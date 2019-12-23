@@ -6,7 +6,6 @@ def load_everything(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE):
     print(f'[INFO] Pool File: {OPTION_FILE}')
     print(f'[INFO] Combination File: {COMBO_FILE}')
     print(f'[INFO] Constraint File: {CONSTRAINT_FILE}')
-    print(f'[INFO] Solution File: {SOLUTION_FILE}')
 
     loans = load_loans(LOAN_FILE)
     pools = load_pools(OPTION_FILE)
@@ -64,16 +63,13 @@ def evaluate_loaded(loans, pools, combs, constraints, states, \
         group_by_j[j].append((i, k))
         byAgency[pools[j].agency].append(loans[i])
 
-    print(len(group_by_j))
+    # print(len(group_by_j))
 
     for j, pairs in group_by_j.items():
         high_ratio, avg_fico, avg_dti, total = 0, 0, 0, 0
         p_ca, cnt_pingora = 0, 0
         p_r, p_pr, cnt_two_harbors = 0, 0, 0
-        print('----------------------------------------------------------')
-        print(f"Pool {j}:")
         for (i, k) in pairs:
-            print(f'{(i, k)}: hat FICO {loans[i].FICO}')
             high_ratio += loans[i].HighBalFlag * loans[i].Li
             avg_fico += loans[i].FICO * loans[i].Li
             avg_dti += loans[i].DTI * loans[i].Li
