@@ -1,12 +1,12 @@
 import csv, sys, traceback
-import collections
 from data import *
 
-def load_everything(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE):
+def evaluate(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE, SOLUTION_FILE):
     print(f'[INFO] Loan File: {LOAN_FILE}')
     print(f'[INFO] Pool File: {OPTION_FILE}')
     print(f'[INFO] Combination File: {COMBO_FILE}')
     print(f'[INFO] Constraint File: {CONSTRAINT_FILE}')
+    print(f'[INFO] Solution File: {SOLUTION_FILE}')
 
     loans = load_loans(LOAN_FILE)
     pools = load_pools(OPTION_FILE)
@@ -23,9 +23,6 @@ def load_everything(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE):
     print('[INFO] # of property_types =', len(property_types))
     print('[INFO] # of purposes =', len(purposes))
 
-    return loans, pools, combs, constraints, states, occupancy_types, purposes, property_types
-
-def load_solution(loans, combs, SOLUTION_FILE):
     with open(SOLUTION_FILE, 'r') as csvfile:
         reader = csv.DictReader(csvfile)
         obj = 0
@@ -39,21 +36,9 @@ def load_solution(loans, combs, SOLUTION_FILE):
             used.add((i, j, k))
             pijk = combs[(i, j, k)]
             obj += float(pijk) / 100 * loans[i].Li
-    return obj, used
 
-def evaluate(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE, SOLUTION_FILE):
-    loans, pools, combs, constraints, states, \
-    occupancy_types, purposes, property_types = load_everything(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE)
-
-    obj, used = load_solution(loans, combs, SOLUTION_FILE)
-
-    return evaluate_loaded(loans, pools, combs, constraints, states, \
-    occupancy_types, purposes, property_types, obj, used)
-
-def evaluate_loaded(loans, pools, combs, constraints, states, \
-    occupancy_types, purposes, property_types, obj, used):
     used = sorted(list(used))
-    group_by_j = {}
+    group_by_j, group_by_k = {}, {}
     byAgency = {}
     agentA, agentB = 'Freddie Mac', 'Fannie Mae'
     byAgency[agentA] = []
@@ -61,32 +46,21 @@ def evaluate_loaded(loans, pools, combs, constraints, states, \
     for (i, j, k) in used:
         if j not in group_by_j:
             group_by_j[j] = []
+        if k not in group_by_k:
+            group_by_k[k] = []
         group_by_j[j].append((i, k))
+        group_by_k[k].append((i, j))
         byAgency[pools[j].agency].append(loans[i])
 
-    # print(len(group_by_j))
+    print(len(group_by_j))
 
     for j, pairs in group_by_j.items():
-        high_ratio, avg_fico, avg_dti, total = 0, 0, 0, 0
-        p_ca, cnt_pingora = 0, 0
-        p_r, p_pr, cnt_two_harbors = 0, 0, 0
+        high_ratio, total = 0, 0
         for (i, k) in pairs:
             high_ratio += loans[i].HighBalFlag * loans[i].Li
-            avg_fico += loans[i].FICO * loans[i].Li
-            avg_dti += loans[i].DTI * loans[i].Li
             total += loans[i].Li
-
-            cnt_pingora += int(k == 'Pingora')
-            p_ca += int((loans[i].state == 'CA') and (k == 'Pingora'))
-            cnt_two_harbors += int(k == 'Two Harbors')
-
-            p_r += int((loans[i].purpose == 'Cashout') and (k == 'Two Harbors'))
-            p_pr += int((loans[i].occupancy == 'Primary') and (k == 'Two Harbors'))
-
         if total > 0:
             high_ratio /= total
-            avg_fico /= total
-            avg_dti /= total
 
         if 'c1' in constraints:
             if pools[j].balance_type.find('Standard') != -1:
@@ -100,37 +74,76 @@ def evaluate_loaded(loans, pools, combs, constraints, states, \
             else:
                 assert total >= 0, f'c2 violated on pool {j}, {total}'
 
+    if True:
+        k = 'Pingora'
+        high_ratio, avg_fico, avg_dti, total = 0, 0, 0, 0
+        p_ca, cnt_pingora = 0, 0
+        for pairs in group_by_k[k]:
+            for i, j, in pairs:
+                cnt_pingora += int(k == 'Pingora')
+                p_ca += int((loans[i].state == 'CA') and (k == 'Pingora'))
+
+                total += loans[i].Li
+                high_ratio += loans[i].HighBalFlag * loans[i].Li
+                avg_fico += loans[i].FICO * loans[i].Li
+                avg_dti += loans[i].DTI * loans[i].Li
+        if total > 0:
+            high_ratio /= total
+            avg_fico /= total
+            avg_dti /= total
         if cnt_pingora > 0:
             p_ca /= cnt_pingora
-            if 'c3' in constraints:
-                assert total <= constraints['c3'], f'c3 violated on pool {j}: {total}'
-            if 'c4' in constraints:
-                assert high_ratio <= constraints['c4'], f'c4 violated on pool {j}: {high_ratio}'
-            if 'c5' in constraints:
-                assert avg_fico >= constraints['c5'], f'c5 violated on pool {j}: {avg_fico}'
-            if 'c6' in constraints:
-                assert avg_dti <= constraints['c6'], f'c6 violated on pool {j}: {avg_dti}'
-            if 'c7' in constraints:
-                assert p_ca <= constraints['c7'], f'c7 violated on pool {j}: {p_ca}'
+
+        if 'c3' in constraints:
+            assert total <= constraints['c3'], f'c3 violated on pool {j}: {total}'
+        if 'c4' in constraints:
+            assert high_ratio <= constraints['c4'], f'c4 violated on pool {j}: {high_ratio}'
+        if 'c5' in constraints:
+            assert avg_fico >= constraints['c5'], f'c5 violated on pool {j}: {avg_fico}'
+        if 'c6' in constraints:
+            assert avg_dti <= constraints['c6'], f'c6 violated on pool {j}: {avg_dti}'
+        if 'c7' in constraints:
+            assert p_ca <= constraints['c7'], f'c7 violated on pool {j}: {p_ca}'
+
+    if True:
+        k = 'Two Harbors'
+        high_ratio, avg_fico, avg_dti, total = 0, 0, 0, 0
+        p_ca, cnt_pingora = 0, 0
+        for pairs in group_by_k[k]:
+            for i, j, in pairs:
+                cnt_two_harbors += int(k == 'Two Harbors')
+                p_r += int((loans[i].purpose == 'Cashout') and (k == 'Two Harbors'))
+                p_pr += int((loans[i].occupancy == 'Primary') and (k == 'Two Harbors'))
+
+                total += loans[i].Li
+                high_ratio += loans[i].HighBalFlag * loans[i].Li
+                avg_fico += loans[i].FICO * loans[i].Li
+                avg_dti += loans[i].DTI * loans[i].Li
+        if total > 0:
+            high_ratio /= total
+            avg_fico /= total
+            avg_dti /= total
         if cnt_two_harbors > 0:
             p_r /= cnt_two_harbors
             p_pr /= cnt_two_harbors
-            if 'c8' in constraints:
-                assert total >= constraints['c8'], f'c8 violated on pool {j}: {total}'
-            if 'c9' in constraints:
-                assert avg_fico >= constraints['c9'], f'c9 violated on pool {j}: {avg_fico}'
-            if 'c10' in constraints:
-                assert avg_dti <= constraints['c10'], f'c10 violated on pool {j}: {avg_dti}'
-            if 'c11' in constraints:
-                assert p_r <= constraints['c11'], f'c11 violated on pool {j}: {p_r}'
-            if 'c12' in constraints:
-                assert p_pr >= constraints['c12'], f'c12 violated on pool {j}: {p_pr}'
+        
+        if 'c8' in constraints:
+            assert total >= constraints['c8'], f'c8 violated on pool {j}: {total}'
+        if 'c9' in constraints:
+            assert avg_fico >= constraints['c9'], f'c9 violated on pool {j}: {avg_fico}'
+        if 'c10' in constraints:
+            assert avg_dti <= constraints['c10'], f'c10 violated on pool {j}: {avg_dti}'
+        if 'c11' in constraints:
+            assert p_r <= constraints['c11'], f'c11 violated on pool {j}: {p_r}'
+        if 'c12' in constraints:
+            assert p_pr >= constraints['c12'], f'c12 violated on pool {j}: {p_pr}'
+
 
     measure = {}
     for agency, loan_list in byAgency.items():
         total, avg_fico, avg_dti = 0, 0, 0
         state_cnt, occupancy_cnt, purpose_cnt, property_type_cnt = \
-            collections.defaultdict(int), collections.defaultdict(int), collections.defaultdict(int), collections.defaultdict(int)
+            defaultdict(int), defaultdict(int), defaultdict(int), defaultdict(int)
         for loan in loan_list:
             total += loan.Li
             avg_fico += loan.FICO
@@ -146,11 +159,11 @@ def evaluate_loaded(loans, pools, combs, constraints, states, \
         for state in states:
             measure[agency].append(state_cnt[state] / len(loan_list))
         for occupancy in occupancy_types:
-            measure[agency].append(occupancy_cnt[occupancy] / len(loan_list))
+            measure[agency].append(occupancy_cnt[occupancy] / len(loan_list)) 
         for purpose in purposes:
-            measure[agency].append(purpose_cnt[purpose] / len(loan_list))
+            measure[agency].append(purpose_cnt[purpose] / len(loan_list)) 
         for property_type in property_types:
-            measure[agency].append(property_type_cnt[property_type] / len(loan_list))
+            measure[agency].append(property_type_cnt[property_type] / len(loan_list)) 
 
     ptr = 0
     if 'c13' in constraints:
@@ -185,20 +198,21 @@ def evaluate_loaded(loans, pools, combs, constraints, states, \
 
 
 if __name__ == '__main__':
-    DATA_FOLDER = './data'
-    SOLUTION_FOLDER = './solution/'
+    if len(sys.argv) == 3:
+        DATA_FOLDER = sys.argv[1]
+        SOLUTION_FOLDER = sys.argv[2]
+    else:
+        DATA_FOLDER = './data/'
+        SOLUTION_FOLDER = './submission/solution/'
 
     COMBO_FILE = DATA_FOLDER + '/EligiblePricingCombinations.csv'
     LOAN_FILE = DATA_FOLDER + '/LoanData.csv'
     OPTION_FILE = DATA_FOLDER + '/PoolOptionData.csv'
-    CONSTRAINT_FILES = [DATA_FOLDER + '/ConstraintA.csv', DATA_FOLDER + '/ConstraintB.csv']
+    CONSTARINT_FILES = [DATA_FOLDER + '/ConstraintA.csv', DATA_FOLDER + '/ConstraintB.csv']
     SOLUTION_FILES = [SOLUTION_FOLDER + '/A.csv', SOLUTION_FOLDER + '/B.csv']
 
-    del CONSTRAINT_FILES[1]
-    del SOLUTION_FILES[1]
-
     scores = []
-    for CONSTRAINT_FILE, SOLUTION_FILE in zip(CONSTRAINT_FILES, SOLUTION_FILES):
+    for CONSTRAINT_FILE, SOLUTION_FILE in zip(CONSTARINT_FILES, SOLUTION_FILES):
         score = 0
         try:
             score = evaluate(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE, SOLUTION_FILE)
@@ -210,6 +224,10 @@ if __name__ == '__main__':
             _, _, tb = sys.exc_info()
             traceback.print_tb(tb) # Fixed format
             print('Error Message:', e)
+        except:
+            _, _, tb = sys.exc_info()
+            traceback.print_tb(tb) # Fixed format
+            print('Other Errors!')
         scores.append(score)
 
     final_score = sum(scores) / len(scores)
