@@ -6,14 +6,19 @@ import scorer
 
 LOAN_FILE = './data/LoanData.csv'
 OPTION_FILE = './data/PoolOptionData.csv'
-COMBO_FILE = './data/EligiblePricingCombinations.csv'
-CONSTRAINT_FILE = './data/ConstraintA.csv'
+COMBO_FILE = './data/EligiblePricingCombinationsSimple.csv'
+CONSTRAINT_FILE = './data/ConstraintSimple.csv'
 
 def choose_buyers():
     chosen_buyer = {}
     for loan_id in buyers:
         loan_buyers = buyers[loan_id]
-        chosen = random.choice(loan_buyers)
+        only_retained = [suggestion for suggestion in loan_buyers if suggestion[1] == 'Retained']
+
+        if only_retained:
+            chosen = random.choice(only_retained)
+        else:
+            chosen = random.choice(loan_buyers)
         chosen_buyer[loan_id] = chosen
     return chosen_buyer
 
