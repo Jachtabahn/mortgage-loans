@@ -1,0 +1,459 @@
+Pool,PoolBalanceType,PoolType,Servicer
+pool_1,Standard Balance,Multi-Issuer,Pingora
+pool_2,Standard Balance,Multi-Issuer,Retained
+pool_3,Standard Balance,Multi-Issuer,Two Harbors
+pool_4,Standard Balance,Multi-Issuer,Pingora
+pool_5,Standard Balance,Multi-Issuer,Retained
+pool_6,Standard Balance,Multi-Issuer,Two Harbors
+pool_7,Standard Balance,Multi-Issuer,Pingora
+pool_8,Standard Balance,Multi-Issuer,Pingora
+pool_9,Standard Balance,Multi-Issuer,Retained
+pool_10,Standard Balance,Multi-Issuer,Two Harbors
+pool_11,Standard Balance,Multi-Issuer,Pingora
+pool_12,Standard Balance,Multi-Issuer,Pingora
+pool_13,Standard Balance,Multi-Issuer,Retained
+pool_14,Standard Balance,Multi-Issuer,Two Harbors
+pool_15,Standard Balance,Multi-Issuer,Pingora
+pool_16,Standard Balance,Multi-Issuer,Pingora
+pool_17,Standard Balance,Multi-Issuer,Retained
+pool_18,Standard Balance,Multi-Issuer,Two Harbors
+pool_19,Standard Balance,Multi-Issuer,Pingora
+pool_20,Standard Balance,Multi-Issuer,Pingora
+pool_21,Standard Balance,Multi-Issuer,Retained
+pool_22,Standard Balance,Multi-Issuer,Pingora
+pool_23,Standard Balance,Multi-Issuer,Pingora
+pool_24,Standard Balance,Multi-Issuer,Retained
+pool_25,Standard Balance,Multi-Issuer,Pingora
+pool_26,Standard Balance,Multi-Issuer,Retained
+pool_27,Standard Balance,Multi-Issuer,Pingora
+pool_28,High Balance,Multi-Issuer,Pingora
+pool_29,High Balance,Multi-Issuer,Retained
+pool_30,High Balance,Multi-Issuer,Two Harbors
+pool_31,High Balance,Multi-Issuer,Pingora
+pool_32,High Balance,Multi-Issuer,Retained
+pool_33,High Balance,Multi-Issuer,Two Harbors
+pool_34,High Balance,Multi-Issuer,Pingora
+pool_35,High Balance,Multi-Issuer,Pingora
+pool_36,High Balance,Multi-Issuer,Retained
+pool_37,High Balance,Multi-Issuer,Two Harbors
+pool_38,High Balance,Multi-Issuer,Pingora
+pool_39,High Balance,Multi-Issuer,Pingora
+pool_40,High Balance,Multi-Issuer,Retained
+pool_41,High Balance,Multi-Issuer,Two Harbors
+pool_42,High Balance,Multi-Issuer,Pingora
+pool_43,High Balance,Multi-Issuer,Pingora
+pool_44,High Balance,Multi-Issuer,Retained
+pool_45,High Balance,Multi-Issuer,Two Harbors
+pool_46,High Balance,Multi-Issuer,Pingora
+pool_47,High Balance,Multi-Issuer,Retained
+pool_48,High Balance,Multi-Issuer,Two Harbors
+pool_49,High Balance,Multi-Issuer,Pingora
+pool_50,High Balance,Multi-Issuer,Retained
+pool_51,High Balance,Multi-Issuer,Two Harbors
+pool_52,High Balance,Multi-Issuer,Pingora
+pool_53,Standard Balance,Single-Issuer,Pingora
+pool_54,Standard Balance,Single-Issuer,Retained
+pool_55,Standard Balance,Single-Issuer,Two Harbors
+pool_56,Standard Balance,Single-Issuer,Pingora
+pool_57,Standard Balance,Single-Issuer,Retained
+pool_58,Standard Balance,Single-Issuer,Two Harbors
+pool_59,Standard Balance,Single-Issuer,Pingora
+pool_60,Standard Balance,Single-Issuer,Retained
+pool_61,Standard Balance,Single-Issuer,Two Harbors
+pool_62,Standard Balance,Single-Issuer,Pingora
+pool_63,Standard Balance,Single-Issuer,Retained
+pool_64,Standard Balance,Single-Issuer,Two Harbors
+pool_65,Standard Balance,Single-Issuer,Pingora
+pool_66,Standard Balance,Single-Issuer,Retained
+pool_67,Standard Balance,Single-Issuer,Two Harbors
+pool_68,Standard Balance,Single-Issuer,Pingora
+pool_69,Standard Balance,Single-Issuer,Retained
+pool_70,Standard Balance,Single-Issuer,Two Harbors
+pool_71,Standard Balance,Single-Issuer,Pingora
+pool_72,Standard Balance,Single-Issuer,Retained
+pool_73,Standard Balance,Single-Issuer,Pingora
+pool_74,Standard Balance,Single-Issuer,Retained
+pool_75,Standard Balance,Single-Issuer,Two Harbors
+pool_76,Standard Balance,Single-Issuer,Pingora
+pool_77,Standard Balance,Single-Issuer,Retained
+pool_78,Standard Balance,Single-Issuer,Two Harbors
+pool_79,Standard Balance,Single-Issuer,Pingora
+pool_80,Standard Balance,Single-Issuer,Retained
+pool_81,Standard Balance,Single-Issuer,Pingora
+pool_82,Standard Balance,Single-Issuer,Retained
+pool_83,Standard Balance,Single-Issuer,Two Harbors
+pool_84,Standard Balance,Single-Issuer,Pingora
+pool_85,Standard Balance,Single-Issuer,Retained
+pool_86,Standard Balance,Single-Issuer,Two Harbors
+pool_87,Standard Balance,Single-Issuer,Pingora
+pool_88,Standard Balance,Single-Issuer,Retained
+pool_89,Standard Balance,Single-Issuer,Pingora
+pool_90,Standard Balance,Single-Issuer,Retained
+pool_91,Standard Balance,Single-Issuer,Two Harbors
+pool_92,Standard Balance,Single-Issuer,Pingora
+pool_93,Standard Balance,Single-Issuer,Retained
+pool_94,Standard Balance,Single-Issuer,Two Harbors
+pool_95,Standard Balance,Single-Issuer,Pingora
+pool_96,Standard Balance,Single-Issuer,Retained
+pool_97,Standard Balance,Single-Issuer,Pingora
+pool_98,Standard Balance,Single-Issuer,Retained
+pool_99,Standard Balance,Single-Issuer,Two Harbors
+pool_100,Standard Balance,Single-Issuer,Pingora
+pool_101,Standard Balance,Single-Issuer,Retained
+pool_102,Standard Balance,Single-Issuer,Pingora
+pool_103,Standard Balance,Single-Issuer,Retained
+pool_104,Standard Balance,Single-Issuer,Two Harbors
+pool_105,Standard Balance,Single-Issuer,Pingora
+pool_106,Standard Balance,Single-Issuer,Retained
+pool_107,Standard Balance,Single-Issuer,Two Harbors
+pool_108,Standard Balance,Single-Issuer,Pingora
+pool_109,Standard Balance,Single-Issuer,Retained
+pool_110,Standard Balance,Single-Issuer,Pingora
+pool_111,Standard Balance,Single-Issuer,Retained
+pool_112,Standard Balance,Single-Issuer,Retained
+pool_113,Standard Balance,Single-Issuer,Retained
+pool_114,Standard Balance,Single-Issuer,Retained
+pool_115,Standard Balance,Single-Issuer,Retained
+pool_116,Standard Balance,Single-Issuer,Retained
+pool_117,Standard Balance,Single-Issuer,Two Harbors
+pool_118,Standard Balance,Single-Issuer,Pingora
+pool_119,Standard Balance,Single-Issuer,Retained
+pool_120,Standard Balance,Single-Issuer,Two Harbors
+pool_121,Standard Balance,Single-Issuer,Pingora
+pool_122,Standard Balance,Single-Issuer,Retained
+pool_123,Standard Balance,Single-Issuer,Two Harbors
+pool_124,Standard Balance,Single-Issuer,Pingora
+pool_125,Standard Balance,Single-Issuer,Retained
+pool_126,Standard Balance,Single-Issuer,Pingora
+pool_127,Standard Balance,Single-Issuer,Retained
+pool_128,Standard Balance,Single-Issuer,Pingora
+pool_129,Standard Balance,Single-Issuer,Retained
+pool_130,Standard Balance,Single-Issuer,Two Harbors
+pool_131,Standard Balance,Single-Issuer,Pingora
+pool_132,Standard Balance,Single-Issuer,Retained
+pool_133,Standard Balance,Single-Issuer,Two Harbors
+pool_134,Standard Balance,Single-Issuer,Pingora
+pool_135,Standard Balance,Single-Issuer,Retained
+pool_136,Standard Balance,Single-Issuer,Two Harbors
+pool_137,Standard Balance,Single-Issuer,Pingora
+pool_138,Standard Balance,Single-Issuer,Retained
+pool_139,Standard Balance,Single-Issuer,Pingora
+pool_140,Standard Balance,Single-Issuer,Retained
+pool_141,Standard Balance,Single-Issuer,Pingora
+pool_142,Standard Balance,Single-Issuer,Retained
+pool_143,Standard Balance,Single-Issuer,Two Harbors
+pool_144,Standard Balance,Single-Issuer,Pingora
+pool_145,Standard Balance,Single-Issuer,Retained
+pool_146,Standard Balance,Single-Issuer,Two Harbors
+pool_147,Standard Balance,Single-Issuer,Pingora
+pool_148,Standard Balance,Single-Issuer,Retained
+pool_149,Standard Balance,Single-Issuer,Two Harbors
+pool_150,Standard Balance,Single-Issuer,Pingora
+pool_151,Standard Balance,Single-Issuer,Retained
+pool_152,Standard Balance,Single-Issuer,Pingora
+pool_153,Standard Balance,Single-Issuer,Retained
+pool_154,Standard Balance,Single-Issuer,Pingora
+pool_155,Standard Balance,Single-Issuer,Retained
+pool_156,Standard Balance,Single-Issuer,Two Harbors
+pool_157,Standard Balance,Single-Issuer,Pingora
+pool_158,Standard Balance,Single-Issuer,Retained
+pool_159,Standard Balance,Single-Issuer,Two Harbors
+pool_160,Standard Balance,Single-Issuer,Pingora
+pool_161,Standard Balance,Single-Issuer,Retained
+pool_162,Standard Balance,Single-Issuer,Two Harbors
+pool_163,Standard Balance,Single-Issuer,Pingora
+pool_164,Standard Balance,Single-Issuer,Retained
+pool_165,Standard Balance,Single-Issuer,Pingora
+pool_166,Standard Balance,Single-Issuer,Retained
+pool_167,Standard Balance,Single-Issuer,Pingora
+pool_168,Standard Balance,Single-Issuer,Retained
+pool_169,Standard Balance,Single-Issuer,Two Harbors
+pool_170,Standard Balance,Single-Issuer,Pingora
+pool_171,Standard Balance,Single-Issuer,Retained
+pool_172,Standard Balance,Single-Issuer,Two Harbors
+pool_173,Standard Balance,Single-Issuer,Pingora
+pool_174,Standard Balance,Single-Issuer,Retained
+pool_175,Standard Balance,Single-Issuer,Pingora
+pool_176,Standard Balance,Single-Issuer,Retained
+pool_177,Standard Balance,Single-Issuer,Pingora
+pool_178,Standard Balance,Single-Issuer,Pingora
+pool_179,Standard Balance,Single-Issuer,Retained
+pool_180,Standard Balance,Single-Issuer,Two Harbors
+pool_181,Standard Balance,Single-Issuer,Pingora
+pool_182,Standard Balance,Single-Issuer,Retained
+pool_183,Standard Balance,Single-Issuer,Two Harbors
+pool_184,Standard Balance,Single-Issuer,Pingora
+pool_185,Standard Balance,Single-Issuer,Retained
+pool_186,Standard Balance,Single-Issuer,Two Harbors
+pool_187,Standard Balance,Single-Issuer,Pingora
+pool_188,Standard Balance,Single-Issuer,Retained
+pool_189,Standard Balance,Single-Issuer,Two Harbors
+pool_190,Standard Balance,Single-Issuer,Pingora
+pool_191,Standard Balance,Single-Issuer,Retained
+pool_192,Standard Balance,Single-Issuer,Pingora
+pool_193,Standard Balance,Single-Issuer,Retained
+pool_194,Standard Balance,Single-Issuer,Retained
+pool_195,Standard Balance,Single-Issuer,Two Harbors
+pool_196,Standard Balance,Single-Issuer,Pingora
+pool_197,Standard Balance,Single-Issuer,Retained
+pool_198,Standard Balance,Single-Issuer,Two Harbors
+pool_199,Standard Balance,Single-Issuer,Pingora
+pool_200,Standard Balance,Single-Issuer,Retained
+pool_201,Standard Balance,Single-Issuer,Two Harbors
+pool_202,Standard Balance,Single-Issuer,Pingora
+pool_203,Standard Balance,Single-Issuer,Retained
+pool_204,Standard Balance,Single-Issuer,Pingora
+pool_205,Standard Balance,Single-Issuer,Retained
+pool_206,Standard Balance,Single-Issuer,Pingora
+pool_207,Standard Balance,Single-Issuer,Retained
+pool_208,Standard Balance,Single-Issuer,Two Harbors
+pool_209,Standard Balance,Single-Issuer,Pingora
+pool_210,Standard Balance,Single-Issuer,Retained
+pool_211,Standard Balance,Single-Issuer,Two Harbors
+pool_212,Standard Balance,Single-Issuer,Pingora
+pool_213,Standard Balance,Single-Issuer,Retained
+pool_214,Standard Balance,Single-Issuer,Two Harbors
+pool_215,Standard Balance,Single-Issuer,Pingora
+pool_216,Standard Balance,Single-Issuer,Retained
+pool_217,Standard Balance,Single-Issuer,Two Harbors
+pool_218,Standard Balance,Single-Issuer,Pingora
+pool_219,Standard Balance,Single-Issuer,Retained
+pool_220,Standard Balance,Single-Issuer,Pingora
+pool_221,Standard Balance,Single-Issuer,Retained
+pool_222,Standard Balance,Single-Issuer,Pingora
+pool_223,Standard Balance,Single-Issuer,Retained
+pool_224,Standard Balance,Single-Issuer,Retained
+pool_225,Standard Balance,Single-Issuer,Retained
+pool_226,Standard Balance,Single-Issuer,Retained
+pool_227,Standard Balance,Single-Issuer,Retained
+pool_228,Standard Balance,Multi-Issuer,Pingora
+pool_229,Standard Balance,Multi-Issuer,Retained
+pool_230,Standard Balance,Multi-Issuer,Two Harbors
+pool_231,Standard Balance,Multi-Issuer,Pingora
+pool_232,Standard Balance,Multi-Issuer,Retained
+pool_233,Standard Balance,Multi-Issuer,Two Harbors
+pool_234,Standard Balance,Multi-Issuer,Pingora
+pool_235,Standard Balance,Multi-Issuer,Pingora
+pool_236,Standard Balance,Multi-Issuer,Retained
+pool_237,Standard Balance,Multi-Issuer,Two Harbors
+pool_238,Standard Balance,Multi-Issuer,Pingora
+pool_239,Standard Balance,Multi-Issuer,Pingora
+pool_240,Standard Balance,Multi-Issuer,Retained
+pool_241,Standard Balance,Multi-Issuer,Two Harbors
+pool_242,Standard Balance,Multi-Issuer,Pingora
+pool_243,Standard Balance,Multi-Issuer,Pingora
+pool_244,Standard Balance,Multi-Issuer,Retained
+pool_245,Standard Balance,Multi-Issuer,Two Harbors
+pool_246,Standard Balance,Multi-Issuer,Pingora
+pool_247,Standard Balance,Multi-Issuer,Pingora
+pool_248,Standard Balance,Multi-Issuer,Retained
+pool_249,Standard Balance,Multi-Issuer,Pingora
+pool_250,Standard Balance,Multi-Issuer,Pingora
+pool_251,Standard Balance,Multi-Issuer,Retained
+pool_252,Standard Balance,Multi-Issuer,Pingora
+pool_253,Standard Balance,Multi-Issuer,Retained
+pool_254,Standard Balance,Multi-Issuer,Pingora
+pool_255,High Balance,Multi-Issuer,Pingora
+pool_256,High Balance,Multi-Issuer,Retained
+pool_257,High Balance,Multi-Issuer,Two Harbors
+pool_258,High Balance,Multi-Issuer,Pingora
+pool_259,High Balance,Multi-Issuer,Retained
+pool_260,High Balance,Multi-Issuer,Two Harbors
+pool_261,High Balance,Multi-Issuer,Pingora
+pool_262,High Balance,Multi-Issuer,Pingora
+pool_263,High Balance,Multi-Issuer,Retained
+pool_264,High Balance,Multi-Issuer,Two Harbors
+pool_265,High Balance,Multi-Issuer,Pingora
+pool_266,High Balance,Multi-Issuer,Pingora
+pool_267,High Balance,Multi-Issuer,Retained
+pool_268,High Balance,Multi-Issuer,Two Harbors
+pool_269,High Balance,Multi-Issuer,Pingora
+pool_270,High Balance,Multi-Issuer,Pingora
+pool_271,High Balance,Multi-Issuer,Retained
+pool_272,High Balance,Multi-Issuer,Two Harbors
+pool_273,High Balance,Multi-Issuer,Pingora
+pool_274,High Balance,Multi-Issuer,Retained
+pool_275,High Balance,Multi-Issuer,Two Harbors
+pool_276,High Balance,Multi-Issuer,Pingora
+pool_277,High Balance,Multi-Issuer,Retained
+pool_278,High Balance,Multi-Issuer,Two Harbors
+pool_279,High Balance,Multi-Issuer,Pingora
+pool_280,Standard Balance,Single-Issuer,Pingora
+pool_281,Standard Balance,Single-Issuer,Retained
+pool_282,Standard Balance,Single-Issuer,Two Harbors
+pool_283,Standard Balance,Single-Issuer,Pingora
+pool_284,Standard Balance,Single-Issuer,Retained
+pool_285,Standard Balance,Single-Issuer,Two Harbors
+pool_286,Standard Balance,Single-Issuer,Pingora
+pool_287,Standard Balance,Single-Issuer,Retained
+pool_288,Standard Balance,Single-Issuer,Two Harbors
+pool_289,Standard Balance,Single-Issuer,Pingora
+pool_290,Standard Balance,Single-Issuer,Retained
+pool_291,Standard Balance,Single-Issuer,Two Harbors
+pool_292,Standard Balance,Single-Issuer,Pingora
+pool_293,Standard Balance,Single-Issuer,Retained
+pool_294,Standard Balance,Single-Issuer,Two Harbors
+pool_295,Standard Balance,Single-Issuer,Pingora
+pool_296,Standard Balance,Single-Issuer,Retained
+pool_297,Standard Balance,Single-Issuer,Two Harbors
+pool_298,Standard Balance,Single-Issuer,Pingora
+pool_299,Standard Balance,Single-Issuer,Retained
+pool_300,Standard Balance,Single-Issuer,Pingora
+pool_301,Standard Balance,Single-Issuer,Retained
+pool_302,Standard Balance,Single-Issuer,Two Harbors
+pool_303,Standard Balance,Single-Issuer,Pingora
+pool_304,Standard Balance,Single-Issuer,Retained
+pool_305,Standard Balance,Single-Issuer,Two Harbors
+pool_306,Standard Balance,Single-Issuer,Pingora
+pool_307,Standard Balance,Single-Issuer,Retained
+pool_308,Standard Balance,Single-Issuer,Pingora
+pool_309,Standard Balance,Single-Issuer,Retained
+pool_310,Standard Balance,Single-Issuer,Two Harbors
+pool_311,Standard Balance,Single-Issuer,Pingora
+pool_312,Standard Balance,Single-Issuer,Retained
+pool_313,Standard Balance,Single-Issuer,Two Harbors
+pool_314,Standard Balance,Single-Issuer,Pingora
+pool_315,Standard Balance,Single-Issuer,Retained
+pool_316,Standard Balance,Single-Issuer,Pingora
+pool_317,Standard Balance,Single-Issuer,Retained
+pool_318,Standard Balance,Single-Issuer,Two Harbors
+pool_319,Standard Balance,Single-Issuer,Pingora
+pool_320,Standard Balance,Single-Issuer,Retained
+pool_321,Standard Balance,Single-Issuer,Two Harbors
+pool_322,Standard Balance,Single-Issuer,Pingora
+pool_323,Standard Balance,Single-Issuer,Retained
+pool_324,Standard Balance,Single-Issuer,Pingora
+pool_325,Standard Balance,Single-Issuer,Retained
+pool_326,Standard Balance,Single-Issuer,Two Harbors
+pool_327,Standard Balance,Single-Issuer,Pingora
+pool_328,Standard Balance,Single-Issuer,Retained
+pool_329,Standard Balance,Single-Issuer,Pingora
+pool_330,Standard Balance,Single-Issuer,Retained
+pool_331,Standard Balance,Single-Issuer,Two Harbors
+pool_332,Standard Balance,Single-Issuer,Pingora
+pool_333,Standard Balance,Single-Issuer,Retained
+pool_334,Standard Balance,Single-Issuer,Two Harbors
+pool_335,Standard Balance,Single-Issuer,Pingora
+pool_336,Standard Balance,Single-Issuer,Retained
+pool_337,Standard Balance,Single-Issuer,Two Harbors
+pool_338,Standard Balance,Single-Issuer,Pingora
+pool_339,Standard Balance,Single-Issuer,Retained
+pool_340,Standard Balance,Single-Issuer,Retained
+pool_341,Standard Balance,Single-Issuer,Retained
+pool_342,Standard Balance,Single-Issuer,Retained
+pool_343,Standard Balance,Single-Issuer,Retained
+pool_344,Standard Balance,Single-Issuer,Retained
+pool_345,Standard Balance,Single-Issuer,Two Harbors
+pool_346,Standard Balance,Single-Issuer,Pingora
+pool_347,Standard Balance,Single-Issuer,Retained
+pool_348,Standard Balance,Single-Issuer,Two Harbors
+pool_349,Standard Balance,Single-Issuer,Pingora
+pool_350,Standard Balance,Single-Issuer,Retained
+pool_351,Standard Balance,Single-Issuer,Two Harbors
+pool_352,Standard Balance,Single-Issuer,Pingora
+pool_353,Standard Balance,Single-Issuer,Retained
+pool_354,Standard Balance,Single-Issuer,Pingora
+pool_355,Standard Balance,Single-Issuer,Retained
+pool_356,Standard Balance,Single-Issuer,Pingora
+pool_357,Standard Balance,Single-Issuer,Retained
+pool_358,Standard Balance,Single-Issuer,Two Harbors
+pool_359,Standard Balance,Single-Issuer,Pingora
+pool_360,Standard Balance,Single-Issuer,Retained
+pool_361,Standard Balance,Single-Issuer,Two Harbors
+pool_362,Standard Balance,Single-Issuer,Pingora
+pool_363,Standard Balance,Single-Issuer,Retained
+pool_364,Standard Balance,Single-Issuer,Two Harbors
+pool_365,Standard Balance,Single-Issuer,Pingora
+pool_366,Standard Balance,Single-Issuer,Retained
+pool_367,Standard Balance,Single-Issuer,Pingora
+pool_368,Standard Balance,Single-Issuer,Retained
+pool_369,Standard Balance,Single-Issuer,Pingora
+pool_370,Standard Balance,Single-Issuer,Retained
+pool_371,Standard Balance,Single-Issuer,Two Harbors
+pool_372,Standard Balance,Single-Issuer,Pingora
+pool_373,Standard Balance,Single-Issuer,Retained
+pool_374,Standard Balance,Single-Issuer,Two Harbors
+pool_375,Standard Balance,Single-Issuer,Pingora
+pool_376,Standard Balance,Single-Issuer,Retained
+pool_377,Standard Balance,Single-Issuer,Two Harbors
+pool_378,Standard Balance,Single-Issuer,Pingora
+pool_379,Standard Balance,Single-Issuer,Retained
+pool_380,Standard Balance,Single-Issuer,Pingora
+pool_381,Standard Balance,Single-Issuer,Retained
+pool_382,Standard Balance,Single-Issuer,Pingora
+pool_383,Standard Balance,Single-Issuer,Retained
+pool_384,Standard Balance,Single-Issuer,Two Harbors
+pool_385,Standard Balance,Single-Issuer,Pingora
+pool_386,Standard Balance,Single-Issuer,Retained
+pool_387,Standard Balance,Single-Issuer,Two Harbors
+pool_388,Standard Balance,Single-Issuer,Pingora
+pool_389,Standard Balance,Single-Issuer,Retained
+pool_390,Standard Balance,Single-Issuer,Two Harbors
+pool_391,Standard Balance,Single-Issuer,Pingora
+pool_392,Standard Balance,Single-Issuer,Retained
+pool_393,Standard Balance,Single-Issuer,Pingora
+pool_394,Standard Balance,Single-Issuer,Retained
+pool_395,Standard Balance,Single-Issuer,Pingora
+pool_396,Standard Balance,Single-Issuer,Retained
+pool_397,Standard Balance,Single-Issuer,Two Harbors
+pool_398,Standard Balance,Single-Issuer,Pingora
+pool_399,Standard Balance,Single-Issuer,Retained
+pool_400,Standard Balance,Single-Issuer,Two Harbors
+pool_401,Standard Balance,Single-Issuer,Pingora
+pool_402,Standard Balance,Single-Issuer,Retained
+pool_403,Standard Balance,Single-Issuer,Two Harbors
+pool_404,Standard Balance,Single-Issuer,Pingora
+pool_405,Standard Balance,Single-Issuer,Retained
+pool_406,Standard Balance,Single-Issuer,Pingora
+pool_407,Standard Balance,Single-Issuer,Retained
+pool_408,Standard Balance,Single-Issuer,Pingora
+pool_409,Standard Balance,Single-Issuer,Pingora
+pool_410,Standard Balance,Single-Issuer,Retained
+pool_411,Standard Balance,Single-Issuer,Two Harbors
+pool_412,Standard Balance,Single-Issuer,Pingora
+pool_413,Standard Balance,Single-Issuer,Retained
+pool_414,Standard Balance,Single-Issuer,Two Harbors
+pool_415,Standard Balance,Single-Issuer,Pingora
+pool_416,Standard Balance,Single-Issuer,Retained
+pool_417,Standard Balance,Single-Issuer,Two Harbors
+pool_418,Standard Balance,Single-Issuer,Pingora
+pool_419,Standard Balance,Single-Issuer,Retained
+pool_420,Standard Balance,Single-Issuer,Two Harbors
+pool_421,Standard Balance,Single-Issuer,Pingora
+pool_422,Standard Balance,Single-Issuer,Retained
+pool_423,Standard Balance,Single-Issuer,Pingora
+pool_424,Standard Balance,Single-Issuer,Retained
+pool_425,Standard Balance,Single-Issuer,Retained
+pool_426,Standard Balance,Single-Issuer,Two Harbors
+pool_427,Standard Balance,Single-Issuer,Pingora
+pool_428,Standard Balance,Single-Issuer,Retained
+pool_429,Standard Balance,Single-Issuer,Two Harbors
+pool_430,Standard Balance,Single-Issuer,Pingora
+pool_431,Standard Balance,Single-Issuer,Retained
+pool_432,Standard Balance,Single-Issuer,Two Harbors
+pool_433,Standard Balance,Single-Issuer,Pingora
+pool_434,Standard Balance,Single-Issuer,Retained
+pool_435,Standard Balance,Single-Issuer,Pingora
+pool_436,Standard Balance,Single-Issuer,Retained
+pool_437,Standard Balance,Single-Issuer,Pingora
+pool_438,Standard Balance,Single-Issuer,Retained
+pool_439,Standard Balance,Single-Issuer,Two Harbors
+pool_440,Standard Balance,Single-Issuer,Pingora
+pool_441,Standard Balance,Single-Issuer,Retained
+pool_442,Standard Balance,Single-Issuer,Two Harbors
+pool_443,Standard Balance,Single-Issuer,Pingora
+pool_444,Standard Balance,Single-Issuer,Retained
+pool_445,Standard Balance,Single-Issuer,Two Harbors
+pool_446,Standard Balance,Single-Issuer,Pingora
+pool_447,Standard Balance,Single-Issuer,Retained
+pool_448,Standard Balance,Single-Issuer,Two Harbors
+pool_449,Standard Balance,Single-Issuer,Pingora
+pool_450,Standard Balance,Single-Issuer,Retained
+pool_451,Standard Balance,Single-Issuer,Pingora
+pool_452,Standard Balance,Single-Issuer,Retained
+pool_453,Standard Balance,Single-Issuer,Pingora
+pool_454,Standard Balance,Single-Issuer,Retained
+pool_455,Standard Balance,Single-Issuer,Retained
+pool_456,Standard Balance,Single-Issuer,Retained
+pool_457,Standard Balance,Single-Issuer,Retained
+pool_458,Standard Balance,Single-Issuer,Retained
