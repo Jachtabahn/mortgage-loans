@@ -1,4 +1,5 @@
 import csv, sys, traceback
+import collections
 from data import *
 
 def load_everything(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE):
@@ -129,7 +130,7 @@ def evaluate_loaded(loans, pools, combs, constraints, states, \
     for agency, loan_list in byAgency.items():
         total, avg_fico, avg_dti = 0, 0, 0
         state_cnt, occupancy_cnt, purpose_cnt, property_type_cnt = \
-            defaultdict(int), defaultdict(int), defaultdict(int), defaultdict(int)
+            collections.defaultdict(int), collections.defaultdict(int), collections.defaultdict(int), collections.defaultdict(int)
         for loan in loan_list:
             total += loan.Li
             avg_fico += loan.FICO
