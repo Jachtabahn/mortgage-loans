@@ -52,7 +52,7 @@ def evaluate(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE, SOLUTION_FILE)
         group_by_k[k].append((i, j))
         byAgency[pools[j].agency].append(loans[i])
 
-    print(len(group_by_j))
+    print(len(group_by_j), len(group_by_k))
 
     for j, pairs in group_by_j.items():
         high_ratio, total = 0, 0
@@ -78,15 +78,14 @@ def evaluate(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE, SOLUTION_FILE)
         k = 'Pingora'
         high_ratio, avg_fico, avg_dti, total = 0, 0, 0, 0
         p_ca, cnt_pingora = 0, 0
-        for pairs in group_by_k[k]:
-            for i, j, in pairs:
-                cnt_pingora += int(k == 'Pingora')
-                p_ca += int((loans[i].state == 'CA') and (k == 'Pingora'))
+        for i, j in group_by_k[k]:
+            cnt_pingora += int(k == 'Pingora')
+            p_ca += int((loans[i].state == 'CA') and (k == 'Pingora'))
 
-                total += loans[i].Li
-                high_ratio += loans[i].HighBalFlag * loans[i].Li
-                avg_fico += loans[i].FICO * loans[i].Li
-                avg_dti += loans[i].DTI * loans[i].Li
+            total += loans[i].Li
+            high_ratio += loans[i].HighBalFlag * loans[i].Li
+            avg_fico += loans[i].FICO * loans[i].Li
+            avg_dti += loans[i].DTI * loans[i].Li
         if total > 0:
             high_ratio /= total
             avg_fico /= total
@@ -108,17 +107,16 @@ def evaluate(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE, SOLUTION_FILE)
     if True:
         k = 'Two Harbors'
         high_ratio, avg_fico, avg_dti, total = 0, 0, 0, 0
-        p_ca, cnt_pingora = 0, 0
-        for pairs in group_by_k[k]:
-            for i, j, in pairs:
-                cnt_two_harbors += int(k == 'Two Harbors')
-                p_r += int((loans[i].purpose == 'Cashout') and (k == 'Two Harbors'))
-                p_pr += int((loans[i].occupancy == 'Primary') and (k == 'Two Harbors'))
+        p_r, p_pr, cnt_two_harbors = 0, 0, 0
+        for i, j in group_by_k[k]:
+            cnt_two_harbors += int(k == 'Two Harbors')
+            p_r += int((loans[i].purpose == 'Cashout') and (k == 'Two Harbors'))
+            p_pr += int((loans[i].occupancy == 'Primary') and (k == 'Two Harbors'))
 
-                total += loans[i].Li
-                high_ratio += loans[i].HighBalFlag * loans[i].Li
-                avg_fico += loans[i].FICO * loans[i].Li
-                avg_dti += loans[i].DTI * loans[i].Li
+            total += loans[i].Li
+            high_ratio += loans[i].HighBalFlag * loans[i].Li
+            avg_fico += loans[i].FICO * loans[i].Li
+            avg_dti += loans[i].DTI * loans[i].Li
         if total > 0:
             high_ratio /= total
             avg_fico /= total
@@ -146,8 +144,8 @@ def evaluate(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE, SOLUTION_FILE)
             defaultdict(int), defaultdict(int), defaultdict(int), defaultdict(int)
         for loan in loan_list:
             total += loan.Li
-            avg_fico += loan.FICO
-            avg_dti += loan.DTI
+            avg_fico += loan.FICO * loan.Li
+            avg_dti += loan.DTI * loan.Li
             state_cnt[loan.state] += 1
             occupancy_cnt[loan.occupancy] += 1
             purpose_cnt[loan.purpose] += 1
