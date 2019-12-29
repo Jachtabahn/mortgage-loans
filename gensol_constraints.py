@@ -128,68 +128,6 @@ def check_constraints(pool, subset_loans):
         logging.debug(f'Check c2: {c2}')
         ok = ok and c2
 
-    if pool.servicer == 'Pingora':
-        logging.debug('Check c3: amounts_sum <= c3')
-        logging.debug(f'Check c3: {amounts_sum} <= {constraints["c3"]}')
-        c3 = (amounts_sum <= constraints["c3"])
-        logging.debug(f'Check c3: {c3}')
-        ok = ok and c3
-
-        logging.debug('Check c4: normal_expense <= c4')
-        logging.debug(f'Check c4: {normal_expense} <= {constraints["c4"]}')
-        c4 = (normal_expense <= constraints["c4"])
-        logging.debug(f'Check c4: {c4}')
-        ok = ok and c4
-
-        logging.debug('Check c5: normal_fico >= c5')
-        logging.debug(f'Check c5: {normal_fico} >= {constraints["c5"]}')
-        c5 = (normal_fico >= constraints["c5"])
-        logging.debug(f'Check c5: {c5}')
-        ok = ok and c5
-
-        logging.debug('Check c6: normal_dti <= c6')
-        logging.debug(f'Check c6: {normal_dti} <= {constraints["c6"]}')
-        c6 = (normal_dti <= constraints["c6"])
-        logging.debug(f'Check c6: {c6}')
-        ok = ok and c6
-
-        logging.debug('Check c7: average_california <= c7')
-        logging.debug(f'Check c7: {average_california} <= {constraints["c7"]}')
-        c7 = (average_california <= constraints["c7"])
-        logging.debug(f'Check c7: {c7}')
-        ok = ok and c7
-
-    if pool.servicer == 'Two Harbors':
-        logging.debug('Check c8: amounts_sum >= c8')
-        logging.debug(f'Check c8: {amounts_sum} >= {constraints["c8"]}')
-        c8 = (amounts_sum >= constraints["c8"])
-        logging.debug(f'Check c8: {c8}')
-        ok = ok and c8
-
-        logging.debug('Check c9: normal_fico >= c9')
-        logging.debug(f'Check c9: {normal_fico} >= {constraints["c9"]}')
-        c9 = (normal_fico >= constraints["c9"])
-        logging.debug(f'Check c9: {c9}')
-        ok = ok and c9
-
-        logging.debug('Check c10: normal_dti <= c10')
-        logging.debug(f'Check c10: {normal_dti} <= {constraints["c10"]}')
-        c10 = (normal_dti <= constraints["c10"])
-        logging.debug(f'Check c10: {c10}')
-        ok = ok and c10
-
-        logging.debug('Check c11: average_cashout <= c11')
-        logging.debug(f'Check c11: {average_cashout} <= {constraints["c11"]}')
-        c11 = (average_cashout <= constraints["c11"])
-        logging.debug(f'Check c11: {c11}')
-        ok = ok and c11
-
-        logging.debug('Check c12: average_primary >= c12')
-        logging.debug(f'Check c12: {average_primary} >= {constraints["c12"]}')
-        c12 = (average_primary >= constraints["c12"])
-        logging.debug(f'Check c12: {c12}')
-        ok = ok and c12
-
     logging.debug(f'OK: {ok}')
 
     return ok
@@ -319,7 +257,6 @@ if __name__ == '__main__':
             assert type(loan.is_california) == int, 'is_california should be an integer for easy multiplication and addition'
             assert type(loan.is_cashout) == int, 'is_cashout should be an integer for easy multiplication and addition'
             assert type(loan.is_primary) == int, 'is_primary should be an integer for easy multiplication and addition'
-
 
     pools = {}
     with open('data/processed/Pools.csv') as pools_file:
