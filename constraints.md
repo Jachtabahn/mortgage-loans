@@ -119,3 +119,35 @@ FOR i in mortgages:
 ```
 
 Unter Einhaltung der obigen Bedingungen an `x`, wollen wir den Nutzwert `price` von `x` maximieren.
+
+
+# Alternative Betrachtung
+
+Eine Konfiguration ist gegeben durch die drei Vektoren `features`, `sums`, `counts` mit je 927 reellwertigen Komponenten. Zusätzliche Vereinfachungen gelten:
+
+* Einige Komponenten von `features` haben nur Werte zwischen 0 und 1
+* `sums` hat genau 463 Komponenten, die ungleich 0 sein können
+* `counts` hat genau 3 Komponenten, die ungleich 0 sein können
+
+Die Dimension der Vektoren wird wiefolgt zerlegt:
+```
+927 = 458 * 2 + 5 + 5 + 1
+```
+Die ersten 458 * 2 Komponenten decken die zwei Ungleichungen pro Pool ab. Zehn weitere Komponenten decken die fünf Ungleichungen für Pingora und fünf Ungleichungen für Two Harbors ab. Schließlich gibt es eine Komponente für den zu maximierenden Verkaufswert.
+
+Jedes Haus hat einen reellwertigen Skalar `amount` und eine Menge von Vektoren `translation_j` mit 927 Komponenten. Jedes `translation_j` hat 927 reelle Komponenten.
+
+Eine `translation_j`, zusammen mit `amount` und der aktuellen Konfiguration `features`, `sums`, `counts`, bringt hervor eine neue Konfiguration `features'`, `sums'`, `counts'`. Hierbei werden nur Multiplikationen und Additionen durchgeführt.
+
+Pro Komponente von `features'`:
+x' := x * old_sum / (old_sum + amount) + f/(old_sum + amount)
+oder
+x' := x * 1 + f
+
+Eine zulässige Konfiguration ist eine Konfiguration, wo die ersten 926 Komponenten jeweils 926 vordefinierte Werteschranken beachten. Pro Komponente und Werteschranke, muss die Komponente einen Wert haben, der wie vordefiniert links oder rechts dieser Werteschranke liegt.
+
+Jedes `translation_j` bewegt den Konfigurationsvektor `features` in eine bestimmte Richtung im Raum. Jedes Haus kann diesen Vektor in verschiedene Richtungen bewegen. Die Richtung, in die Haus bewegt wird, kann abhängen von
+
+* der Translation,
+* dem `amount` des Hauses,
+* den anderen beiden Konfigurationsvektoren `sums` und `counts`.
