@@ -1,7 +1,25 @@
 import argparse
+import numpy as np
 import itertools
 import logging
 import csv
+
+LOWER_BOUND = -1
+UPPER_BOUND = 1
+constraint_directions = {
+    'c1': UPPER_BOUND,
+    'c2': LOWER_BOUND,
+    'c3': UPPER_BOUND,
+    'c4': UPPER_BOUND,
+    'c5': LOWER_BOUND,
+    'c6': UPPER_BOUND,
+    'c7': UPPER_BOUND,
+    'c8': LOWER_BOUND,
+    'c9': LOWER_BOUND,
+    'c10': UPPER_BOUND,
+    'c11': UPPER_BOUND,
+    'c12': LOWER_BOUND
+}
 
 def check_constraints(pool, subset_loans):
     subset_size = len(subset_loans)
@@ -136,13 +154,6 @@ class Buyer:
     def __str__(self):
         return buyer_string.format(self.id, self.pool_id, self.loan_id, self.price)
 
-class Constraint:
-
-    def __init__(self):
-        self.below = below
-        self.type = constraint_type
-        self.
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     # parser.add_argument('--network-name', '-g', default=None)
@@ -234,17 +245,39 @@ if __name__ == '__main__':
     assert type(constraints) == dict, 'Constraints should be in a dict'
     assert type(buyers) == list, 'Buyers should be in a list'
 
-    max_pool_id = max([pool.id for pool in pools])
-    PINGORA = max_pool_id + 1
-    TWO_HARBORS = max_pool_id + 2
-    ECONOMIC_VALUE = max_pool_id + 3
-
-    config_values = np.zero(shape=(927, 1))
-    config_normalizers = np.zero(shape=(927, 1))
-    config_ids = [pool.id for pool in pools] + [PINGORA, TWO_HARBORS, ECONOMIC_VALUE]
-
     # remove unnecessary loans (may be needed if this is a reduced input)
     used_loan_ids = set([buyer.loan_id for buyer in buyers])
     for loan_id in list(loans):
         if loan_id not in used_loan_ids:
             del loans[loan_id]
+
+    used_pool_ids = set([buyer.pool_id for buyer in buyers])
+    for pool_id in list(pools):
+        if pool_id not in used_pool_ids:
+            del pools[pool_id]
+
+    max_pool_id = max([pool_id for pool_id in pools])
+    PINGORA = max_pool_id + 1
+    TWO_HARBORS = max_pool_id + 2
+    ECONOMIC_VALUE = max_pool_id + 3
+
+    num_features = len(pools) * 2 + 5 + 5 + 1
+
+    config_values = np.zeros(shape=num_features)
+    config_normalizers = np.zeros(shape=num_features)
+    config_ids = sum([[(pool_id, 'c1'), (pool_id, 'c2')] for pool_id in pools], []) \
+        + [(PINGORA, 'c3'), (PINGORA, 'c4'), (PINGORA, 'c5'), (PINGORA, 'c6'), (PINGORA, 'c7')] \
+        + [(TWO_HARBORS, 'c8'), (TWO_HARBORS, 'c9'), (TWO_HARBORS, 'c10'), (TWO_HARBORS, 'c11'), (TWO_HARBORS, 'c12')] \
+        + [(ECONOMIC_VALUE, '')]
+
+    for i, config_id, normalizer, value in zip(range(num_features), config_ids, config_normalizers, config_values):
+        constraint_name = config_id[1]
+        if constraint_name:
+            config_values[i] = 0
+            config_normalizers[i] = 0
+
+    logging.debug(config_values)
+
+    fixed_loan_id = 103282778
+    loan = loans[fixed_loan_id]
+    loan
