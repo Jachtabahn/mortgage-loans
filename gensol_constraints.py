@@ -3,67 +3,6 @@ import itertools
 import logging
 import csv
 
-def recompute_subsets(buyer_subsets, chosen_pool_id, all_loan_ids, new_loan_ids):
-    # delete buyers of loans that we have just sold to some chosen buyer
-    for i in range(len(buyer_subsets))[::-1]:
-        subset = buyer_subsets[i]
-
-        subset_pool_ids = list(set([buyer.pool_id for buyer in subset]))
-        assert len(subset_pool_ids) == 1
-        subset_pool_id = subset_pool_ids[0]
-
-        # delete all loans from this pool
-        if subset_pool_id == chosen_pool_id:
-            del buyer_subsets[i]
-        # delete all subsets containig at least one of the new loans
-        else:
-            for buyer in subset:
-                if buyer.loan_id in new_loan_ids:
-                    logging.debug(f'This buyer:')
-                    logging.debug(buyer)
-                    logging.debug('has a loan id that is one the new loan ids:')
-                    logging.debug(new_loan_ids)
-                    logging.debug('So, delete the singleton subset containing that buyer')
-                    logging.debug('---------------------------------------------------------------\n')
-
-                    del buyer_subsets[i]
-                    break
-
-    # add back buyers from the chosen pool
-    pool = pools[chosen_pool_id]
-    pool_buyers = [buyer for buyer in buyers if buyer.pool_id == chosen_pool_id]
-    feasible_subsets = compute_feasible_subsets(pool, pool_buyers, all_loan_ids, loans)
-    buyer_subsets += feasible_subsets
-
-def compute_feasible_subsets(pool, pool_buyers, sold_loan_ids, loans):
-    feasible_subsets = []
-    num_subsets, num_feasible = 0, 0
-    num_sold_loan_ids = len(sold_loan_ids)
-    for subset_buyers in itertools.combinations(pool_buyers, 1):
-        num_subsets += 1
-
-        buyers_loan_ids = [buyer.loan_id for buyer in subset_buyers]
-        subset_loan_ids = sold_loan_ids + buyers_loan_ids
-
-        loan_ids_intersect = len(set(subset_loan_ids)) < num_sold_loan_ids + len(buyers_loan_ids)
-        if loan_ids_intersect: continue
-
-        subset_loans = [loans[loan_id] for loan_id in subset_loan_ids]
-
-        logging.debug(f'Buyer IDs: {[buyer.id for buyer in subset_buyers]}')
-        logging.debug(f'Pool: {pool.id}')
-        show_list(subset_loans, 'Loans:')
-
-        ok = check_constraints(pool, subset_loans)
-
-        logging.debug('---------------------------------------------\n')
-
-        if ok:
-            num_feasible += 1
-            feasible_subsets.append(subset_buyers)
-
-    return feasible_subsets
-
 def check_constraints(pool, subset_loans):
     subset_size = len(subset_loans)
 
@@ -197,6 +136,13 @@ class Buyer:
     def __str__(self):
         return buyer_string.format(self.id, self.pool_id, self.loan_id, self.price)
 
+class Constraint:
+
+    def __init__(self):
+        self.below = below
+        self.type = constraint_type
+        self.
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     # parser.add_argument('--network-name', '-g', default=None)
@@ -288,74 +234,17 @@ if __name__ == '__main__':
     assert type(constraints) == dict, 'Constraints should be in a dict'
     assert type(buyers) == list, 'Buyers should be in a list'
 
-    # remove unnecessary loans
-    buyer_loan_ids = set([buyer.loan_id for buyer in buyers])
+    max_pool_id = max([pool.id for pool in pools])
+    PINGORA = max_pool_id + 1
+    TWO_HARBORS = max_pool_id + 2
+    ECONOMIC_VALUE = max_pool_id + 3
+
+    config_values = np.zero(shape=(927, 1))
+    config_normalizers = np.zero(shape=(927, 1))
+    config_ids = [pool.id for pool in pools] + [PINGORA, TWO_HARBORS, ECONOMIC_VALUE]
+
+    # remove unnecessary loans (may be needed if this is a reduced input)
+    used_loan_ids = set([buyer.loan_id for buyer in buyers])
     for loan_id in list(loans):
-        if loan_id not in buyer_loan_ids:
+        if loan_id not in used_loan_ids:
             del loans[loan_id]
-
-    logging.info(f'Total loans: {len(loans)}')
-
-    buyer_subsets = []
-    for pool_id in pools:
-        pool = pools[pool_id]
-        pool_buyers = [buyer for buyer in buyers if buyer.pool_id == pool_id]
-        feasible_subsets = compute_feasible_subsets(pool, pool_buyers, [], loans)
-        logging.info(f'Pool {pool_id} has {len(feasible_subsets)} feasible subsets.')
-        buyer_subsets += feasible_subsets
-
-    total_buyers = []
-    i = 0
-    while len(total_buyers) < len(loans):
-        i += 1
-        if not buyer_subsets:
-            logging.error(f'No more buyers at iteration {i}')
-            logging.error(f'Chosen {len(total_buyers)} buyers')
-
-        new_buyers = buyer_subsets[0] # arbitrary choice of a buyer
-        total_buyers += new_buyers
-
-        logging.info(f'Choose buyer at iteration {i} out of {len(loans)}:')
-        for buyer in new_buyers:
-            logging.debug(buyer)
-
-        # determine the pool of this subset of buyers
-        chosen_pool_ids = list(set([buyer.pool_id for buyer in new_buyers]))
-        assert len(chosen_pool_ids) == 1
-        chosen_pool_id = chosen_pool_ids[0]
-
-        # determine the loan ids of this subset of buyers
-        new_loan_ids = [buyer.loan_id for buyer in new_buyers]
-        logging.debug(f'I have chosen this singleton of loan ids: {new_loan_ids}\n')
-
-        # determine all loan ids allocated to this pool
-        all_loan_ids = [buyer.loan_id for buyer in total_buyers]
-
-        recompute_subsets(buyer_subsets, chosen_pool_id, all_loan_ids, new_loan_ids)
-
-        check_loan_id = 103383740
-        logging.debug(f'After clearing subsets, these subsets have the loan id {check_loan_id}:')
-        for subset in buyer_subsets:
-            for buyer in subset:
-                if buyer.loan_id == check_loan_id:
-                    logging.debug('-----------------')
-                    logging.debug(buyer)
-                    logging.debug('-----------------\n')
-
-        logging.info(f'We know {len(buyer_subsets)} feasible subsets.')
-
-    logging.info('-----------------------------------------------------------\n')
-
-    logging.info('Feasible solution found!')
-    logging.info(f'Total buyers: {len(total_buyers)}')
-
-    logging.info(f'Choose buyers in total:')
-    my_loan_ids = []
-    for i, buyer in enumerate(total_buyers):
-        logging.info(f'Buyer #{i}')
-        logging.info(buyer)
-
-        if buyer.loan_id in my_loan_ids:
-            logging.info(f'Found a duplicate: {buyer.loan_id}')
-            break
-        my_loan_ids.append(buyer.loan_id)
