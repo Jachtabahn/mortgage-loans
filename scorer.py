@@ -124,7 +124,7 @@ def evaluate(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE, SOLUTION_FILE)
         if cnt_two_harbors > 0:
             p_r /= cnt_two_harbors
             p_pr /= cnt_two_harbors
-        
+
         if 'c8' in constraints:
             assert total >= constraints['c8'], f'c8 violated on pool {j}: {total}'
         if 'c9' in constraints:
@@ -157,11 +157,11 @@ def evaluate(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE, SOLUTION_FILE)
         for state in states:
             measure[agency].append(state_cnt[state] / len(loan_list))
         for occupancy in occupancy_types:
-            measure[agency].append(occupancy_cnt[occupancy] / len(loan_list)) 
+            measure[agency].append(occupancy_cnt[occupancy] / len(loan_list))
         for purpose in purposes:
-            measure[agency].append(purpose_cnt[purpose] / len(loan_list)) 
+            measure[agency].append(purpose_cnt[purpose] / len(loan_list))
         for property_type in property_types:
-            measure[agency].append(property_type_cnt[property_type] / len(loan_list)) 
+            measure[agency].append(property_type_cnt[property_type] / len(loan_list))
 
     ptr = 0
     if 'c13' in constraints:
@@ -200,14 +200,14 @@ if __name__ == '__main__':
         DATA_FOLDER = sys.argv[1]
         SOLUTION_FOLDER = sys.argv[2]
     else:
-        DATA_FOLDER = './data/'
-        SOLUTION_FOLDER = './submission/solution/'
+        DATA_FOLDER = './data'
+        SOLUTION_FOLDER = './solution'
 
     COMBO_FILE = DATA_FOLDER + '/EligiblePricingCombinations.csv'
     LOAN_FILE = DATA_FOLDER + '/LoanData.csv'
     OPTION_FILE = DATA_FOLDER + '/PoolOptionData.csv'
-    CONSTARINT_FILES = [DATA_FOLDER + '/ConstraintA.csv', DATA_FOLDER + '/ConstraintB.csv']
-    SOLUTION_FILES = [SOLUTION_FOLDER + '/A.csv', SOLUTION_FOLDER + '/B.csv']
+    CONSTARINT_FILES = [DATA_FOLDER + '/Constraints.csv']
+    SOLUTION_FILES = [SOLUTION_FOLDER + '/A.csv']
 
     scores = []
     for CONSTRAINT_FILE, SOLUTION_FILE in zip(CONSTARINT_FILES, SOLUTION_FILES):
@@ -222,10 +222,6 @@ if __name__ == '__main__':
             _, _, tb = sys.exc_info()
             traceback.print_tb(tb) # Fixed format
             print('Error Message:', e)
-        except:
-            _, _, tb = sys.exc_info()
-            traceback.print_tb(tb) # Fixed format
-            print('Other Errors!')
         scores.append(score)
 
     final_score = sum(scores) / len(scores)
