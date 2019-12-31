@@ -4,6 +4,12 @@ import itertools
 import logging
 import csv
 
+# Do not allow importing this script from somewhere else
+if __name__ != '__main__':
+    logging.basicConfig(format='%(message)s')
+    logging.error('Import forbidden! Exiting..')
+    exit()
+
 LOWER_BOUND = -1
 UPPER_BOUND = 1
 constraint_directions = {
