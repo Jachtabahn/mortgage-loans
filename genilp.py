@@ -165,7 +165,7 @@ with open('data_processed/Constraints.csv') as constraints_file:
         constraints[name] = value
 
 deals = []
-take_every_line = 500
+take_every_line = 1
 with open('data_processed/ChooseLoan.csv') as choose_pool_file:
     pool_loans_reader = csv.reader(choose_pool_file)
     next(pool_loans_reader) # consume the column names
@@ -198,22 +198,28 @@ for pool_id in list(pools):
 
 assert len(deals) > 0
 
-program = f'// Declaration of {len(deals)} decision variables\n'
-program += f'int DealIds = 0..{len(deals)-1};\n'
-program += f'dvar int deals[DealIds] in 0..1;\n'
+program = ''
 
-program += f'float prices[DealIds] = ['
+program += f'range DealIds = 0..{len(deals)-1};\n'
+program += f'float prices[DealIds] = [\n'
+is_first = True
 for deal in deals:
-    program += f'{deal.price}, '
+    if is_first:
+        program += f'{deal.price}'
+        is_first = False
+    else:
+        program += f',\n{deal.price}'
+program += f'];\n'
+
+program += f'// Declaration of {len(deals)} decision variables\n'
+program += f'dvar int deals[DealIds] in 0..1;\n'
 program += f'// <------------------------------------------------------- Declaration of {len(deals)} decision variables\n\n\n'
 
 program += '// Objective function\n'
-program += f'maximize {deals[0].price} * deals[{deals[0].id}]\n'
-for deal in deals[1:]:
-    program += f'  + {deal.price} * deals[{deal.id}]\n'
-program += ';'
+program += f'maximize sum (i in DealIds) prices[i] * deals[i];\n'
 program += '// <------------------------------------------------------- Objective function\n\n\n'
 
+program += 'subject to {\n'
 program += '// Mutual exclusion inequations\n'
 for loan_id in loans:
     loan_deals = [deal for deal in deals if deal.loan_id == loan_id]
@@ -260,9 +266,26 @@ for pool_id, pool in pools.items():
                     is_first = False
                 else:
                     program += f' + {reduced_amount} * deals[{pool_deal.id}]'
+            program += ';'
     program += f'\n'
     if pool.is_single:
         program += f'// is a single issuer pool\n'
+
+        total_sum = sum(loans[pool_deal.loan_id].amount for pool_deal in pool_deals)
+        program += f'// Maximum possible sum to sell to this pool is {total_sum}; have to sell at at least {constraints["c2"]}\n'
+        if total_sum < constraints["c2"]:
+            logging.warning(f'Single issuer pool {pool_id} cannot possibly satisfy its constraint')
+
+        is_first = True
+        for pool_deal in pool_deals:
+            loan = loans[pool_deal.loan_id]
+            if is_first:
+                program += f'deals[{pool_deal.id}]'
+                is_first = False
+            else:
+                program += f' + deals[{pool_deal.id}]'
+        program += f' == 0\n  || '
+
         is_first = True
         for pool_deal in pool_deals:
             loan = loans[pool_deal.loan_id]
@@ -271,8 +294,10 @@ for pool_id, pool in pools.items():
                 is_first = False
             else:
                 program += f' + {loan.amount} * deals[{pool_deal.id}]'
-        program += f' >= {constraints["c2"]}'
+        program += f' >= {constraints["c2"]};'
     program += f'\n\n'
 program += '// <------------------------------------------------------- Pool inequations\n\n\n'
+
+program += '}\n'
 
 print(program)
