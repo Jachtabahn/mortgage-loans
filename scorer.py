@@ -207,7 +207,7 @@ if __name__ == '__main__':
     LOAN_FILE = DATA_FOLDER + '/LoanData.csv'
     OPTION_FILE = DATA_FOLDER + '/PoolOptionData.csv'
     CONSTARINT_FILES = [DATA_FOLDER + '/Constraints.csv']
-    SOLUTION_FILES = [SOLUTION_FOLDER + '/A.csv']
+    SOLUTION_FILES = [SOLUTION_FOLDER + '/minus-constraints.csv']
 
     scores = []
     for CONSTRAINT_FILE, SOLUTION_FILE in zip(CONSTARINT_FILES, SOLUTION_FILES):
