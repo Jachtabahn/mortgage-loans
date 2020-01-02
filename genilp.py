@@ -205,7 +205,7 @@ assert type(constraints) == dict, 'Constraints should be in a dict'
 assert type(deals) == list, 'Deals should be in a list'
 
 # remove a couple deals to make the problem easier
-take_every_deal = 500
+take_every_deal = 1
 for i in range(len(deals))[::-1]:
     if i % take_every_deal > 0:
         del deals[i]
@@ -304,7 +304,6 @@ for pool_id, pool in pools.items():
     program += f'\n'
     if pool.is_single:
         program += f'// is a single issuer pool\n'
-        program += f'// Maximum possible sum to sell to this pool is {total_sum}; have to sell at at least {constraints["c2"]}\n'
         is_first = True
         for pool_deal in pool_deals:
             loan = loans[pool_deal.loan_id]
@@ -333,16 +332,10 @@ program += f'// There are {len(deals)} deals in total\n'
 program += f'// Of those, {len(pingora_deals)} are Pingora deals\n'
 
 program += '// Amount inequation\n'
-is_first = True
-for pingora_deal in pingora_deals:
-    loan = loans[pingora_deal.loan_id]
-    if is_first:
-        program += f'{loan.amount} * deal_{pingora_deal.id}'
-        is_first = False
-    else:
-        program += f'\n  + {loan.amount} * deal_{pingora_deal.id}'
-program += f'\n  <= {constraints["c3"]};'
-program += '\n\n'
+pingora_amounts = [loans[deal.loan_id].amount for deal in pingora_deals]
+program += sum_deals(pingora_deals, pingora_amounts)
+program += f'\n  <= {constraints["c3"]}'
+program += ';\n\n'
 
 program += '// High balance inequation\n'
 expensive_deals = [deal for deal in pingora_deals if loans[deal.loan_id].is_expensive]
@@ -375,7 +368,6 @@ program += f'// There are {len(california_deals)} deals involving houses in Cali
 program += sum_deals(california_deals)
 program += f'\n  <= '
 program += sum_deals(pingora_deals, constraints["c7"])
-
 program += ';\n\n'
 
 program += '// <------------------------------------------------------- 5 Pingora inequations\n\n\n'
