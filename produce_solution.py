@@ -185,6 +185,18 @@ assert type(pools) == dict, 'Pools should be in a dict'
 assert type(constraints) == dict, 'Constraints should be in a dict'
 assert type(deals) == list, 'Deals should be in a list'
 
+# remove infeasible deals, because the corresponding pool is a single issuer pool that cannot possibly reach its lower bound on the amount
+used_pool_ids = set([deal.pool_id for deal in deals])
+for pool_id in list(pools):
+    pool = pools[pool_id]
+    if pool.is_single:
+        pool_deals = [deal for deal in deals if deal.pool_id == pool_id]
+        loans_sum = sum(loans[deal.loan_id].amount for deal in pool_deals)
+        if loans_sum < constraints["c2"]:
+            logging.debug(f'Single issuer pool {pool_id} cannot possibly satisfy its constraint; removing all deals involving this pool..')
+            for pool_deal in pool_deals:
+                deals.remove(pool_deal)
+
 # remove unnecessary loans (may be needed if this is a reduced input)
 used_loan_ids = set([buyer.loan_id for buyer in deals])
 for loan_id in list(loans):
@@ -199,7 +211,7 @@ for pool_id in list(pools):
 assert len(deals) > 0
 
 decisions = None
-with open('allocation.txt') as file:
+with open('allocation1.sol') as file:
     decisions = file.read().split()
 assert decisions is not None
 
@@ -210,7 +222,7 @@ logging.debug(f'I have sold {len(deal_ids)} / {len(loans)} loans')
 pool_ids = set([deals[deal_id].pool_id for deal_id in deal_ids])
 logging.debug(f'I have sold to {len(pool_ids)} / {len(pools)} pools')
 
-with open('solution/minus-constraints.csv', 'w') as file:
+with open('solution/without-servicers.csv', 'w') as file:
     solution_csv = csv.writer(file)
     solution_csv.writerow(['Loan', 'Pool', 'Servicer'])
     for deal_id in deal_ids:
