@@ -1,4 +1,5 @@
 import csv, sys, traceback
+import collections
 from data import *
 
 def evaluate(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE, SOLUTION_FILE):
@@ -141,7 +142,7 @@ def evaluate(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE, SOLUTION_FILE)
     for agency, loan_list in byAgency.items():
         total, avg_fico, avg_dti = 0, 0, 0
         state_cnt, occupancy_cnt, purpose_cnt, property_type_cnt = \
-            defaultdict(int), defaultdict(int), defaultdict(int), defaultdict(int)
+            collections.defaultdict(int), collections.defaultdict(int), collections.defaultdict(int), collections.defaultdict(int)
         for loan in loan_list:
             total += loan.Li
             avg_fico += loan.FICO * loan.Li
@@ -207,7 +208,7 @@ if __name__ == '__main__':
     LOAN_FILE = DATA_FOLDER + '/LoanData.csv'
     OPTION_FILE = DATA_FOLDER + '/PoolOptionData.csv'
     CONSTARINT_FILES = [DATA_FOLDER + '/Constraints.csv']
-    SOLUTION_FILES = [SOLUTION_FOLDER + '/minus-constraints.csv']
+    SOLUTION_FILES = [SOLUTION_FOLDER + '/without-servicers.csv']
 
     scores = []
     for CONSTRAINT_FILE, SOLUTION_FILE in zip(CONSTARINT_FILES, SOLUTION_FILES):
