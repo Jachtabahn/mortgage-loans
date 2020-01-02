@@ -8,6 +8,27 @@ if __name__ != '__main__':
     logging.error('Import forbidden! Exiting..')
     exit()
 
+def sum_deals(my_deals, my_factors = None):
+    if my_factors is None:
+        my_factors = [1] * len(my_deals)
+    if type(my_factors) != list:
+        my_factors = [my_factors] * len(my_deals)
+    is_first = True
+    my_sum = ''
+    for deal, factor in zip(my_deals, my_factors):
+        if is_first:
+            if factor != 1:
+                my_sum += f'{factor} * deal_{deal.id}'
+            else:
+                my_sum += f'deal_{deal.id}'
+            is_first = False
+        else:
+            if factor != 1:
+                my_sum += f'\n  + {factor} * deal_{deal.id}'
+            else:
+                my_sum += f'\n  + deal_{deal.id}'
+    return my_sum
+
 def show_dict(items):
     for _, item in items.items():
         logging.debug(item)
@@ -162,36 +183,53 @@ with open('data_processed/Constraints.csv') as constraints_file:
     constraints_reader = csv.reader(constraints_file)
     for name, value_string in constraints_reader:
         value = float(value_string)
-        constraints[name] = value
+        constraints[name] = value if int(value) != value else int(value)
 
 deals = []
-take_every_line = 1
 with open('data_processed/ChooseLoan.csv') as choose_pool_file:
     pool_loans_reader = csv.reader(choose_pool_file)
     next(pool_loans_reader) # consume the column names
     for i, (pool_id_string, loan_id_string, price_string) in enumerate(pool_loans_reader):
-        if i % take_every_line > 0: continue
         pool_id = int(pool_id_string[5:])
-        buyer = Deal(len(deals), pool_id, int(loan_id_string), float(price_string))
-        deals.append(buyer)
+        deal = Deal(len(deals), pool_id, int(loan_id_string), float(price_string))
+        deals.append(deal)
 
-        assert type(buyer.id) == int
-        assert type(buyer.price) == float
-        assert type(buyer.pool_id) == int
-        assert type(buyer.loan_id) == int
+        assert type(deal.id) == int
+        assert type(deal.price) == float
+        assert type(deal.pool_id) == int
+        assert type(deal.loan_id) == int
 
 assert type(loans) == dict, 'Loans should be in a dict'
 assert type(pools) == dict, 'Pools should be in a dict'
 assert type(constraints) == dict, 'Constraints should be in a dict'
 assert type(deals) == list, 'Deals should be in a list'
 
+# remove a couple deals to make the problem easier
+take_every_deal = 500
+for i in range(len(deals))[::-1]:
+    if i % take_every_deal > 0:
+        del deals[i]
+
+# remove infeasible deals, because the corresponding pool is a single issuer pool that cannot possibly reach its lower bound on the amount
+used_pool_ids = set([deal.pool_id for deal in deals])
+for pool_id in list(pools):
+    pool = pools[pool_id]
+    if pool.is_single:
+        pool_deals = [deal for deal in deals if deal.pool_id == pool_id]
+        loans_sum = sum(loans[deal.loan_id].amount for deal in pool_deals)
+        if loans_sum < constraints["c2"]:
+            logging.debug(f'Single issuer pool {pool_id} cannot possibly satisfy its constraint; removing all deals involving this pool..')
+            for pool_deal in pool_deals:
+                deals.remove(pool_deal)
+
 # remove unnecessary loans (may be needed if this is a reduced input)
-used_loan_ids = set([buyer.loan_id for buyer in deals])
+used_loan_ids = set([deal.loan_id for deal in deals])
 for loan_id in list(loans):
     if loan_id not in used_loan_ids:
         del loans[loan_id]
 
-used_pool_ids = set([buyer.pool_id for buyer in deals])
+# remove unnecessary pools (may be needed if this is a reduced input or some single issuer pools have been removed)
+used_pool_ids = set([deal.pool_id for deal in deals])
 for pool_id in list(pools):
     if pool_id not in used_pool_ids:
         del pools[pool_id]
@@ -199,24 +237,20 @@ for pool_id in list(pools):
 assert len(deals) > 0
 
 program = ''
-
-program += f'range DealIds = 0..{len(deals)-1};\n'
-program += f'float prices[DealIds] = [\n'
-is_first = True
-for deal in deals:
-    if is_first:
-        program += f'{deal.price}'
-        is_first = False
-    else:
-        program += f',\n{deal.price}'
-program += f'];\n'
-
 program += f'// Declaration of {len(deals)} decision variables\n'
-program += f'dvar int deals[DealIds] in 0..1;\n'
+for deal in deals:
+    program += f'dvar int deal_{deal.id} in 0..1;\n'
 program += f'// <------------------------------------------------------- Declaration of {len(deals)} decision variables\n\n\n'
 
 program += '// Objective function\n'
-program += f'maximize sum (i in DealIds) prices[i] * deals[i];\n'
+is_first = True
+for deal in deals:
+    if is_first:
+        program += f'maximize {deal.price} * deal_{deal.id}'
+        is_first = False
+    else:
+        program += f'\n  + {deal.price} * deal_{deal.id}'
+program += f';\n'
 program += '// <------------------------------------------------------- Objective function\n\n\n'
 
 program += 'subject to {\n'
@@ -230,10 +264,10 @@ for loan_id in loans:
         is_first = True
         for deal_id in deal_ids:
             if is_first:
-                program += f'deals[{deal_id}]'
+                program += f'deal_{deal_id}'
                 is_first = False
                 continue
-            program += f' + deals[{deal_id}]'
+            program += f' + deal_{deal_id}'
         program +=' <= 1;'
         program +='\n\n'
 program += '// <------------------------------------------------------- Mutual exclusion inequations\n\n'
@@ -250,10 +284,10 @@ for pool_id, pool in pools.items():
             for pool_deal in expensive_deals:
                 loan = loans[pool_deal.loan_id]
                 if is_first:
-                    program += f'{loan.amount} * deals[{pool_deal.id}]'
+                    program += f'{loan.amount} * deal_{pool_deal.id}'
                     is_first = False
                 else:
-                    program += f' + {loan.amount} * deals[{pool_deal.id}]'
+                    program += f' + {loan.amount} * deal_{pool_deal.id}'
             program += f' <= '
             is_first = True
             for pool_deal in pool_deals:
@@ -262,41 +296,95 @@ for pool_id, pool in pools.items():
                 if int(reduced_amount) == reduced_amount:
                     reduced_amount = int(reduced_amount)
                 if is_first:
-                    program += f'{reduced_amount} * deals[{pool_deal.id}]'
+                    program += f'{reduced_amount} * deal_{pool_deal.id}'
                     is_first = False
                 else:
-                    program += f' + {reduced_amount} * deals[{pool_deal.id}]'
+                    program += f' + {reduced_amount} * deal_{pool_deal.id}'
             program += ';'
     program += f'\n'
     if pool.is_single:
         program += f'// is a single issuer pool\n'
-
-        total_sum = sum(loans[pool_deal.loan_id].amount for pool_deal in pool_deals)
         program += f'// Maximum possible sum to sell to this pool is {total_sum}; have to sell at at least {constraints["c2"]}\n'
-        if total_sum < constraints["c2"]:
-            logging.warning(f'Single issuer pool {pool_id} cannot possibly satisfy its constraint')
-
         is_first = True
         for pool_deal in pool_deals:
             loan = loans[pool_deal.loan_id]
             if is_first:
-                program += f'deals[{pool_deal.id}]'
+                program += f'deal_{pool_deal.id}'
                 is_first = False
             else:
-                program += f' + deals[{pool_deal.id}]'
+                program += f' + deal_{pool_deal.id}'
         program += f' == 0\n  || '
 
         is_first = True
         for pool_deal in pool_deals:
             loan = loans[pool_deal.loan_id]
             if is_first:
-                program += f'{loan.amount} * deals[{pool_deal.id}]'
+                program += f'{loan.amount} * deal_{pool_deal.id}'
                 is_first = False
             else:
-                program += f' + {loan.amount} * deals[{pool_deal.id}]'
+                program += f' + {loan.amount} * deal_{pool_deal.id}'
         program += f' >= {constraints["c2"]};'
     program += f'\n\n'
 program += '// <------------------------------------------------------- Pool inequations\n\n\n'
+
+program += '// 5 Pingora inequations\n'
+pingora_deals = [deal for deal in deals if pools[deal.pool_id].servicer == 'Pingora']
+program += f'// There are {len(deals)} deals in total\n'
+program += f'// Of those, {len(pingora_deals)} are Pingora deals\n'
+
+program += '// Amount inequation\n'
+is_first = True
+for pingora_deal in pingora_deals:
+    loan = loans[pingora_deal.loan_id]
+    if is_first:
+        program += f'{loan.amount} * deal_{pingora_deal.id}'
+        is_first = False
+    else:
+        program += f'\n  + {loan.amount} * deal_{pingora_deal.id}'
+program += f'\n  <= {constraints["c3"]};'
+program += '\n\n'
+
+program += '// High balance inequation\n'
+expensive_deals = [deal for deal in pingora_deals if loans[deal.loan_id].is_expensive]
+expensive_amounts = [loans[deal.loan_id].amount for deal in expensive_deals]
+program += sum_deals(expensive_deals, expensive_amounts)
+program += '\n  <= '
+expensive_c4_amounts = [constraints["c4"] * loans[deal.loan_id].amount for deal in pingora_deals]
+program += sum_deals(pingora_deals, expensive_c4_amounts)
+program += ';\n\n'
+
+program += '// FICO inequation\n'
+pingora_fico_amounts = [loans[deal.loan_id].fico * loans[deal.loan_id].amount for deal in pingora_deals]
+program += sum_deals(pingora_deals, pingora_fico_amounts)
+program += '\n  >= '
+pingora_c5_amounts = [constraints["c5"] * loans[deal.loan_id].amount for deal in pingora_deals]
+program += sum_deals(pingora_deals, pingora_c5_amounts)
+program += ';\n\n'
+
+program += '// DTI inequation\n'
+pingora_dti_amounts = [loans[deal.loan_id].dti * loans[deal.loan_id].amount for deal in pingora_deals]
+program += sum_deals(pingora_deals, pingora_dti_amounts)
+program += '\n  <= '
+pingora_c6_amounts = [constraints["c6"] * loans[deal.loan_id].amount for deal in pingora_deals]
+program += sum_deals(pingora_deals, pingora_c6_amounts)
+program += ';\n\n'
+
+program += '// California inequation\n'
+california_deals = [california_deal for california_deal in pingora_deals if loans[california_deal.loan_id].is_california]
+program += f'// There are {len(california_deals)} deals involving houses in California \n'
+program += sum_deals(california_deals)
+program += f'\n  <= '
+program += sum_deals(pingora_deals, constraints["c7"])
+
+program += ';\n\n'
+
+program += '// <------------------------------------------------------- 5 Pingora inequations\n\n\n'
+
+
+two_harbors = [deal for deal in deals if pools[deal.pool_id].servicer == 'Two Harbors']
+retained_deals = [deal for deal in deals if pools[deal.pool_id].servicer == 'Retained']
+logging.debug(f'and {len(two_harbors)} are Two Harbors deals')
+logging.debug(f'and {len(retained_deals)} are Retained deals')
 
 program += '}\n'
 
