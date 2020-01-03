@@ -18,15 +18,15 @@ def sum_deals(my_deals, my_factors = None):
     for deal, factor in zip(my_deals, my_factors):
         if is_first:
             if factor != 1:
-                my_sum += f'{factor} * deal_{deal.id}'
+                my_sum += f'{factor} * deals[{deal.id}]'
             else:
-                my_sum += f'deal_{deal.id}'
+                my_sum += f'deals[{deal.id}]'
             is_first = False
         else:
             if factor != 1:
-                my_sum += f'\n  + {factor} * deal_{deal.id}'
+                my_sum += f'\n  + {factor} * deals[{deal.id}]'
             else:
-                my_sum += f'\n  + deal_{deal.id}'
+                my_sum += f'\n  + deals[{deal.id}]'
     return my_sum
 
 def show_dict(items):
@@ -191,7 +191,7 @@ with open('data_processed/ChooseLoan.csv') as choose_pool_file:
     next(pool_loans_reader) # consume the column names
     for i, (pool_id_string, loan_id_string, price_string) in enumerate(pool_loans_reader):
         pool_id = int(pool_id_string[5:])
-        deal = Deal(len(deals), pool_id, int(loan_id_string), float(price_string))
+        deal = Deal(2 + len(deals), pool_id, int(loan_id_string), float(price_string))
         deals.append(deal)
 
         assert type(deal.id) == int
@@ -238,18 +238,26 @@ assert len(deals) > 0
 
 program = ''
 program += f'// Declaration of {len(deals)} decision variables\n'
+program += '{int} DealIds = {\n'
+is_first = True
 for deal in deals:
-    program += f'dvar int deal_{deal.id} in 0..1;\n'
+    if is_first:
+        program += f'  {deal.id}'
+        is_first = False
+    else:
+        program += f',\n  {deal.id}'
+program += '};\n'
+program += f'dvar int deals[DealIds] in 0..1;\n'
 program += f'// <------------------------------------------------------- Declaration of {len(deals)} decision variables\n\n\n'
 
 program += '// Objective function\n'
 is_first = True
 for deal in deals:
     if is_first:
-        program += f'maximize {deal.price} * deal_{deal.id}'
+        program += f'maximize {deal.price} * deals[{deal.id}]'
         is_first = False
     else:
-        program += f'\n  + {deal.price} * deal_{deal.id}'
+        program += f'\n  + {deal.price} * deals[{deal.id}]'
 program += f';\n'
 program += '// <------------------------------------------------------- Objective function\n\n\n'
 
@@ -264,10 +272,10 @@ for loan_id in loans:
         is_first = True
         for deal_id in deal_ids:
             if is_first:
-                program += f'deal_{deal_id}'
+                program += f'deals[{deal_id}]'
                 is_first = False
                 continue
-            program += f' + deal_{deal_id}'
+            program += f' + deals[{deal_id}]'
         program +=' <= 1;'
         program +='\n\n'
 program += '// <------------------------------------------------------- Mutual exclusion inequations\n\n'
@@ -284,10 +292,10 @@ for pool_id, pool in pools.items():
             for pool_deal in expensive_deals:
                 loan = loans[pool_deal.loan_id]
                 if is_first:
-                    program += f'{loan.amount} * deal_{pool_deal.id}'
+                    program += f'{loan.amount} * deals[{pool_deal.id}]'
                     is_first = False
                 else:
-                    program += f' + {loan.amount} * deal_{pool_deal.id}'
+                    program += f' + {loan.amount} * deals[{pool_deal.id}]'
             program += f' <= '
             is_first = True
             for pool_deal in pool_deals:
@@ -296,10 +304,10 @@ for pool_id, pool in pools.items():
                 if int(reduced_amount) == reduced_amount:
                     reduced_amount = int(reduced_amount)
                 if is_first:
-                    program += f'{reduced_amount} * deal_{pool_deal.id}'
+                    program += f'{reduced_amount} * deals[{pool_deal.id}]'
                     is_first = False
                 else:
-                    program += f' + {reduced_amount} * deal_{pool_deal.id}'
+                    program += f' + {reduced_amount} * deals[{pool_deal.id}]'
             program += ';'
     program += f'\n'
     if pool.is_single:
@@ -308,20 +316,20 @@ for pool_id, pool in pools.items():
         for pool_deal in pool_deals:
             loan = loans[pool_deal.loan_id]
             if is_first:
-                program += f'deal_{pool_deal.id}'
+                program += f'deals[{pool_deal.id}]'
                 is_first = False
             else:
-                program += f' + deal_{pool_deal.id}'
+                program += f' + deals[{pool_deal.id}]'
         program += f' == 0\n  || '
 
         is_first = True
         for pool_deal in pool_deals:
             loan = loans[pool_deal.loan_id]
             if is_first:
-                program += f'{loan.amount} * deal_{pool_deal.id}'
+                program += f'{loan.amount} * deals[{pool_deal.id}]'
                 is_first = False
             else:
-                program += f' + {loan.amount} * deal_{pool_deal.id}'
+                program += f' + {loan.amount} * deals[{pool_deal.id}]'
         program += f' >= {constraints["c2"]};'
     program += f'\n\n'
 program += '// <------------------------------------------------------- Pool inequations\n\n\n'
