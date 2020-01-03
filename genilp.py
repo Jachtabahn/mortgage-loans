@@ -205,7 +205,7 @@ assert type(constraints) == dict, 'Constraints should be in a dict'
 assert type(deals) == list, 'Deals should be in a list'
 
 # remove a couple deals to make the problem easier
-take_every_deal = 1
+take_every_deal = 100
 for i in range(len(deals))[::-1]:
     if i % take_every_deal > 0:
         del deals[i]
@@ -380,11 +380,50 @@ program += ';\n\n'
 
 program += '// <------------------------------------------------------- 5 Pingora inequations\n\n\n'
 
+program += '// 5 Two Harbors inequations\n'
+two_harbors_deals = [deal for deal in deals if pools[deal.pool_id].servicer == 'Two Harbors']
+program += f'// There are {len(deals)} deals in total\n'
+program += f'// Of those, {len(two_harbors_deals)} are Two Harbors deals\n'
 
-two_harbors = [deal for deal in deals if pools[deal.pool_id].servicer == 'Two Harbors']
-retained_deals = [deal for deal in deals if pools[deal.pool_id].servicer == 'Retained']
-logging.debug(f'and {len(two_harbors)} are Two Harbors deals')
-logging.debug(f'and {len(retained_deals)} are Retained deals')
+program += '// Amount inequation\n'
+two_harbors_amounts = [loans[deal.loan_id].amount for deal in two_harbors_deals]
+program += sum_deals(two_harbors_deals, two_harbors_amounts)
+program += f'\n  >= {constraints["c8"]}'
+program += ';\n\n'
+
+program += '// FICO inequation\n'
+two_harbors_fico_amounts = [loans[deal.loan_id].fico * loans[deal.loan_id].amount for deal in two_harbors_deals]
+program += sum_deals(two_harbors_deals, two_harbors_fico_amounts)
+program += '\n  >= '
+two_harbors_c9_amounts = [constraints["c9"] * loans[deal.loan_id].amount for deal in two_harbors_deals]
+program += sum_deals(two_harbors_deals, two_harbors_c9_amounts)
+program += ';\n\n'
+
+program += '// DTI inequation\n'
+two_harbors_dti_amounts = [loans[deal.loan_id].dti * loans[deal.loan_id].amount for deal in two_harbors_deals]
+program += sum_deals(two_harbors_deals, two_harbors_dti_amounts)
+program += '\n  <= '
+two_harbors_c10_amounts = [constraints["c10"] * loans[deal.loan_id].amount for deal in two_harbors_deals]
+program += sum_deals(two_harbors_deals, two_harbors_c10_amounts)
+program += ';\n\n'
+
+program += '// Cashout inequation\n'
+cashout_deals = [deal for deal in two_harbors_deals if loans[deal.loan_id].is_cashout]
+program += f'// There are {len(cashout_deals)} deals with loans that have been given out in cash \n'
+program += sum_deals(cashout_deals)
+program += f'\n  <= '
+program += sum_deals(two_harbors_deals, constraints["c11"])
+program += ';\n\n'
+
+program += '// Primary residence inequation\n'
+primary_deals = [deal for deal in two_harbors_deals if loans[deal.loan_id].is_primary]
+program += f'// There are {len(primary_deals)} deals involving houses used as a primary residence \n'
+program += sum_deals(primary_deals)
+program += f'\n  >= '
+program += sum_deals(two_harbors_deals, constraints["c12"])
+program += ';\n\n'
+
+program += '// <------------------------------------------------------- 5 Two Harbors inequations\n\n\n'
 
 program += '}\n'
 
