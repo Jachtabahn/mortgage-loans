@@ -1,3 +1,4 @@
+import pulp
 import logging
 import csv
 import argparse
@@ -207,7 +208,7 @@ assert type(constraints) == dict, 'Constraints should be in a dict'
 assert type(deals) == list, 'Deals should be in a list'
 
 # remove a couple deals to make the problem easier
-take_every_deal = 1
+take_every_deal = 1000
 for i in range(len(deals))[::-1]:
     if i % take_every_deal > 0:
         del deals[i]
@@ -238,222 +239,44 @@ for pool_id in list(pools):
 
 assert len(deals) > 0
 
-program = ''
-program += f'// Declaration of {len(deals)} decision variables\n'
-program += '{int} DealIds = {\n'
-is_first = True
-for deal in deals:
-    if is_first:
-        program += f'  {deal.id}'
-        is_first = False
-    else:
-        program += f',\n  {deal.id}'
-program += '};\n'
-program += f'dvar int deals[DealIds] in 0..1;\n'
-program += f'// <------------------------------------------------------- Declaration of {len(deals)} decision variables\n\n\n'
+deal_ids = [deal.id for deal in deals]
+vars = pulp.LpVariable.dicts("Deal", lowBound=0, upBound=1, indexs=deal_ids, cat=pulp.LpInteger)
 
-program += '// Objective function\n'
-is_first = True
-for deal in deals:
-    if is_first:
-        program += f'maximize {deal.price} * deals[{deal.id}]'
-        is_first = False
-    else:
-        program += f'\n  + {deal.price} * deals[{deal.id}]'
-program += f';\n'
-program += '// <------------------------------------------------------- Objective function\n\n\n'
+# Creates the 'program' variable to contain the problem data
+program = pulp.LpProblem("Mortgages_Problem", pulp.LpMaximize)
 
-program += 'subject to {\n'
+# Creates the objective function
+program += pulp.lpSum([vars[deal.id]* deal.price for deal in deals]), "Total Selling Price"
 
-num_mutex_inequations = 0
-program += '// Mutual exclusion inequations\n'
-for loan_id in loans:
-    loan_deals = [deal for deal in deals if deal.loan_id == loan_id]
-    deal_ids = [loan_deal.id for loan_deal in loan_deals]
-
-    if len(deal_ids) > 1:
-        program += f'// Loan {loan_id} has {len(deal_ids)} pools in total\n'
-        is_first = True
-        for deal_id in deal_ids:
-            if is_first:
-                program += f'deals[{deal_id}]'
-                is_first = False
-                continue
-            program += f' + deals[{deal_id}]'
-        program +=' <= 1;'
-        program +='\n\n'
-        num_mutex_inequations += 1
-program += '// <------------------------------------------------------- Mutual exclusion inequations\n\n'
-
-num_standard_inequations = 0
-num_single_disjunctions = 0
-program += f'// Inequations for {len(pools)} pools \n'
-for pool_id, pool in pools.items():
-    pool_deals = [deal for deal in deals if deal.pool_id == pool_id]
-    program += f'// Pool {pool_id}\n'
-    if pool.is_standard:
-        expensive_deals = [pool_deal for pool_deal in pool_deals if loans[pool_deal.loan_id].is_expensive]
-        program += f'// has {len(pool_deals)} loans in total and {len(expensive_deals)} expensive ones\n'
-        if expensive_deals:
-            is_first = True
-            for pool_deal in expensive_deals:
-                loan = loans[pool_deal.loan_id]
-                if is_first:
-                    program += f'{loan.amount} * deals[{pool_deal.id}]'
-                    is_first = False
-                else:
-                    program += f' + {loan.amount} * deals[{pool_deal.id}]'
-            program += f' <= '
-            is_first = True
-            for pool_deal in pool_deals:
-                loan = loans[pool_deal.loan_id]
-                reduced_amount = constraints["c1"] * loan.amount
-                if int(reduced_amount) == reduced_amount:
-                    reduced_amount = int(reduced_amount)
-                if is_first:
-                    program += f'{reduced_amount} * deals[{pool_deal.id}]'
-                    is_first = False
-                else:
-                    program += f' + {reduced_amount} * deals[{pool_deal.id}]'
-            program += ';'
-            num_standard_inequations += 1
-    program += f'\n'
-    if pool.is_single:
-        program += f'// is a single issuer pool\n'
-        is_first = True
-        for pool_deal in pool_deals:
-            loan = loans[pool_deal.loan_id]
-            if is_first:
-                program += f'deals[{pool_deal.id}]'
-                is_first = False
-            else:
-                program += f' + deals[{pool_deal.id}]'
-        program += f' == 0\n  || '
-
-        is_first = True
-        for pool_deal in pool_deals:
-            loan = loans[pool_deal.loan_id]
-            if is_first:
-                program += f'{loan.amount} * deals[{pool_deal.id}]'
-                is_first = False
-            else:
-                program += f' + {loan.amount} * deals[{pool_deal.id}]'
-        program += f' >= {constraints["c2"]};'
-        num_single_disjunctions += 1
-    program += f'\n\n'
-program += f'// <------------------------------------------------------- Inequations for {len(pools)} pools\n\n\n'
-
-program += '// 5 Pingora inequations\n'
-pingora_deals = [deal for deal in deals if pools[deal.pool_id].servicer == 'Pingora']
-program += f'// There are {len(deals)} deals in total\n'
-program += f'// Of those, {len(pingora_deals)} are Pingora deals\n'
-
-program += '// Amount inequation\n'
-pingora_amounts = [loans[deal.loan_id].amount for deal in pingora_deals]
-program += sum_deals(pingora_deals, pingora_amounts)
-program += f'\n  <= {constraints["c3"]}'
-program += ';\n\n'
-
-program += '// High balance inequation\n'
-expensive_deals = [deal for deal in pingora_deals if loans[deal.loan_id].is_expensive]
-expensive_amounts = [loans[deal.loan_id].amount for deal in expensive_deals]
-program += sum_deals(expensive_deals, expensive_amounts)
-program += '\n  <= '
-expensive_c4_amounts = [constraints["c4"] * loans[deal.loan_id].amount for deal in pingora_deals]
-program += sum_deals(pingora_deals, expensive_c4_amounts)
-program += ';\n\n'
-
-program += '// FICO inequation\n'
-pingora_fico_amounts = [loans[deal.loan_id].fico * loans[deal.loan_id].amount for deal in pingora_deals]
-program += sum_deals(pingora_deals, pingora_fico_amounts)
-program += '\n  >= '
-pingora_c5_amounts = [constraints["c5"] * loans[deal.loan_id].amount for deal in pingora_deals]
-program += sum_deals(pingora_deals, pingora_c5_amounts)
-program += ';\n\n'
-
-program += '// DTI inequation\n'
-pingora_dti_amounts = [loans[deal.loan_id].dti * loans[deal.loan_id].amount for deal in pingora_deals]
-program += sum_deals(pingora_deals, pingora_dti_amounts)
-program += '\n  <= '
-pingora_c6_amounts = [constraints["c6"] * loans[deal.loan_id].amount for deal in pingora_deals]
-program += sum_deals(pingora_deals, pingora_c6_amounts)
-program += ';\n\n'
-
-program += '// California inequation\n'
-california_deals = [california_deal for california_deal in pingora_deals if loans[california_deal.loan_id].is_california]
-program += f'// There are {len(california_deals)} deals involving houses in California \n'
-program += sum_deals(california_deals)
-program += f'\n  <= '
-program += sum_deals(pingora_deals, constraints["c7"])
-program += ';\n\n'
-
-program += '// <------------------------------------------------------- 5 Pingora inequations\n\n\n'
-
-program += '// 5 Two Harbors inequations\n'
-two_harbors_deals = [deal for deal in deals if pools[deal.pool_id].servicer == 'Two Harbors']
-program += f'// There are {len(deals)} deals in total\n'
-program += f'// Of those, {len(two_harbors_deals)} are Two Harbors deals\n'
-
-program += '// Amount inequation\n'
-two_harbors_amounts = [loans[deal.loan_id].amount for deal in two_harbors_deals]
-program += sum_deals(two_harbors_deals, two_harbors_amounts)
-program += f'\n  >= {constraints["c8"]}'
-program += ';\n\n'
-
-program += '// FICO inequation\n'
-two_harbors_fico_amounts = [loans[deal.loan_id].fico * loans[deal.loan_id].amount for deal in two_harbors_deals]
-program += sum_deals(two_harbors_deals, two_harbors_fico_amounts)
-program += '\n  >= '
-two_harbors_c9_amounts = [constraints["c9"] * loans[deal.loan_id].amount for deal in two_harbors_deals]
-program += sum_deals(two_harbors_deals, two_harbors_c9_amounts)
-program += ';\n\n'
-
-program += '// DTI inequation\n'
-two_harbors_dti_amounts = [loans[deal.loan_id].dti * loans[deal.loan_id].amount for deal in two_harbors_deals]
-program += sum_deals(two_harbors_deals, two_harbors_dti_amounts)
-program += '\n  <= '
-two_harbors_c10_amounts = [constraints["c10"] * loans[deal.loan_id].amount for deal in two_harbors_deals]
-program += sum_deals(two_harbors_deals, two_harbors_c10_amounts)
-program += ';\n\n'
-
-program += '// Cashout inequation\n'
-cashout_deals = [deal for deal in two_harbors_deals if loans[deal.loan_id].is_cashout]
-program += f'// There are {len(cashout_deals)} deals with loans that have been given out in cash \n'
-program += sum_deals(cashout_deals)
-program += f'\n  <= '
-program += sum_deals(two_harbors_deals, constraints["c11"])
-program += ';\n\n'
-
-program += '// Primary residence inequation\n'
-primary_deals = [deal for deal in two_harbors_deals if loans[deal.loan_id].is_primary]
-program += f'// There are {len(primary_deals)} deals involving houses used as a primary residence \n'
-program += sum_deals(primary_deals)
-program += f'\n  >= '
-program += sum_deals(two_harbors_deals, constraints["c12"])
-program += ';\n\n'
-
-program += '// <------------------------------------------------------- 5 Two Harbors inequations\n\n\n'
+# for n in Nodes:
+#     program += (supply[n]+ pulp.lpSum([vars[(i,j)] for (i,j) in Arcs if j == n]) >=
+#              demand[n]+ pulp.lpSum([vars[(i,j)] for (i,j) in Arcs if i == n])), "Steel Flow Conservation in Node %s"%n
 
 
 
 
-program += '}\n'
 
+
+
+
+
+
+
+
+
+# The problem data is written to an .lp file
+program.writeLP("AmericanSteelProblem.lp")
+
+# The problem is solved using PuLP's choice of Solver
+program.solve(solver=pulp.solvers.PULP_CBC_CMD())
+
+# The status of the solution is printed to the screen
+print("Status:", pulp.LpStatus[program.status])
+
+# Each of the variables is printed with it's resolved optimum value
+for v in program.variables():
+    print(v, "=", v.varValue)
+
+# The optimised objective function value is printed to the screen
+print("Total Cost of Transportation = ", pulp.value(program.objective))
 print(program)
-
-logging.debug('')
-logging.debug('----------------------------- SUMMARY -----------------------------')
-logging.debug(f'Number of loans: {len(loans)}')
-logging.debug(f'Number of pools: {len(pools)}')
-logging.debug(f'Number of deals: {len(deals)}')
-logging.debug('-----------------------------------------')
-
-logging.debug(f'Number of Mutex inequations: {num_mutex_inequations}')
-logging.debug(f'Number of Standard Balance inequations: {num_standard_inequations}')
-logging.debug(f'Number of Single Issuer disjunctions: {num_single_disjunctions}')
-logging.debug(f'Number of Pingora inequations: 5')
-logging.debug(f'Number of Two Harbors inequations: 5')
-logging.debug('-----------------------------------------')
-
-total = num_mutex_inequations + num_standard_inequations + num_single_disjunctions + 5 + 5
-logging.debug(f'Total number of inequations or disjunctions: {total}')
