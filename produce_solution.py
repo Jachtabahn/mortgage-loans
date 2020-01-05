@@ -211,7 +211,7 @@ for pool_id in list(pools):
 assert len(deals) > 0
 
 decisions = None
-with open('allocation_pingora.sol') as file:
+with open('twoharbors_allocation') as file:
     decisions = file.read().split()
 assert decisions is not None
 
@@ -222,7 +222,7 @@ logging.debug(f'I have sold {len(deal_ids)} / {len(loans)} loans')
 pool_ids = set([deals[deal_id].pool_id for deal_id in deal_ids])
 logging.debug(f'I have sold to {len(pool_ids)} / {len(pools)} pools')
 
-with open('solution/with-pingora.csv', 'w') as file:
+with open('solution/twoharbors_allocation.csv', 'w') as file:
     solution_csv = csv.writer(file)
     solution_csv.writerow(['Loan', 'Pool', 'Servicer'])
     for deal_id in deal_ids:
