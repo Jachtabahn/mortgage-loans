@@ -91,11 +91,12 @@ class Loan:
 
 class Pool:
 
-    def __init__(self, pool_id, is_standard, is_single, servicer):
+    def __init__(self, pool_id, is_standard, is_single, servicer, agency):
         self.id = pool_id
         self.is_standard = is_standard
         self.is_single = is_single
         self.servicer = servicer
+        self.agency = agency
 
     def __str__(self):
         return pool_string.format(self.id,
@@ -163,20 +164,21 @@ pools = {}
 with open('data_processed/Pools.csv') as pools_file:
     pools_reader = csv.reader(pools_file)
     next(pools_reader) # consume the column names
-    for pool_id_string, standard_string, single_string, servicer in pools_reader:
+    for pool_id_string, issuer_type, balance_type, agency, servicer in pools_reader:
 
         # parse the pool row
         pool_id = int(pool_id_string[5:])
-        is_standard = (standard_string == 'Standard Balance')
-        is_single = (single_string == 'Single-Issuer')
+        is_standard = (balance_type == 'Standard Balance')
+        is_single = (issuer_type == 'Single-Issuer')
 
-        pool = Pool(pool_id, is_standard, is_single, servicer)
+        pool = Pool(pool_id, is_standard, is_single, servicer, agency)
         pools[pool_id] = pool
 
         assert type(pool.id) == int
         assert type(pool.is_standard) == bool
         assert type(pool.is_single) == bool
         assert type(pool.servicer) == str
+        assert type(pool.agency) == str
 
 constraints = {}
 with open('data_processed/Constraints.csv') as constraints_file:
@@ -431,6 +433,9 @@ program += sum_deals(two_harbors_deals, constraints["c12"])
 program += ';\n\n'
 
 program += '// <------------------------------------------------------- 5 Two Harbors inequations\n\n\n'
+
+
+
 
 program += '}\n'
 
