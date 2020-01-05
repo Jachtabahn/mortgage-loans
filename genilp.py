@@ -205,7 +205,7 @@ assert type(constraints) == dict, 'Constraints should be in a dict'
 assert type(deals) == list, 'Deals should be in a list'
 
 # remove a couple deals to make the problem easier
-take_every_deal = 100
+take_every_deal = 1
 for i in range(len(deals))[::-1]:
     if i % take_every_deal > 0:
         del deals[i]
@@ -262,6 +262,8 @@ program += f';\n'
 program += '// <------------------------------------------------------- Objective function\n\n\n'
 
 program += 'subject to {\n'
+
+num_mutex_inequations = 0
 program += '// Mutual exclusion inequations\n'
 for loan_id in loans:
     loan_deals = [deal for deal in deals if deal.loan_id == loan_id]
@@ -278,9 +280,12 @@ for loan_id in loans:
             program += f' + deals[{deal_id}]'
         program +=' <= 1;'
         program +='\n\n'
+        num_mutex_inequations += 1
 program += '// <------------------------------------------------------- Mutual exclusion inequations\n\n'
 
-program += '// Pool inequations\n'
+num_standard_inequations = 0
+num_single_disjunctions = 0
+program += f'// Inequations for {len(pools)} pools \n'
 for pool_id, pool in pools.items():
     pool_deals = [deal for deal in deals if deal.pool_id == pool_id]
     program += f'// Pool {pool_id}\n'
@@ -309,6 +314,7 @@ for pool_id, pool in pools.items():
                 else:
                     program += f' + {reduced_amount} * deals[{pool_deal.id}]'
             program += ';'
+            num_standard_inequations += 1
     program += f'\n'
     if pool.is_single:
         program += f'// is a single issuer pool\n'
@@ -331,8 +337,9 @@ for pool_id, pool in pools.items():
             else:
                 program += f' + {loan.amount} * deals[{pool_deal.id}]'
         program += f' >= {constraints["c2"]};'
+        num_single_disjunctions += 1
     program += f'\n\n'
-program += '// <------------------------------------------------------- Pool inequations\n\n\n'
+program += f'// <------------------------------------------------------- Inequations for {len(pools)} pools\n\n\n'
 
 program += '// 5 Pingora inequations\n'
 pingora_deals = [deal for deal in deals if pools[deal.pool_id].servicer == 'Pingora']
@@ -428,3 +435,20 @@ program += '// <------------------------------------------------------- 5 Two Ha
 program += '}\n'
 
 print(program)
+
+logging.debug('')
+logging.debug('----------------------------- SUMMARY -----------------------------')
+logging.debug(f'Number of loans: {len(loans)}')
+logging.debug(f'Number of pools: {len(pools)}')
+logging.debug(f'Number of deals: {len(deals)}')
+logging.debug('-----------------------------------------')
+
+logging.debug(f'Number of Mutex inequations: {num_mutex_inequations}')
+logging.debug(f'Number of Standard Balance inequations: {num_standard_inequations}')
+logging.debug(f'Number of Single Issuer disjunctions: {num_single_disjunctions}')
+logging.debug(f'Number of Pingora inequations: 5')
+logging.debug(f'Number of Two Harbors inequations: 5')
+logging.debug('-----------------------------------------')
+
+total = num_mutex_inequations + num_standard_inequations + num_single_disjunctions + 5 + 5
+logging.debug(f'Total number of inequations or disjunctions: {total}')
