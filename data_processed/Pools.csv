@@ -1,459 +1,459 @@
-Pool,PoolBalanceType,PoolType,Servicer
-pool_1,Standard Balance,Multi-Issuer,Pingora
-pool_2,Standard Balance,Multi-Issuer,Retained
-pool_3,Standard Balance,Multi-Issuer,Two Harbors
-pool_4,Standard Balance,Multi-Issuer,Pingora
-pool_5,Standard Balance,Multi-Issuer,Retained
-pool_6,Standard Balance,Multi-Issuer,Two Harbors
-pool_7,Standard Balance,Multi-Issuer,Pingora
-pool_8,Standard Balance,Multi-Issuer,Pingora
-pool_9,Standard Balance,Multi-Issuer,Retained
-pool_10,Standard Balance,Multi-Issuer,Two Harbors
-pool_11,Standard Balance,Multi-Issuer,Pingora
-pool_12,Standard Balance,Multi-Issuer,Pingora
-pool_13,Standard Balance,Multi-Issuer,Retained
-pool_14,Standard Balance,Multi-Issuer,Two Harbors
-pool_15,Standard Balance,Multi-Issuer,Pingora
-pool_16,Standard Balance,Multi-Issuer,Pingora
-pool_17,Standard Balance,Multi-Issuer,Retained
-pool_18,Standard Balance,Multi-Issuer,Two Harbors
-pool_19,Standard Balance,Multi-Issuer,Pingora
-pool_20,Standard Balance,Multi-Issuer,Pingora
-pool_21,Standard Balance,Multi-Issuer,Retained
-pool_22,Standard Balance,Multi-Issuer,Pingora
-pool_23,Standard Balance,Multi-Issuer,Pingora
-pool_24,Standard Balance,Multi-Issuer,Retained
-pool_25,Standard Balance,Multi-Issuer,Pingora
-pool_26,Standard Balance,Multi-Issuer,Retained
-pool_27,Standard Balance,Multi-Issuer,Pingora
-pool_28,High Balance,Multi-Issuer,Pingora
-pool_29,High Balance,Multi-Issuer,Retained
-pool_30,High Balance,Multi-Issuer,Two Harbors
-pool_31,High Balance,Multi-Issuer,Pingora
-pool_32,High Balance,Multi-Issuer,Retained
-pool_33,High Balance,Multi-Issuer,Two Harbors
-pool_34,High Balance,Multi-Issuer,Pingora
-pool_35,High Balance,Multi-Issuer,Pingora
-pool_36,High Balance,Multi-Issuer,Retained
-pool_37,High Balance,Multi-Issuer,Two Harbors
-pool_38,High Balance,Multi-Issuer,Pingora
-pool_39,High Balance,Multi-Issuer,Pingora
-pool_40,High Balance,Multi-Issuer,Retained
-pool_41,High Balance,Multi-Issuer,Two Harbors
-pool_42,High Balance,Multi-Issuer,Pingora
-pool_43,High Balance,Multi-Issuer,Pingora
-pool_44,High Balance,Multi-Issuer,Retained
-pool_45,High Balance,Multi-Issuer,Two Harbors
-pool_46,High Balance,Multi-Issuer,Pingora
-pool_47,High Balance,Multi-Issuer,Retained
-pool_48,High Balance,Multi-Issuer,Two Harbors
-pool_49,High Balance,Multi-Issuer,Pingora
-pool_50,High Balance,Multi-Issuer,Retained
-pool_51,High Balance,Multi-Issuer,Two Harbors
-pool_52,High Balance,Multi-Issuer,Pingora
-pool_53,Standard Balance,Single-Issuer,Pingora
-pool_54,Standard Balance,Single-Issuer,Retained
-pool_55,Standard Balance,Single-Issuer,Two Harbors
-pool_56,Standard Balance,Single-Issuer,Pingora
-pool_57,Standard Balance,Single-Issuer,Retained
-pool_58,Standard Balance,Single-Issuer,Two Harbors
-pool_59,Standard Balance,Single-Issuer,Pingora
-pool_60,Standard Balance,Single-Issuer,Retained
-pool_61,Standard Balance,Single-Issuer,Two Harbors
-pool_62,Standard Balance,Single-Issuer,Pingora
-pool_63,Standard Balance,Single-Issuer,Retained
-pool_64,Standard Balance,Single-Issuer,Two Harbors
-pool_65,Standard Balance,Single-Issuer,Pingora
-pool_66,Standard Balance,Single-Issuer,Retained
-pool_67,Standard Balance,Single-Issuer,Two Harbors
-pool_68,Standard Balance,Single-Issuer,Pingora
-pool_69,Standard Balance,Single-Issuer,Retained
-pool_70,Standard Balance,Single-Issuer,Two Harbors
-pool_71,Standard Balance,Single-Issuer,Pingora
-pool_72,Standard Balance,Single-Issuer,Retained
-pool_73,Standard Balance,Single-Issuer,Pingora
-pool_74,Standard Balance,Single-Issuer,Retained
-pool_75,Standard Balance,Single-Issuer,Two Harbors
-pool_76,Standard Balance,Single-Issuer,Pingora
-pool_77,Standard Balance,Single-Issuer,Retained
-pool_78,Standard Balance,Single-Issuer,Two Harbors
-pool_79,Standard Balance,Single-Issuer,Pingora
-pool_80,Standard Balance,Single-Issuer,Retained
-pool_81,Standard Balance,Single-Issuer,Pingora
-pool_82,Standard Balance,Single-Issuer,Retained
-pool_83,Standard Balance,Single-Issuer,Two Harbors
-pool_84,Standard Balance,Single-Issuer,Pingora
-pool_85,Standard Balance,Single-Issuer,Retained
-pool_86,Standard Balance,Single-Issuer,Two Harbors
-pool_87,Standard Balance,Single-Issuer,Pingora
-pool_88,Standard Balance,Single-Issuer,Retained
-pool_89,Standard Balance,Single-Issuer,Pingora
-pool_90,Standard Balance,Single-Issuer,Retained
-pool_91,Standard Balance,Single-Issuer,Two Harbors
-pool_92,Standard Balance,Single-Issuer,Pingora
-pool_93,Standard Balance,Single-Issuer,Retained
-pool_94,Standard Balance,Single-Issuer,Two Harbors
-pool_95,Standard Balance,Single-Issuer,Pingora
-pool_96,Standard Balance,Single-Issuer,Retained
-pool_97,Standard Balance,Single-Issuer,Pingora
-pool_98,Standard Balance,Single-Issuer,Retained
-pool_99,Standard Balance,Single-Issuer,Two Harbors
-pool_100,Standard Balance,Single-Issuer,Pingora
-pool_101,Standard Balance,Single-Issuer,Retained
-pool_102,Standard Balance,Single-Issuer,Pingora
-pool_103,Standard Balance,Single-Issuer,Retained
-pool_104,Standard Balance,Single-Issuer,Two Harbors
-pool_105,Standard Balance,Single-Issuer,Pingora
-pool_106,Standard Balance,Single-Issuer,Retained
-pool_107,Standard Balance,Single-Issuer,Two Harbors
-pool_108,Standard Balance,Single-Issuer,Pingora
-pool_109,Standard Balance,Single-Issuer,Retained
-pool_110,Standard Balance,Single-Issuer,Pingora
-pool_111,Standard Balance,Single-Issuer,Retained
-pool_112,Standard Balance,Single-Issuer,Retained
-pool_113,Standard Balance,Single-Issuer,Retained
-pool_114,Standard Balance,Single-Issuer,Retained
-pool_115,Standard Balance,Single-Issuer,Retained
-pool_116,Standard Balance,Single-Issuer,Retained
-pool_117,Standard Balance,Single-Issuer,Two Harbors
-pool_118,Standard Balance,Single-Issuer,Pingora
-pool_119,Standard Balance,Single-Issuer,Retained
-pool_120,Standard Balance,Single-Issuer,Two Harbors
-pool_121,Standard Balance,Single-Issuer,Pingora
-pool_122,Standard Balance,Single-Issuer,Retained
-pool_123,Standard Balance,Single-Issuer,Two Harbors
-pool_124,Standard Balance,Single-Issuer,Pingora
-pool_125,Standard Balance,Single-Issuer,Retained
-pool_126,Standard Balance,Single-Issuer,Pingora
-pool_127,Standard Balance,Single-Issuer,Retained
-pool_128,Standard Balance,Single-Issuer,Pingora
-pool_129,Standard Balance,Single-Issuer,Retained
-pool_130,Standard Balance,Single-Issuer,Two Harbors
-pool_131,Standard Balance,Single-Issuer,Pingora
-pool_132,Standard Balance,Single-Issuer,Retained
-pool_133,Standard Balance,Single-Issuer,Two Harbors
-pool_134,Standard Balance,Single-Issuer,Pingora
-pool_135,Standard Balance,Single-Issuer,Retained
-pool_136,Standard Balance,Single-Issuer,Two Harbors
-pool_137,Standard Balance,Single-Issuer,Pingora
-pool_138,Standard Balance,Single-Issuer,Retained
-pool_139,Standard Balance,Single-Issuer,Pingora
-pool_140,Standard Balance,Single-Issuer,Retained
-pool_141,Standard Balance,Single-Issuer,Pingora
-pool_142,Standard Balance,Single-Issuer,Retained
-pool_143,Standard Balance,Single-Issuer,Two Harbors
-pool_144,Standard Balance,Single-Issuer,Pingora
-pool_145,Standard Balance,Single-Issuer,Retained
-pool_146,Standard Balance,Single-Issuer,Two Harbors
-pool_147,Standard Balance,Single-Issuer,Pingora
-pool_148,Standard Balance,Single-Issuer,Retained
-pool_149,Standard Balance,Single-Issuer,Two Harbors
-pool_150,Standard Balance,Single-Issuer,Pingora
-pool_151,Standard Balance,Single-Issuer,Retained
-pool_152,Standard Balance,Single-Issuer,Pingora
-pool_153,Standard Balance,Single-Issuer,Retained
-pool_154,Standard Balance,Single-Issuer,Pingora
-pool_155,Standard Balance,Single-Issuer,Retained
-pool_156,Standard Balance,Single-Issuer,Two Harbors
-pool_157,Standard Balance,Single-Issuer,Pingora
-pool_158,Standard Balance,Single-Issuer,Retained
-pool_159,Standard Balance,Single-Issuer,Two Harbors
-pool_160,Standard Balance,Single-Issuer,Pingora
-pool_161,Standard Balance,Single-Issuer,Retained
-pool_162,Standard Balance,Single-Issuer,Two Harbors
-pool_163,Standard Balance,Single-Issuer,Pingora
-pool_164,Standard Balance,Single-Issuer,Retained
-pool_165,Standard Balance,Single-Issuer,Pingora
-pool_166,Standard Balance,Single-Issuer,Retained
-pool_167,Standard Balance,Single-Issuer,Pingora
-pool_168,Standard Balance,Single-Issuer,Retained
-pool_169,Standard Balance,Single-Issuer,Two Harbors
-pool_170,Standard Balance,Single-Issuer,Pingora
-pool_171,Standard Balance,Single-Issuer,Retained
-pool_172,Standard Balance,Single-Issuer,Two Harbors
-pool_173,Standard Balance,Single-Issuer,Pingora
-pool_174,Standard Balance,Single-Issuer,Retained
-pool_175,Standard Balance,Single-Issuer,Pingora
-pool_176,Standard Balance,Single-Issuer,Retained
-pool_177,Standard Balance,Single-Issuer,Pingora
-pool_178,Standard Balance,Single-Issuer,Pingora
-pool_179,Standard Balance,Single-Issuer,Retained
-pool_180,Standard Balance,Single-Issuer,Two Harbors
-pool_181,Standard Balance,Single-Issuer,Pingora
-pool_182,Standard Balance,Single-Issuer,Retained
-pool_183,Standard Balance,Single-Issuer,Two Harbors
-pool_184,Standard Balance,Single-Issuer,Pingora
-pool_185,Standard Balance,Single-Issuer,Retained
-pool_186,Standard Balance,Single-Issuer,Two Harbors
-pool_187,Standard Balance,Single-Issuer,Pingora
-pool_188,Standard Balance,Single-Issuer,Retained
-pool_189,Standard Balance,Single-Issuer,Two Harbors
-pool_190,Standard Balance,Single-Issuer,Pingora
-pool_191,Standard Balance,Single-Issuer,Retained
-pool_192,Standard Balance,Single-Issuer,Pingora
-pool_193,Standard Balance,Single-Issuer,Retained
-pool_194,Standard Balance,Single-Issuer,Retained
-pool_195,Standard Balance,Single-Issuer,Two Harbors
-pool_196,Standard Balance,Single-Issuer,Pingora
-pool_197,Standard Balance,Single-Issuer,Retained
-pool_198,Standard Balance,Single-Issuer,Two Harbors
-pool_199,Standard Balance,Single-Issuer,Pingora
-pool_200,Standard Balance,Single-Issuer,Retained
-pool_201,Standard Balance,Single-Issuer,Two Harbors
-pool_202,Standard Balance,Single-Issuer,Pingora
-pool_203,Standard Balance,Single-Issuer,Retained
-pool_204,Standard Balance,Single-Issuer,Pingora
-pool_205,Standard Balance,Single-Issuer,Retained
-pool_206,Standard Balance,Single-Issuer,Pingora
-pool_207,Standard Balance,Single-Issuer,Retained
-pool_208,Standard Balance,Single-Issuer,Two Harbors
-pool_209,Standard Balance,Single-Issuer,Pingora
-pool_210,Standard Balance,Single-Issuer,Retained
-pool_211,Standard Balance,Single-Issuer,Two Harbors
-pool_212,Standard Balance,Single-Issuer,Pingora
-pool_213,Standard Balance,Single-Issuer,Retained
-pool_214,Standard Balance,Single-Issuer,Two Harbors
-pool_215,Standard Balance,Single-Issuer,Pingora
-pool_216,Standard Balance,Single-Issuer,Retained
-pool_217,Standard Balance,Single-Issuer,Two Harbors
-pool_218,Standard Balance,Single-Issuer,Pingora
-pool_219,Standard Balance,Single-Issuer,Retained
-pool_220,Standard Balance,Single-Issuer,Pingora
-pool_221,Standard Balance,Single-Issuer,Retained
-pool_222,Standard Balance,Single-Issuer,Pingora
-pool_223,Standard Balance,Single-Issuer,Retained
-pool_224,Standard Balance,Single-Issuer,Retained
-pool_225,Standard Balance,Single-Issuer,Retained
-pool_226,Standard Balance,Single-Issuer,Retained
-pool_227,Standard Balance,Single-Issuer,Retained
-pool_228,Standard Balance,Multi-Issuer,Pingora
-pool_229,Standard Balance,Multi-Issuer,Retained
-pool_230,Standard Balance,Multi-Issuer,Two Harbors
-pool_231,Standard Balance,Multi-Issuer,Pingora
-pool_232,Standard Balance,Multi-Issuer,Retained
-pool_233,Standard Balance,Multi-Issuer,Two Harbors
-pool_234,Standard Balance,Multi-Issuer,Pingora
-pool_235,Standard Balance,Multi-Issuer,Pingora
-pool_236,Standard Balance,Multi-Issuer,Retained
-pool_237,Standard Balance,Multi-Issuer,Two Harbors
-pool_238,Standard Balance,Multi-Issuer,Pingora
-pool_239,Standard Balance,Multi-Issuer,Pingora
-pool_240,Standard Balance,Multi-Issuer,Retained
-pool_241,Standard Balance,Multi-Issuer,Two Harbors
-pool_242,Standard Balance,Multi-Issuer,Pingora
-pool_243,Standard Balance,Multi-Issuer,Pingora
-pool_244,Standard Balance,Multi-Issuer,Retained
-pool_245,Standard Balance,Multi-Issuer,Two Harbors
-pool_246,Standard Balance,Multi-Issuer,Pingora
-pool_247,Standard Balance,Multi-Issuer,Pingora
-pool_248,Standard Balance,Multi-Issuer,Retained
-pool_249,Standard Balance,Multi-Issuer,Pingora
-pool_250,Standard Balance,Multi-Issuer,Pingora
-pool_251,Standard Balance,Multi-Issuer,Retained
-pool_252,Standard Balance,Multi-Issuer,Pingora
-pool_253,Standard Balance,Multi-Issuer,Retained
-pool_254,Standard Balance,Multi-Issuer,Pingora
-pool_255,High Balance,Multi-Issuer,Pingora
-pool_256,High Balance,Multi-Issuer,Retained
-pool_257,High Balance,Multi-Issuer,Two Harbors
-pool_258,High Balance,Multi-Issuer,Pingora
-pool_259,High Balance,Multi-Issuer,Retained
-pool_260,High Balance,Multi-Issuer,Two Harbors
-pool_261,High Balance,Multi-Issuer,Pingora
-pool_262,High Balance,Multi-Issuer,Pingora
-pool_263,High Balance,Multi-Issuer,Retained
-pool_264,High Balance,Multi-Issuer,Two Harbors
-pool_265,High Balance,Multi-Issuer,Pingora
-pool_266,High Balance,Multi-Issuer,Pingora
-pool_267,High Balance,Multi-Issuer,Retained
-pool_268,High Balance,Multi-Issuer,Two Harbors
-pool_269,High Balance,Multi-Issuer,Pingora
-pool_270,High Balance,Multi-Issuer,Pingora
-pool_271,High Balance,Multi-Issuer,Retained
-pool_272,High Balance,Multi-Issuer,Two Harbors
-pool_273,High Balance,Multi-Issuer,Pingora
-pool_274,High Balance,Multi-Issuer,Retained
-pool_275,High Balance,Multi-Issuer,Two Harbors
-pool_276,High Balance,Multi-Issuer,Pingora
-pool_277,High Balance,Multi-Issuer,Retained
-pool_278,High Balance,Multi-Issuer,Two Harbors
-pool_279,High Balance,Multi-Issuer,Pingora
-pool_280,Standard Balance,Single-Issuer,Pingora
-pool_281,Standard Balance,Single-Issuer,Retained
-pool_282,Standard Balance,Single-Issuer,Two Harbors
-pool_283,Standard Balance,Single-Issuer,Pingora
-pool_284,Standard Balance,Single-Issuer,Retained
-pool_285,Standard Balance,Single-Issuer,Two Harbors
-pool_286,Standard Balance,Single-Issuer,Pingora
-pool_287,Standard Balance,Single-Issuer,Retained
-pool_288,Standard Balance,Single-Issuer,Two Harbors
-pool_289,Standard Balance,Single-Issuer,Pingora
-pool_290,Standard Balance,Single-Issuer,Retained
-pool_291,Standard Balance,Single-Issuer,Two Harbors
-pool_292,Standard Balance,Single-Issuer,Pingora
-pool_293,Standard Balance,Single-Issuer,Retained
-pool_294,Standard Balance,Single-Issuer,Two Harbors
-pool_295,Standard Balance,Single-Issuer,Pingora
-pool_296,Standard Balance,Single-Issuer,Retained
-pool_297,Standard Balance,Single-Issuer,Two Harbors
-pool_298,Standard Balance,Single-Issuer,Pingora
-pool_299,Standard Balance,Single-Issuer,Retained
-pool_300,Standard Balance,Single-Issuer,Pingora
-pool_301,Standard Balance,Single-Issuer,Retained
-pool_302,Standard Balance,Single-Issuer,Two Harbors
-pool_303,Standard Balance,Single-Issuer,Pingora
-pool_304,Standard Balance,Single-Issuer,Retained
-pool_305,Standard Balance,Single-Issuer,Two Harbors
-pool_306,Standard Balance,Single-Issuer,Pingora
-pool_307,Standard Balance,Single-Issuer,Retained
-pool_308,Standard Balance,Single-Issuer,Pingora
-pool_309,Standard Balance,Single-Issuer,Retained
-pool_310,Standard Balance,Single-Issuer,Two Harbors
-pool_311,Standard Balance,Single-Issuer,Pingora
-pool_312,Standard Balance,Single-Issuer,Retained
-pool_313,Standard Balance,Single-Issuer,Two Harbors
-pool_314,Standard Balance,Single-Issuer,Pingora
-pool_315,Standard Balance,Single-Issuer,Retained
-pool_316,Standard Balance,Single-Issuer,Pingora
-pool_317,Standard Balance,Single-Issuer,Retained
-pool_318,Standard Balance,Single-Issuer,Two Harbors
-pool_319,Standard Balance,Single-Issuer,Pingora
-pool_320,Standard Balance,Single-Issuer,Retained
-pool_321,Standard Balance,Single-Issuer,Two Harbors
-pool_322,Standard Balance,Single-Issuer,Pingora
-pool_323,Standard Balance,Single-Issuer,Retained
-pool_324,Standard Balance,Single-Issuer,Pingora
-pool_325,Standard Balance,Single-Issuer,Retained
-pool_326,Standard Balance,Single-Issuer,Two Harbors
-pool_327,Standard Balance,Single-Issuer,Pingora
-pool_328,Standard Balance,Single-Issuer,Retained
-pool_329,Standard Balance,Single-Issuer,Pingora
-pool_330,Standard Balance,Single-Issuer,Retained
-pool_331,Standard Balance,Single-Issuer,Two Harbors
-pool_332,Standard Balance,Single-Issuer,Pingora
-pool_333,Standard Balance,Single-Issuer,Retained
-pool_334,Standard Balance,Single-Issuer,Two Harbors
-pool_335,Standard Balance,Single-Issuer,Pingora
-pool_336,Standard Balance,Single-Issuer,Retained
-pool_337,Standard Balance,Single-Issuer,Two Harbors
-pool_338,Standard Balance,Single-Issuer,Pingora
-pool_339,Standard Balance,Single-Issuer,Retained
-pool_340,Standard Balance,Single-Issuer,Retained
-pool_341,Standard Balance,Single-Issuer,Retained
-pool_342,Standard Balance,Single-Issuer,Retained
-pool_343,Standard Balance,Single-Issuer,Retained
-pool_344,Standard Balance,Single-Issuer,Retained
-pool_345,Standard Balance,Single-Issuer,Two Harbors
-pool_346,Standard Balance,Single-Issuer,Pingora
-pool_347,Standard Balance,Single-Issuer,Retained
-pool_348,Standard Balance,Single-Issuer,Two Harbors
-pool_349,Standard Balance,Single-Issuer,Pingora
-pool_350,Standard Balance,Single-Issuer,Retained
-pool_351,Standard Balance,Single-Issuer,Two Harbors
-pool_352,Standard Balance,Single-Issuer,Pingora
-pool_353,Standard Balance,Single-Issuer,Retained
-pool_354,Standard Balance,Single-Issuer,Pingora
-pool_355,Standard Balance,Single-Issuer,Retained
-pool_356,Standard Balance,Single-Issuer,Pingora
-pool_357,Standard Balance,Single-Issuer,Retained
-pool_358,Standard Balance,Single-Issuer,Two Harbors
-pool_359,Standard Balance,Single-Issuer,Pingora
-pool_360,Standard Balance,Single-Issuer,Retained
-pool_361,Standard Balance,Single-Issuer,Two Harbors
-pool_362,Standard Balance,Single-Issuer,Pingora
-pool_363,Standard Balance,Single-Issuer,Retained
-pool_364,Standard Balance,Single-Issuer,Two Harbors
-pool_365,Standard Balance,Single-Issuer,Pingora
-pool_366,Standard Balance,Single-Issuer,Retained
-pool_367,Standard Balance,Single-Issuer,Pingora
-pool_368,Standard Balance,Single-Issuer,Retained
-pool_369,Standard Balance,Single-Issuer,Pingora
-pool_370,Standard Balance,Single-Issuer,Retained
-pool_371,Standard Balance,Single-Issuer,Two Harbors
-pool_372,Standard Balance,Single-Issuer,Pingora
-pool_373,Standard Balance,Single-Issuer,Retained
-pool_374,Standard Balance,Single-Issuer,Two Harbors
-pool_375,Standard Balance,Single-Issuer,Pingora
-pool_376,Standard Balance,Single-Issuer,Retained
-pool_377,Standard Balance,Single-Issuer,Two Harbors
-pool_378,Standard Balance,Single-Issuer,Pingora
-pool_379,Standard Balance,Single-Issuer,Retained
-pool_380,Standard Balance,Single-Issuer,Pingora
-pool_381,Standard Balance,Single-Issuer,Retained
-pool_382,Standard Balance,Single-Issuer,Pingora
-pool_383,Standard Balance,Single-Issuer,Retained
-pool_384,Standard Balance,Single-Issuer,Two Harbors
-pool_385,Standard Balance,Single-Issuer,Pingora
-pool_386,Standard Balance,Single-Issuer,Retained
-pool_387,Standard Balance,Single-Issuer,Two Harbors
-pool_388,Standard Balance,Single-Issuer,Pingora
-pool_389,Standard Balance,Single-Issuer,Retained
-pool_390,Standard Balance,Single-Issuer,Two Harbors
-pool_391,Standard Balance,Single-Issuer,Pingora
-pool_392,Standard Balance,Single-Issuer,Retained
-pool_393,Standard Balance,Single-Issuer,Pingora
-pool_394,Standard Balance,Single-Issuer,Retained
-pool_395,Standard Balance,Single-Issuer,Pingora
-pool_396,Standard Balance,Single-Issuer,Retained
-pool_397,Standard Balance,Single-Issuer,Two Harbors
-pool_398,Standard Balance,Single-Issuer,Pingora
-pool_399,Standard Balance,Single-Issuer,Retained
-pool_400,Standard Balance,Single-Issuer,Two Harbors
-pool_401,Standard Balance,Single-Issuer,Pingora
-pool_402,Standard Balance,Single-Issuer,Retained
-pool_403,Standard Balance,Single-Issuer,Two Harbors
-pool_404,Standard Balance,Single-Issuer,Pingora
-pool_405,Standard Balance,Single-Issuer,Retained
-pool_406,Standard Balance,Single-Issuer,Pingora
-pool_407,Standard Balance,Single-Issuer,Retained
-pool_408,Standard Balance,Single-Issuer,Pingora
-pool_409,Standard Balance,Single-Issuer,Pingora
-pool_410,Standard Balance,Single-Issuer,Retained
-pool_411,Standard Balance,Single-Issuer,Two Harbors
-pool_412,Standard Balance,Single-Issuer,Pingora
-pool_413,Standard Balance,Single-Issuer,Retained
-pool_414,Standard Balance,Single-Issuer,Two Harbors
-pool_415,Standard Balance,Single-Issuer,Pingora
-pool_416,Standard Balance,Single-Issuer,Retained
-pool_417,Standard Balance,Single-Issuer,Two Harbors
-pool_418,Standard Balance,Single-Issuer,Pingora
-pool_419,Standard Balance,Single-Issuer,Retained
-pool_420,Standard Balance,Single-Issuer,Two Harbors
-pool_421,Standard Balance,Single-Issuer,Pingora
-pool_422,Standard Balance,Single-Issuer,Retained
-pool_423,Standard Balance,Single-Issuer,Pingora
-pool_424,Standard Balance,Single-Issuer,Retained
-pool_425,Standard Balance,Single-Issuer,Retained
-pool_426,Standard Balance,Single-Issuer,Two Harbors
-pool_427,Standard Balance,Single-Issuer,Pingora
-pool_428,Standard Balance,Single-Issuer,Retained
-pool_429,Standard Balance,Single-Issuer,Two Harbors
-pool_430,Standard Balance,Single-Issuer,Pingora
-pool_431,Standard Balance,Single-Issuer,Retained
-pool_432,Standard Balance,Single-Issuer,Two Harbors
-pool_433,Standard Balance,Single-Issuer,Pingora
-pool_434,Standard Balance,Single-Issuer,Retained
-pool_435,Standard Balance,Single-Issuer,Pingora
-pool_436,Standard Balance,Single-Issuer,Retained
-pool_437,Standard Balance,Single-Issuer,Pingora
-pool_438,Standard Balance,Single-Issuer,Retained
-pool_439,Standard Balance,Single-Issuer,Two Harbors
-pool_440,Standard Balance,Single-Issuer,Pingora
-pool_441,Standard Balance,Single-Issuer,Retained
-pool_442,Standard Balance,Single-Issuer,Two Harbors
-pool_443,Standard Balance,Single-Issuer,Pingora
-pool_444,Standard Balance,Single-Issuer,Retained
-pool_445,Standard Balance,Single-Issuer,Two Harbors
-pool_446,Standard Balance,Single-Issuer,Pingora
-pool_447,Standard Balance,Single-Issuer,Retained
-pool_448,Standard Balance,Single-Issuer,Two Harbors
-pool_449,Standard Balance,Single-Issuer,Pingora
-pool_450,Standard Balance,Single-Issuer,Retained
-pool_451,Standard Balance,Single-Issuer,Pingora
-pool_452,Standard Balance,Single-Issuer,Retained
-pool_453,Standard Balance,Single-Issuer,Pingora
-pool_454,Standard Balance,Single-Issuer,Retained
-pool_455,Standard Balance,Single-Issuer,Retained
-pool_456,Standard Balance,Single-Issuer,Retained
-pool_457,Standard Balance,Single-Issuer,Retained
-pool_458,Standard Balance,Single-Issuer,Retained
+Pool,IssuerType,BalanceType,Agency,Servicer
+pool_1,Multi-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_2,Multi-Issuer,Standard Balance,Freddie Mac,Retained
+pool_3,Multi-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_4,Multi-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_5,Multi-Issuer,Standard Balance,Freddie Mac,Retained
+pool_6,Multi-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_7,Multi-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_8,Multi-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_9,Multi-Issuer,Standard Balance,Freddie Mac,Retained
+pool_10,Multi-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_11,Multi-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_12,Multi-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_13,Multi-Issuer,Standard Balance,Freddie Mac,Retained
+pool_14,Multi-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_15,Multi-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_16,Multi-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_17,Multi-Issuer,Standard Balance,Freddie Mac,Retained
+pool_18,Multi-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_19,Multi-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_20,Multi-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_21,Multi-Issuer,Standard Balance,Freddie Mac,Retained
+pool_22,Multi-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_23,Multi-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_24,Multi-Issuer,Standard Balance,Freddie Mac,Retained
+pool_25,Multi-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_26,Multi-Issuer,Standard Balance,Freddie Mac,Retained
+pool_27,Multi-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_28,Multi-Issuer,High Balance,Freddie Mac,Pingora
+pool_29,Multi-Issuer,High Balance,Freddie Mac,Retained
+pool_30,Multi-Issuer,High Balance,Freddie Mac,Two Harbors
+pool_31,Multi-Issuer,High Balance,Freddie Mac,Pingora
+pool_32,Multi-Issuer,High Balance,Freddie Mac,Retained
+pool_33,Multi-Issuer,High Balance,Freddie Mac,Two Harbors
+pool_34,Multi-Issuer,High Balance,Freddie Mac,Pingora
+pool_35,Multi-Issuer,High Balance,Freddie Mac,Pingora
+pool_36,Multi-Issuer,High Balance,Freddie Mac,Retained
+pool_37,Multi-Issuer,High Balance,Freddie Mac,Two Harbors
+pool_38,Multi-Issuer,High Balance,Freddie Mac,Pingora
+pool_39,Multi-Issuer,High Balance,Freddie Mac,Pingora
+pool_40,Multi-Issuer,High Balance,Freddie Mac,Retained
+pool_41,Multi-Issuer,High Balance,Freddie Mac,Two Harbors
+pool_42,Multi-Issuer,High Balance,Freddie Mac,Pingora
+pool_43,Multi-Issuer,High Balance,Freddie Mac,Pingora
+pool_44,Multi-Issuer,High Balance,Freddie Mac,Retained
+pool_45,Multi-Issuer,High Balance,Freddie Mac,Two Harbors
+pool_46,Multi-Issuer,High Balance,Freddie Mac,Pingora
+pool_47,Multi-Issuer,High Balance,Freddie Mac,Retained
+pool_48,Multi-Issuer,High Balance,Freddie Mac,Two Harbors
+pool_49,Multi-Issuer,High Balance,Freddie Mac,Pingora
+pool_50,Multi-Issuer,High Balance,Freddie Mac,Retained
+pool_51,Multi-Issuer,High Balance,Freddie Mac,Two Harbors
+pool_52,Multi-Issuer,High Balance,Freddie Mac,Pingora
+pool_53,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_54,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_55,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_56,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_57,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_58,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_59,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_60,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_61,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_62,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_63,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_64,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_65,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_66,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_67,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_68,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_69,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_70,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_71,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_72,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_73,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_74,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_75,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_76,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_77,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_78,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_79,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_80,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_81,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_82,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_83,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_84,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_85,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_86,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_87,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_88,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_89,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_90,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_91,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_92,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_93,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_94,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_95,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_96,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_97,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_98,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_99,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_100,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_101,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_102,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_103,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_104,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_105,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_106,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_107,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_108,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_109,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_110,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_111,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_112,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_113,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_114,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_115,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_116,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_117,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_118,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_119,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_120,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_121,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_122,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_123,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_124,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_125,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_126,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_127,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_128,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_129,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_130,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_131,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_132,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_133,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_134,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_135,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_136,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_137,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_138,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_139,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_140,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_141,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_142,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_143,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_144,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_145,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_146,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_147,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_148,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_149,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_150,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_151,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_152,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_153,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_154,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_155,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_156,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_157,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_158,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_159,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_160,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_161,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_162,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_163,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_164,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_165,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_166,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_167,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_168,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_169,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_170,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_171,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_172,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_173,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_174,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_175,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_176,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_177,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_178,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_179,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_180,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_181,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_182,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_183,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_184,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_185,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_186,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_187,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_188,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_189,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_190,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_191,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_192,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_193,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_194,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_195,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_196,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_197,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_198,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_199,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_200,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_201,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_202,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_203,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_204,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_205,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_206,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_207,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_208,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_209,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_210,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_211,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_212,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_213,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_214,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_215,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_216,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_217,Single-Issuer,Standard Balance,Freddie Mac,Two Harbors
+pool_218,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_219,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_220,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_221,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_222,Single-Issuer,Standard Balance,Freddie Mac,Pingora
+pool_223,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_224,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_225,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_226,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_227,Single-Issuer,Standard Balance,Freddie Mac,Retained
+pool_228,Multi-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_229,Multi-Issuer,Standard Balance,Fannie Mae,Retained
+pool_230,Multi-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_231,Multi-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_232,Multi-Issuer,Standard Balance,Fannie Mae,Retained
+pool_233,Multi-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_234,Multi-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_235,Multi-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_236,Multi-Issuer,Standard Balance,Fannie Mae,Retained
+pool_237,Multi-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_238,Multi-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_239,Multi-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_240,Multi-Issuer,Standard Balance,Fannie Mae,Retained
+pool_241,Multi-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_242,Multi-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_243,Multi-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_244,Multi-Issuer,Standard Balance,Fannie Mae,Retained
+pool_245,Multi-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_246,Multi-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_247,Multi-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_248,Multi-Issuer,Standard Balance,Fannie Mae,Retained
+pool_249,Multi-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_250,Multi-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_251,Multi-Issuer,Standard Balance,Fannie Mae,Retained
+pool_252,Multi-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_253,Multi-Issuer,Standard Balance,Fannie Mae,Retained
+pool_254,Multi-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_255,Multi-Issuer,High Balance,Fannie Mae,Pingora
+pool_256,Multi-Issuer,High Balance,Fannie Mae,Retained
+pool_257,Multi-Issuer,High Balance,Fannie Mae,Two Harbors
+pool_258,Multi-Issuer,High Balance,Fannie Mae,Pingora
+pool_259,Multi-Issuer,High Balance,Fannie Mae,Retained
+pool_260,Multi-Issuer,High Balance,Fannie Mae,Two Harbors
+pool_261,Multi-Issuer,High Balance,Fannie Mae,Pingora
+pool_262,Multi-Issuer,High Balance,Fannie Mae,Pingora
+pool_263,Multi-Issuer,High Balance,Fannie Mae,Retained
+pool_264,Multi-Issuer,High Balance,Fannie Mae,Two Harbors
+pool_265,Multi-Issuer,High Balance,Fannie Mae,Pingora
+pool_266,Multi-Issuer,High Balance,Fannie Mae,Pingora
+pool_267,Multi-Issuer,High Balance,Fannie Mae,Retained
+pool_268,Multi-Issuer,High Balance,Fannie Mae,Two Harbors
+pool_269,Multi-Issuer,High Balance,Fannie Mae,Pingora
+pool_270,Multi-Issuer,High Balance,Fannie Mae,Pingora
+pool_271,Multi-Issuer,High Balance,Fannie Mae,Retained
+pool_272,Multi-Issuer,High Balance,Fannie Mae,Two Harbors
+pool_273,Multi-Issuer,High Balance,Fannie Mae,Pingora
+pool_274,Multi-Issuer,High Balance,Fannie Mae,Retained
+pool_275,Multi-Issuer,High Balance,Fannie Mae,Two Harbors
+pool_276,Multi-Issuer,High Balance,Fannie Mae,Pingora
+pool_277,Multi-Issuer,High Balance,Fannie Mae,Retained
+pool_278,Multi-Issuer,High Balance,Fannie Mae,Two Harbors
+pool_279,Multi-Issuer,High Balance,Fannie Mae,Pingora
+pool_280,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_281,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_282,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_283,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_284,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_285,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_286,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_287,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_288,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_289,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_290,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_291,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_292,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_293,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_294,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_295,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_296,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_297,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_298,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_299,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_300,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_301,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_302,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_303,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_304,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_305,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_306,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_307,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_308,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_309,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_310,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_311,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_312,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_313,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_314,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_315,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_316,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_317,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_318,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_319,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_320,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_321,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_322,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_323,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_324,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_325,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_326,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_327,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_328,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_329,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_330,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_331,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_332,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_333,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_334,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_335,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_336,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_337,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_338,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_339,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_340,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_341,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_342,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_343,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_344,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_345,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_346,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_347,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_348,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_349,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_350,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_351,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_352,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_353,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_354,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_355,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_356,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_357,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_358,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_359,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_360,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_361,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_362,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_363,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_364,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_365,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_366,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_367,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_368,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_369,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_370,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_371,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_372,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_373,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_374,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_375,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_376,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_377,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_378,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_379,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_380,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_381,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_382,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_383,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_384,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_385,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_386,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_387,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_388,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_389,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_390,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_391,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_392,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_393,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_394,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_395,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_396,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_397,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_398,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_399,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_400,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_401,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_402,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_403,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_404,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_405,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_406,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_407,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_408,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_409,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_410,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_411,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_412,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_413,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_414,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_415,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_416,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_417,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_418,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_419,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_420,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_421,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_422,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_423,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_424,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_425,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_426,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_427,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_428,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_429,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_430,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_431,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_432,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_433,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_434,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_435,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_436,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_437,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_438,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_439,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_440,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_441,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_442,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_443,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_444,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_445,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_446,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_447,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_448,Single-Issuer,Standard Balance,Fannie Mae,Two Harbors
+pool_449,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_450,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_451,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_452,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_453,Single-Issuer,Standard Balance,Fannie Mae,Pingora
+pool_454,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_455,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_456,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_457,Single-Issuer,Standard Balance,Fannie Mae,Retained
+pool_458,Single-Issuer,Standard Balance,Fannie Mae,Retained
