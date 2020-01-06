@@ -208,7 +208,7 @@ assert type(constraints) == dict, 'Constraints should be in a dict'
 assert type(deals) == list, 'Deals should be in a list'
 
 # remove a couple deals to make the problem easier
-take_every_deal = 1000
+take_every_deal = 10
 for i in range(len(deals))[::-1]:
     if i % take_every_deal > 0:
         del deals[i]
@@ -243,40 +243,40 @@ deal_ids = [deal.id for deal in deals]
 vars = pulp.LpVariable.dicts("Deal", lowBound=0, upBound=1, indexs=deal_ids, cat=pulp.LpInteger)
 
 # Creates the 'program' variable to contain the problem data
-program = pulp.LpProblem("Mortgages_Problem", pulp.LpMaximize)
+program = pulp.LpProblem("MortgagesProblem", pulp.LpMaximize)
 
 # Creates the objective function
-program += pulp.lpSum([vars[deal.id]* deal.price for deal in deals]), "Total Selling Price"
+program += pulp.lpSum([vars[deal.id] * deal.price for deal in deals]), "Total Selling Price"
 
-# for n in Nodes:
-#     program += (supply[n]+ pulp.lpSum([vars[(i,j)] for (i,j) in Arcs if j == n]) >=
-#              demand[n]+ pulp.lpSum([vars[(i,j)] for (i,j) in Arcs if i == n])), "Steel Flow Conservation in Node %s"%n
+for loan_id in loans:
+    loan_deals = [deal for deal in deals if deal.loan_id == loan_id]
+    if len(loan_deals) > 1:
+        program += pulp.lpSum([vars[deal.id] for deal in loan_deals]) <= 1, f'Mutex constraint for loan {loan_id}'
 
-
-
-
-
-
-
-
-
-
-
+for pool_id, pool in pools.items():
+    pool_deals = [deal for deal in deals if deal.pool_id == pool_id]
+    high_balance_deals = [pool_deal for pool_deal in pool_deals if loans[pool_deal.loan_id].is_expensive]
+    if pool.is_standard and high_balance_deals:
+        lhs = pulp.lpSum([loans[high_balance_deal.loan_id].amount * vars[high_balance_deal.id] for high_balance_deal in high_balance_deals])
+        rhs = pulp.lpSum([constraints['c1'] * loans[pool_deal.loan_id].amount * vars[pool_deal.id] for pool_deal in pool_deals])
+        program += lhs <= rhs, f'Standard balance constraint for pool {pool_id}'
 
 
 # The problem data is written to an .lp file
-program.writeLP("AmericanSteelProblem.lp")
+program.writeLP("MortgagesProblem.lp")
 
 # The problem is solved using PuLP's choice of Solver
-program.solve(solver=pulp.solvers.PULP_CBC_CMD())
+cbc_solver = pulp.solvers.COIN_CMD(
+    path='/home/habimm/anaconda3/lib/python3.7/site-packages/pulp/solverdir/cbc/linux/64/cbc', threads=8)
+program.solve(solver=cbc_solver)
 
 # The status of the solution is printed to the screen
 print("Status:", pulp.LpStatus[program.status])
 
 # Each of the variables is printed with it's resolved optimum value
 for v in program.variables():
-    print(v, "=", v.varValue)
+    print(v, "=", int(v.varValue))
 
 # The optimised objective function value is printed to the screen
-print("Total Cost of Transportation = ", pulp.value(program.objective))
-print(program)
+print("Total selling price:", pulp.value(program.objective))
+# print(program)
