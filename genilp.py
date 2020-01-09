@@ -321,29 +321,19 @@ c12_inequation = two_harbors_primaries >= constraints['c12'] * num_two_harbors_d
 program += c12_inequation
 
 # Constraints for fairness between Fanny Mae and Freddy Mac
-logging.debug('Hi')
-agency_deal_id_pairs = [(fannie_deal_id, freddie_deal_id) for fannie_deal_id in deals for freddie_deal_id in deals \
-    if pools[deals[fannie_deal_id].pool_id].agency == 'Fannie Mae' and pools[deals[freddie_deal_id].pool_id].agency == 'Freddie Mae'
-    and fannie_deal_id < freddie_pool_id]
-agency_variables = pulp.LpVariable.dicts('AgencyPair', lowBound=0, upBound=1, indexs=agency_deal_id_pairs, cat=pulp.LpInteger)
-
 fannie_deals = [deal for _, deal in deals.items() if pools[deal.pool_id].agency == 'Fannie Mae']
 freddie_deals = [deal for _, deal in deals.items() if pools[deal.pool_id].agency == 'Freddie Mac']
 logging.debug(f'Have {len(deals)} deals in total')
 logging.debug(f'Have {len(fannie_deals)} Fannie Mae deals')
 logging.debug(f'Have {len(freddie_deals)} Freddie Mac deals')
 
-logging.debug('Before constructing the left hand side of the FICO constraint')
-fannie_fico_amounts = pulp.lpSum([loans[deals[fannie_deal_id].loan_id].amount * loans[deals[freddie_deal_id].loan_id].amount * (loans[deals[fannie_deal_id].loan_id].fico - loans[deals[freddie_deal_id].loan_id].fico - constraints['c13']) * agency_variables[fannie_deal_id, freddie_deal_id] \
-    for (fannie_deal_id, freddie_deal_id) in agency_variables])
-logging.debug('After constructing the left hand side of the FICO constraint')
-fico_fairness_constraint = fannie_fico_amounts <= 0, 'FICO Fairness between Fannie Mae and Freddie Mac'
-logging.debug('Before adding FICO constraint')
-program += fico_fairness_constraint
-logging.debug('After adding FICO constraint')
+num_fannies_in_california = pulp.lpSum([loans[fannie_deal.loan_id].is_california * variables[fannie_deal.id] for fannie_deal in fannie_deals])
+num_freddies_in_california = pulp.lpSum([loans[freddie_deal.loan_id].is_california * variables[freddie_deal.id] for freddie_deal in freddie_deals])
+c15_constraint = num_fannies_in_california - num_freddies_in_california <= constraints['c15'], 'Fairness California'
+program += c15_constraint
 
 program.writeLP('MortgagesProblem.lp')
-exit()
+logging.info('Integer Linear Program written to MortgagesProblem.lp')
 
 my_solver = pulp.solvers.CPLEX_CMD(path='/opt/ibm/ILOG/CPLEX_Studio129/cplex/bin/x86-64_linux/cplex')
 program.solve(solver=my_solver)
