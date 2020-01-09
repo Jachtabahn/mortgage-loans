@@ -183,7 +183,7 @@ with open('data_processed/ChooseLoan.csv') as choose_pool_file:
 assert type(loans) == dict, 'Loans should be in a dict'
 assert type(pools) == dict, 'Pools should be in a dict'
 assert type(constraints) == dict, 'Constraints should be in a dict'
-assert type(deals) == dict, 'Deals should be in a list'
+assert type(deals) == dict, 'Deals should be in a dict'
 
 assert len(deals) > 0
 
