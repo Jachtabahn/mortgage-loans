@@ -266,8 +266,8 @@ for pool_id, pool in pools.items():
 program.writeLP("MortgagesProblem.lp")
 
 # The problem is solved using PuLP's choice of Solver
-cbc_solver = pulp.solvers.COIN_CMD(
-    path='/home/habimm/anaconda3/lib/python3.7/site-packages/pulp/solverdir/cbc/linux/64/cbc', threads=8)
+cbc_solver = pulp.solvers.CPLEX_CMD(
+    path='/opt/ibm/ILOG/CPLEX_Studio129/cplex/bin/x86-64_linux/cplex')
 program.solve(solver=cbc_solver)
 
 # The status of the solution is printed to the screen
