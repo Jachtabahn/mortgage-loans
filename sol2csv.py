@@ -1,4 +1,5 @@
 import logging
+import sys
 import csv
 import argparse
 
@@ -142,12 +143,12 @@ pools = {}
 with open('data_processed/Pools.csv') as pools_file:
     pools_reader = csv.reader(pools_file)
     next(pools_reader) # consume the column names
-    for pool_id_string, standard_string, single_string, servicer in pools_reader:
+    for pool_id_string, issuer_type, balance_type, agency, servicer in pools_reader:
 
         # parse the pool row
         pool_id = int(pool_id_string[5:])
-        is_standard = (standard_string == 'Standard Balance')
-        is_single = (single_string == 'Single-Issuer')
+        is_standard = (balance_type == 'Standard Balance')
+        is_single = (issuer_type == 'Single-Issuer')
 
         pool = Pool(pool_id, is_standard, is_single, servicer)
         pools[pool_id] = pool
@@ -164,68 +165,45 @@ with open('data_processed/Constraints.csv') as constraints_file:
         value = float(value_string)
         constraints[name] = value
 
-deals = []
-take_every_line = 1
+deals = {}
 with open('data_processed/ChooseLoan.csv') as choose_pool_file:
     pool_loans_reader = csv.reader(choose_pool_file)
     next(pool_loans_reader) # consume the column names
-    for i, (pool_id_string, loan_id_string, price_string) in enumerate(pool_loans_reader):
-        if i % take_every_line > 0: continue
+    for i, (deal_id_string, pool_id_string, loan_id_string, price_string) in enumerate(pool_loans_reader):
         pool_id = int(pool_id_string[5:])
-        buyer = Deal(len(deals), pool_id, int(loan_id_string), float(price_string))
-        deals.append(buyer)
+        deal_id = int(deal_id_string)
+        deal = Deal(deal_id, pool_id, int(loan_id_string), float(price_string))
+        deals[deal_id] = deal
 
-        assert type(buyer.id) == int
-        assert type(buyer.price) == float
-        assert type(buyer.pool_id) == int
-        assert type(buyer.loan_id) == int
+        assert type(deal.id) == int
+        assert type(deal.price) == float
+        assert type(deal.pool_id) == int
+        assert type(deal.loan_id) == int
 
 assert type(loans) == dict, 'Loans should be in a dict'
 assert type(pools) == dict, 'Pools should be in a dict'
 assert type(constraints) == dict, 'Constraints should be in a dict'
-assert type(deals) == list, 'Deals should be in a list'
-
-# remove infeasible deals, because the corresponding pool is a single issuer pool that cannot possibly reach its lower bound on the amount
-used_pool_ids = set([deal.pool_id for deal in deals])
-for pool_id in list(pools):
-    pool = pools[pool_id]
-    if pool.is_single:
-        pool_deals = [deal for deal in deals if deal.pool_id == pool_id]
-        loans_sum = sum(loans[deal.loan_id].amount for deal in pool_deals)
-        if loans_sum < constraints["c2"]:
-            logging.debug(f'Single issuer pool {pool_id} cannot possibly satisfy its constraint; removing all deals involving this pool..')
-            for pool_deal in pool_deals:
-                deals.remove(pool_deal)
-
-# remove unnecessary loans (may be needed if this is a reduced input)
-used_loan_ids = set([buyer.loan_id for buyer in deals])
-for loan_id in list(loans):
-    if loan_id not in used_loan_ids:
-        del loans[loan_id]
-
-used_pool_ids = set([buyer.pool_id for buyer in deals])
-for pool_id in list(pools):
-    if pool_id not in used_pool_ids:
-        del pools[pool_id]
+assert type(deals) == dict, 'Deals should be in a list'
 
 assert len(deals) > 0
 
-decisions = None
-with open('twoharbors_allocation') as file:
-    decisions = file.read().split()
-assert decisions is not None
+taken_deal_ids = []
+next(sys.stdin) # skip the csv heading
+for line in sys.stdin:
+    stripped = line.strip()
+    taken_deal_id = int(stripped)
+    taken_deal_ids.append(taken_deal_id)
+logging.debug(taken_deal_ids)
+logging.debug(deals[45350])
+logging.debug(f'I have sold {len(taken_deal_ids)} / {len(loans)} loans')
+assert len(taken_deal_ids) > 0
 
-deal_ids = [i for i in range(len(decisions)) if decisions[i] == '1']
-logging.debug(f'I have {len(decisions)} decisions')
-logging.debug(f'I have sold {len(deal_ids)} / {len(loans)} loans')
+pool_ids = set([deals[deal_id].pool_id for deal_id in taken_deal_ids])
+logging.debug(f'I have sold to {len(pool_ids)} / {len(pools)} different pools')
 
-pool_ids = set([deals[deal_id].pool_id for deal_id in deal_ids])
-logging.debug(f'I have sold to {len(pool_ids)} / {len(pools)} pools')
-
-with open('solution/twoharbors_allocation.csv', 'w') as file:
-    solution_csv = csv.writer(file)
-    solution_csv.writerow(['Loan', 'Pool', 'Servicer'])
-    for deal_id in deal_ids:
-        deal = deals[deal_id]
-        pool = pools[deal.pool_id]
-        solution_csv.writerow([deal.loan_id, 'pool_' + str(deal.pool_id), pool.servicer])
+solution_csv = csv.writer(sys.stdout)
+solution_csv.writerow(['Loan', 'Pool', 'Servicer'])
+for deal_id in taken_deal_ids:
+    deal = deals[deal_id]
+    pool = pools[deal.pool_id]
+    solution_csv.writerow([deal.loan_id, 'pool_' + str(deal.pool_id), pool.servicer])
