@@ -71,11 +71,12 @@ class Loan:
 
 class Pool:
 
-    def __init__(self, pool_id, is_standard, is_single, servicer):
+    def __init__(self, pool_id, is_standard, is_single, servicer, agency):
         self.id = pool_id
         self.is_standard = is_standard
         self.is_single = is_single
         self.servicer = servicer
+        self.agency = agency
 
     def __str__(self):
         return pool_string.format(self.id,
@@ -150,13 +151,14 @@ with open('data_processed/Pools.csv') as pools_file:
         is_standard = (balance_type == 'Standard Balance')
         is_single = (issuer_type == 'Single-Issuer')
 
-        pool = Pool(pool_id, is_standard, is_single, servicer)
+        pool = Pool(pool_id, is_standard, is_single, servicer, agency)
         pools[pool_id] = pool
 
         assert type(pool.id) == int
         assert type(pool.is_standard) == bool
         assert type(pool.is_single) == bool
         assert type(pool.servicer) == str
+        assert type(pool.agency) == str
 
 constraints = {}
 with open('data_processed/Constraints.csv') as constraints_file:
@@ -193,8 +195,6 @@ for line in sys.stdin:
     stripped = line.strip()
     taken_deal_id = int(stripped)
     taken_deal_ids.append(taken_deal_id)
-logging.debug(taken_deal_ids)
-logging.debug(deals[45350])
 logging.debug(f'I have sold {len(taken_deal_ids)} / {len(loans)} loans')
 assert len(taken_deal_ids) > 0
 
@@ -207,3 +207,18 @@ for deal_id in taken_deal_ids:
     deal = deals[deal_id]
     pool = pools[deal.pool_id]
     solution_csv.writerow([deal.loan_id, 'pool_' + str(deal.pool_id), pool.servicer])
+
+taken_deals = [deals[deal_id] for deal_id in taken_deal_ids]
+logging.debug(f'Number of loans sold: {len(taken_deals)}')
+
+taken_fannie_deals = [taken_fannie_deal for taken_fannie_deal in taken_deals if pools[taken_fannie_deal.pool_id].agency == 'Fannie Mae']
+taken_fannie_california_deals = [loans[taken_fannie_deal.loan_id].is_california for taken_fannie_deal in taken_fannie_deals]
+logging.debug(f'Number of loans sold to a Fannie Mae pool: {len(taken_fannie_deals)}')
+logging.debug(f'Number of California loans sold to a Fannie Mae pool: {len(taken_fannie_california_deals)}')
+logging.debug(f'Proportion of California loans sold to a Fannie Mae pool: {len(taken_fannie_california_deals) / len(taken_fannie_deals)}')
+
+taken_freddie_deals = [taken_freddie_deal for taken_freddie_deal in taken_deals if pools[taken_freddie_deal.pool_id].agency == 'Freddie Mac']
+taken_freddie_california_deals = [loans[taken_freddie_deal.loan_id].is_california for taken_freddie_deal in taken_freddie_deals]
+logging.debug(f'Number of loans sold to a Freddie Mae pool: {len(taken_freddie_deals)}')
+logging.debug(f'Number of California loans sold to a Freddie Mac pool: {len(taken_freddie_california_deals)}')
+logging.debug(f'Proportion of California loans sold to a Freddie Mac pool: {len(taken_freddie_california_deals) / len(taken_freddie_deals)}')
