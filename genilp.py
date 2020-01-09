@@ -220,7 +220,7 @@ for pool_id in list(pools):
     if pool.is_single:
         pool_deals = [deal for deal in deals if deal.pool_id == pool_id]
         loans_sum = sum(loans[deal.loan_id].amount for deal in pool_deals)
-        if loans_sum < constraints["c2"]:
+        if loans_sum < constraints['c2']:
             logging.debug(f'Single issuer pool {pool_id} cannot possibly satisfy its constraint; removing all deals involving this pool..')
             for pool_deal in pool_deals:
                 deals.remove(pool_deal)
@@ -240,13 +240,16 @@ for pool_id in list(pools):
 assert len(deals) > 0
 
 deal_ids = [deal.id for deal in deals]
-vars = pulp.LpVariable.dicts("Deal", lowBound=0, upBound=1, indexs=deal_ids, cat=pulp.LpInteger)
+vars = pulp.LpVariable.dicts('Deal', lowBound=0, upBound=1, indexs=deal_ids, cat=pulp.LpInteger)
+
+single_pool_ids = [pool_id for pool_id in pools if pools[pool_id].is_single]
+single_vars = pulp.LpVariable.dicts('SinglePool', lowBound=0, upBound=1, indexs=single_pool_ids, cat=pulp.LpInteger)
 
 # Creates the 'program' variable to contain the problem data
-program = pulp.LpProblem("MortgagesProblem", pulp.LpMaximize)
+program = pulp.LpProblem('MortgagesProblem', pulp.LpMaximize)
 
 # Creates the objective function
-program += pulp.lpSum([vars[deal.id] * deal.price for deal in deals]), "Total Selling Price"
+program += pulp.lpSum([vars[deal.id] * deal.price for deal in deals]), 'Total Selling Price'
 
 for loan_id in loans:
     loan_deals = [deal for deal in deals if deal.loan_id == loan_id]
@@ -260,80 +263,72 @@ for pool_id, pool in pools.items():
         lhs = pulp.lpSum([loans[high_balance_deal.loan_id].amount * vars[high_balance_deal.id] for high_balance_deal in high_balance_deals])
         rhs = pulp.lpSum([constraints['c1'] * loans[pool_deal.loan_id].amount * vars[pool_deal.id] for pool_deal in pool_deals])
         program += lhs <= rhs, f'Standard balance constraint for pool {pool_id}'
-
-
+    if pool.is_single:
+        pool_amounts = pulp.lpSum([loans[deal.loan_id].amount * vars[deal.id] for deal in pool_deals])
+        single_inequation = pool_amounts >= constraints['c2'] * single_vars[pool_id], f'Single issuer constraint for pool {pool_id}'
+        program +=  single_inequation
+        for deal in pool_deals:
+            single_helper_inequation = single_vars[pool_id] >= vars[deal.id], f'Pool {pool_id} is not empty if loan {deal.loan_id} is sold to it'
+            program += single_helper_inequation
 
 pingora_deals = [deal for deal in deals if pools[deal.pool_id].servicer == 'Pingora']
 sum_pingora_amounts = pulp.lpSum([loans[deal.loan_id].amount * vars[deal.id] for deal in pingora_deals])
 c3_inequation = sum_pingora_amounts <= constraints['c3'], f'Upper bound on the total amount sold to Pingora'
-logging.debug(c3_inequation)
 program += c3_inequation
 
 sum_pingora_expensive_amounts = pulp.lpSum([loans[deal.loan_id].is_expensive * loans[deal.loan_id].amount * vars[deal.id] for deal in pingora_deals])
 c4_inequation = sum_pingora_expensive_amounts <= constraints['c4'] * sum_pingora_amounts, f'Upper bound on high balance loans sold to Pingora'
-logging.debug(c4_inequation)
 program += c4_inequation
 
 sum_pingora_fico_amounts = pulp.lpSum([loans[deal.loan_id].fico * loans[deal.loan_id].amount * vars[deal.id] for deal in pingora_deals])
 c5_inequation = sum_pingora_fico_amounts >= constraints['c5'] * sum_pingora_amounts, f'Lower bound on the amount-relative average FICO score of loans sold to Pingora'
-logging.debug(c5_inequation)
 program += c5_inequation
 
 sum_pingora_dti_amounts = pulp.lpSum([loans[deal.loan_id].dti * loans[deal.loan_id].amount * vars[deal.id] for deal in pingora_deals])
 c6_inequation = sum_pingora_dti_amounts <= constraints['c6'] * sum_pingora_amounts, f'Upper bound on the amount-relative average DTI of loans sold to Pingora'
-logging.debug(c6_inequation)
 program += c6_inequation
 
 sum_pingora_californias = pulp.lpSum([loans[deal.loan_id].is_california * vars[deal.id] for deal in pingora_deals])
 num_pingora_deals = pulp.lpSum([vars[deal.id] for deal in pingora_deals])
 c7_inequation = sum_pingora_californias <= constraints['c7'] * num_pingora_deals, f'Upper bound on the number of loans issued to buy a residence in California and sold to Pingora'
-logging.debug(c7_inequation)
 program += c7_inequation
 
 
 two_harbors_deals = [deal for deal in deals if pools[deal.pool_id].servicer == 'Two Harbors']
 two_harbors_amounts = pulp.lpSum([loans[deal.loan_id].amount * vars[deal.id] for deal in two_harbors_deals])
 c8_inequation = two_harbors_amounts >= constraints['c8'], 'Lower bound on the total amount sold to Two Harbors'
-logging.debug(c8_inequation)
 program += c8_inequation
 
 two_harbors_fico_amounts = pulp.lpSum([loans[deal.loan_id].fico * loans[deal.loan_id].amount * vars[deal.id] for deal in two_harbors_deals])
 c9_inequation = two_harbors_fico_amounts >= constraints['c9'] * two_harbors_amounts, 'Lower bound on the amount-relative average FICO score of loans sold to Two Harbors'
-logging.debug(c9_inequation)
 program += c9_inequation
 
 two_harbors_dti_amounts = pulp.lpSum([loans[deal.loan_id].dti * loans[deal.loan_id].amount * vars[deal.id] for deal in two_harbors_deals])
 c10_inequation = two_harbors_dti_amounts <= constraints['c10'] * two_harbors_amounts, 'Upper bound on the amount-relative average DTI of loans sold to Two Harbors'
-logging.debug(c10_inequation)
 program += c10_inequation
 
 num_two_harbors_deals = pulp.lpSum([vars[deal.id] for deal in two_harbors_deals])
 two_harbors_cashouts = pulp.lpSum([loans[deal.loan_id].is_cashout * vars[deal.id] for deal in two_harbors_deals])
 c11_inequation = two_harbors_cashouts <= constraints['c11'] * num_two_harbors_deals, 'Upper bound on the number of loans issued in cash and sold to Two Harbors'
-logging.debug(c11_inequation)
 program += c11_inequation
 
 two_harbors_primaries = pulp.lpSum([loans[deal.loan_id].is_primary * vars[deal.id] for deal in two_harbors_deals])
 c12_inequation = two_harbors_primaries >= constraints['c12'] * num_two_harbors_deals, 'Upper bound on the number of loans issued to finance a primary residence and sold to Two Harbors'
-logging.debug(c12_inequation)
 program += c12_inequation
 
-# The problem data is written to an .lp file
-program.writeLP("MortgagesProblem.lp")
+program.writeLP('MortgagesProblem.lp')
 
-# The problem is solved using PuLP's choice of Solver
-cbc_solver = pulp.solvers.CPLEX_CMD(
-    path='/opt/ibm/ILOG/CPLEX_Studio129/cplex/bin/x86-64_linux/cplex')
-program.solve(solver=cbc_solver)
+my_solver = pulp.solvers.CPLEX_CMD(path='/opt/ibm/ILOG/CPLEX_Studio129/cplex/bin/x86-64_linux/cplex')
+program.solve(solver=my_solver)
+logging.debug(f'Solver status: {pulp.LpStatus[program.status]}')
+logging.debug(f'Objective: {pulp.value(program.objective)}')
+with open('MortgagesProblem.sol', 'w') as solution_file:
+    csvwriter = csv.writer(solution_file)
+    csvwriter.writerow(['DealId', 'Take'])
+    for deal_id, variable in vars.items():
+        if variable.varValue is None: continue
+        csvwriter.writerow([deal_id, int(variable.varValue)])
 
-# The status of the solution is printed to the screen
-print("Status:", pulp.LpStatus[program.status])
-
-# Each of the variables is printed with it's resolved optimum value
-for v in program.variables():
-    if v.varValue is None: continue
-    print(v, "=", int(v.varValue))
-
-# The optimised objective function value is printed to the screen
-print("Total selling price:", pulp.value(program.objective))
-# print(program)
+    for pool_id, variable in single_vars.items():
+        if variable.varValue is None: continue
+        csvwriter.writerow([f'pool_{pool_id}', int(variable.varValue)])
