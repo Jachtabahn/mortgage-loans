@@ -327,11 +327,6 @@ logging.debug(f'Have {len(deals)} deals in total')
 logging.debug(f'Have {len(fannie_deals)} Fannie Mae deals')
 logging.debug(f'Have {len(freddie_deals)} Freddie Mac deals')
 
-num_fannies_in_california = pulp.lpSum([loans[fannie_deal.loan_id].is_california * variables[fannie_deal.id] for fannie_deal in fannie_deals])
-num_freddies_in_california = pulp.lpSum([loans[freddie_deal.loan_id].is_california * variables[freddie_deal.id] for freddie_deal in freddie_deals])
-c15_constraint = num_fannies_in_california - num_freddies_in_california <= constraints['c15'], 'Fairness California'
-program += c15_constraint
-
 program.writeLP('MortgagesProblem.lp')
 logging.info('Integer Linear Program written to MortgagesProblem.lp')
 
