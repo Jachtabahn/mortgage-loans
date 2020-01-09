@@ -188,14 +188,15 @@ with open('data_processed/Constraints.csv') as constraints_file:
         value = float(value_string)
         constraints[name] = value if int(value) != value else int(value)
 
-deals = []
+deals = {}
 with open('data_processed/ChooseLoan.csv') as choose_pool_file:
     pool_loans_reader = csv.reader(choose_pool_file)
     next(pool_loans_reader) # consume the column names
-    for i, (pool_id_string, loan_id_string, price_string) in enumerate(pool_loans_reader):
+    for i, (deal_id_string, pool_id_string, loan_id_string, price_string) in enumerate(pool_loans_reader):
         pool_id = int(pool_id_string[5:])
-        deal = Deal(2 + len(deals), pool_id, int(loan_id_string), float(price_string))
-        deals.append(deal)
+        deal_id = int(deal_id_string)
+        deal = Deal(deal_id, pool_id, int(loan_id_string), float(price_string))
+        deals[deal_id] = deal
 
         assert type(deal.id) == int
         assert type(deal.price) == float
@@ -205,41 +206,41 @@ with open('data_processed/ChooseLoan.csv') as choose_pool_file:
 assert type(loans) == dict, 'Loans should be in a dict'
 assert type(pools) == dict, 'Pools should be in a dict'
 assert type(constraints) == dict, 'Constraints should be in a dict'
-assert type(deals) == list, 'Deals should be in a list'
+assert type(deals) == dict, 'Deals should be in a dict'
 
 # remove a couple deals to make the problem easier
 take_every_deal = 1
-for i in range(len(deals))[::-1]:
-    if i % take_every_deal > 0:
-        del deals[i]
+for deal_id in deals:
+    if deal_id % take_every_deal > 0:
+        del deals[deal_id]
 
 # remove infeasible deals, because the corresponding pool is a single issuer pool that cannot possibly reach its lower bound on the amount
-used_pool_ids = set([deal.pool_id for deal in deals])
+used_pool_ids = set([deal.pool_id for _, deal in deals.items()])
 for pool_id in list(pools):
     pool = pools[pool_id]
     if pool.is_single:
-        pool_deals = [deal for deal in deals if deal.pool_id == pool_id]
+        pool_deals = [deal for _, deal in deals.items() if deal.pool_id == pool_id]
         loans_sum = sum(loans[deal.loan_id].amount for deal in pool_deals)
         if loans_sum < constraints['c2']:
             logging.debug(f'Single issuer pool {pool_id} cannot possibly satisfy its constraint; removing all deals involving this pool..')
             for pool_deal in pool_deals:
-                deals.remove(pool_deal)
+                del deals[pool_deal.id]
 
 # remove unnecessary loans (may be needed if this is a reduced input)
-used_loan_ids = set([deal.loan_id for deal in deals])
+used_loan_ids = set([deal.loan_id for _, deal in deals.items()])
 for loan_id in list(loans):
     if loan_id not in used_loan_ids:
         del loans[loan_id]
 
 # remove unnecessary pools (may be needed if this is a reduced input or some single issuer pools have been removed)
-used_pool_ids = set([deal.pool_id for deal in deals])
+used_pool_ids = set([deal.pool_id for _, deal in deals.items()])
 for pool_id in list(pools):
     if pool_id not in used_pool_ids:
         del pools[pool_id]
 
 assert len(deals) > 0
 
-deal_ids = [deal.id for deal in deals]
+deal_ids = [deal.id for _, deal in deals.items()]
 vars = pulp.LpVariable.dicts('Deal', lowBound=0, upBound=1, indexs=deal_ids, cat=pulp.LpInteger)
 
 single_pool_ids = [pool_id for pool_id in pools if pools[pool_id].is_single]
@@ -248,18 +249,18 @@ single_vars = pulp.LpVariable.dicts('SinglePool', lowBound=0, upBound=1, indexs=
 program = pulp.LpProblem('MortgagesProblem', pulp.LpMaximize)
 
 # Objective function
-program += pulp.lpSum([vars[deal.id] * deal.price for deal in deals]), 'Total Selling Price'
+program += pulp.lpSum([vars[deal.id] * deal.price for _, deal in deals.items()]), 'Total Selling Price'
 
 # For each loan having at least two pools: One mutex constraint
 for loan_id in loans:
-    loan_deals = [deal for deal in deals if deal.loan_id == loan_id]
+    loan_deals = [deal for _, deal in deals.items() if deal.loan_id == loan_id]
     if len(loan_deals) >= 2:
         program += pulp.lpSum([vars[deal.id] for deal in loan_deals]) <= 1, f'Mutex constraint for loan {loan_id}'
 
 # For each pool having at least one high balance loan: One standard balance constraint
 # For each single issuer pool: One single issuer constraint plus as many helper constraints as this pool is allowed loans
 for pool_id, pool in pools.items():
-    pool_deals = [deal for deal in deals if deal.pool_id == pool_id]
+    pool_deals = [deal for _, deal in deals.items() if deal.pool_id == pool_id]
     high_balance_deals = [pool_deal for pool_deal in pool_deals if loans[pool_deal.loan_id].is_expensive]
     if pool.is_standard and high_balance_deals:
         lhs = pulp.lpSum([loans[high_balance_deal.loan_id].amount * vars[high_balance_deal.id] for high_balance_deal in high_balance_deals])
@@ -274,7 +275,7 @@ for pool_id, pool in pools.items():
             program += single_helper_inequation
 
 # 5 Pingora constraints
-pingora_deals = [deal for deal in deals if pools[deal.pool_id].servicer == 'Pingora']
+pingora_deals = [deal for _, deal in deals.items() if pools[deal.pool_id].servicer == 'Pingora']
 sum_pingora_amounts = pulp.lpSum([loans[deal.loan_id].amount * vars[deal.id] for deal in pingora_deals])
 c3_inequation = sum_pingora_amounts <= constraints['c3'], f'Upper bound on the total amount sold to Pingora'
 program += c3_inequation
@@ -297,7 +298,7 @@ c7_inequation = sum_pingora_californias <= constraints['c7'] * num_pingora_deals
 program += c7_inequation
 
 # 5 Two Harbors constraints
-two_harbors_deals = [deal for deal in deals if pools[deal.pool_id].servicer == 'Two Harbors']
+two_harbors_deals = [deal for _, deal in deals.items() if pools[deal.pool_id].servicer == 'Two Harbors']
 two_harbors_amounts = pulp.lpSum([loans[deal.loan_id].amount * vars[deal.id] for deal in two_harbors_deals])
 c8_inequation = two_harbors_amounts >= constraints['c8'], 'Lower bound on the total amount sold to Two Harbors'
 program += c8_inequation
@@ -318,9 +319,6 @@ program += c11_inequation
 two_harbors_primaries = pulp.lpSum([loans[deal.loan_id].is_primary * vars[deal.id] for deal in two_harbors_deals])
 c12_inequation = two_harbors_primaries >= constraints['c12'] * num_two_harbors_deals, 'Upper bound on the number of loans issued to finance a primary residence and sold to Two Harbors'
 program += c12_inequation
-
-# Constraints for fairness between Fanny Mae and Freddy Mac
-
 
 program.writeLP('MortgagesProblem.lp')
 
