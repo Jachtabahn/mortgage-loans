@@ -1,3 +1,5 @@
+import logging
+import argparse
 import csv, sys, traceback
 import collections
 from data import *
@@ -197,35 +199,32 @@ def evaluate(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE, SOLUTION_FILE)
 
 
 if __name__ == '__main__':
-    if len(sys.argv) == 3:
-        DATA_FOLDER = sys.argv[1]
-        SOLUTION_FOLDER = sys.argv[2]
-    else:
-        DATA_FOLDER = './data'
-        SOLUTION_FOLDER = './solution'
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--solution-path', '-s', type=str, required=True)
+    parser.add_argument('--constraints-path', '-c', type=str, required=True)
+    parser.add_argument('--verbose', '-v', action='count')
+    args = parser.parse_args()
 
-    COMBO_FILE = DATA_FOLDER + '/EligiblePricingCombinations.csv'
-    LOAN_FILE = DATA_FOLDER + '/LoanData.csv'
-    OPTION_FILE = DATA_FOLDER + '/PoolOptionData.csv'
-    CONSTARINT_FILES = [DATA_FOLDER + '/Constraints.csv']
-    SOLUTION_FILES = [SOLUTION_FOLDER + '/MortgagesSolution.csv']
+    log_levels = {
+        None: logging.WARNING,
+        1: logging.INFO,
+        2: logging.DEBUG
+    }
+    if args.verbose is not None and args.verbose >= len(log_levels):
+        args.verbose = len(log_levels)-1
+    logging.basicConfig(format='%(message)s', level=log_levels[args.verbose])
 
-    scores = []
-    for CONSTRAINT_FILE, SOLUTION_FILE in zip(CONSTARINT_FILES, SOLUTION_FILES):
-        score = 0
-        try:
-            score = evaluate(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE, SOLUTION_FILE)
-        except AssertionError as e:
-            _, _, tb = sys.exc_info()
-            traceback.print_tb(tb) # Fixed format
-            print('Error Message:', e)
-        except FileNotFoundError as e:
-            _, _, tb = sys.exc_info()
-            traceback.print_tb(tb) # Fixed format
-            print('Error Message:', e)
-        scores.append(score)
-
-    final_score = sum(scores) / len(scores)
-
-    print(f'Final Score = {final_score}')
-
+    try:
+        evaluate('data/LoanData.csv',
+            'data/PoolOptionData.csv',
+            'data/EligiblePricingCombinations.csv',
+            args.constraints_path,
+            args.solution_path)
+    except AssertionError as e:
+        _, _, tb = sys.exc_info()
+        traceback.print_tb(tb) # Fixed format
+        print('Error Message:', e)
+    except FileNotFoundError as e:
+        _, _, tb = sys.exc_info()
+        traceback.print_tb(tb) # Fixed format
+        print('Error Message:', e)
