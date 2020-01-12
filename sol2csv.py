@@ -52,7 +52,8 @@ buyer_string = '''Deal {}
 
 class Loan:
 
-    def __init__(self, loan_id, amount, fico, dti, is_expensive, is_california, is_cashout, is_primary):
+    def __init__(self, loan_id, amount, fico, dti, is_expensive, is_california, is_cashout, is_primary,
+        occupancy, location, property_type, purpose):
         self.id = loan_id
         if int(amount) == amount:
             self.amount = int(amount)
@@ -64,6 +65,11 @@ class Loan:
         self.is_california = is_california
         self.is_cashout = is_cashout
         self.is_primary = is_primary
+
+        self.occupancy = occupancy
+        self.location = location
+        self.property_type = property_type
+        self.purpose = purpose
 
     def __str__(self):
         return loan_string.format(self.id, self.amount, self.fico, self.dti,
@@ -110,12 +116,13 @@ if args.verbose is not None and args.verbose >= len(log_levels):
 logging.basicConfig(format='%(message)s', level=log_levels[args.verbose])
 
 loans = {}
-with open('data_processed/Loans.csv') as loans_file:
+with open('data_processed/LoansFull.csv') as loans_file:
     loans_reader = csv.reader(loans_file)
     next(loans_reader) # consume the column names
     for loan_id_string, amount_string, fico_string, dti_string,\
             is_expensive_string, is_california_string,\
-            is_cashout_string, is_primary_string in loans_reader:
+            is_cashout_string, is_primary_string,\
+            occupancy, location, property_type, purpose in loans_reader:
 
         # parse the loan row
         loan_id = int(loan_id_string)
@@ -128,7 +135,8 @@ with open('data_processed/Loans.csv') as loans_file:
         is_primary = int(is_primary_string == '1')
 
         loan = Loan(loan_id, amount, fico, dti,
-            is_expensive, is_california, is_cashout, is_primary)
+            is_expensive, is_california, is_cashout, is_primary,
+            occupancy, location, property_type, purpose)
         loans[loan_id] = loan
 
         assert type(loan.id) == int
@@ -139,6 +147,10 @@ with open('data_processed/Loans.csv') as loans_file:
         assert type(loan.is_california) == int, 'is_california should be an integer for easy multiplication and addition'
         assert type(loan.is_cashout) == int, 'is_cashout should be an integer for easy multiplication and addition'
         assert type(loan.is_primary) == int, 'is_primary should be an integer for easy multiplication and addition'
+        assert type(loan.occupancy) == str
+        assert type(loan.location) == str
+        assert type(loan.property_type) == str
+        assert type(loan.purpose) == str
 
 pools = {}
 with open('data_processed/Pools.csv') as pools_file:
@@ -195,7 +207,7 @@ for line in sys.stdin:
     stripped = line.strip()
     taken_deal_id = int(stripped)
     taken_deal_ids.append(taken_deal_id)
-logging.debug(f'I have sold {len(taken_deal_ids)} / {len(loans)} loans')
+logging.debug('I have sold {:,} / {:,} loans'.format(len(taken_deal_ids), len(loans)))
 assert len(taken_deal_ids) > 0
 
 pool_ids = set([deals[deal_id].pool_id for deal_id in taken_deal_ids])
@@ -209,16 +221,62 @@ for deal_id in taken_deal_ids:
     solution_csv.writerow([deal.loan_id, 'pool_' + str(deal.pool_id), pool.servicer])
 
 taken_deals = [deals[deal_id] for deal_id in taken_deal_ids]
-logging.debug(f'Number of loans sold: {len(taken_deals)}')
 
 taken_fannie_deals = [taken_fannie_deal for taken_fannie_deal in taken_deals if pools[taken_fannie_deal.pool_id].agency == 'Fannie Mae']
-taken_fannie_california_deals = [loans[taken_fannie_deal.loan_id].is_california for taken_fannie_deal in taken_fannie_deals]
-logging.debug(f'Number of loans sold to a Fannie Mae pool: {len(taken_fannie_deals)}')
-logging.debug(f'Number of California loans sold to a Fannie Mae pool: {len(taken_fannie_california_deals)}')
-logging.debug(f'Proportion of California loans sold to a Fannie Mae pool: {len(taken_fannie_california_deals) / len(taken_fannie_deals)}')
+fannie_total_amount = sum(loans[deal.loan_id].amount for deal in taken_fannie_deals)
+fannie_loans_weights = [(loans[deal.loan_id], loans[deal.loan_id].amount / fannie_total_amount) for deal in taken_fannie_deals]
 
 taken_freddie_deals = [taken_freddie_deal for taken_freddie_deal in taken_deals if pools[taken_freddie_deal.pool_id].agency == 'Freddie Mac']
+freddie_total_amount = sum(loans[deal.loan_id].amount for deal in taken_freddie_deals)
+freddie_loans_weights = [(loans[deal.loan_id], loans[deal.loan_id].amount / freddie_total_amount) for deal in taken_freddie_deals]
+logging.debug('----------------------------------------------------------------------------------------------------------------------')
+logging.debug('Total number of deals: {:,}'.format(len(deals)))
+logging.debug('Number of loans sold to a Fannie Mae pool: {:,}'.format(len(taken_fannie_deals)))
+logging.debug('Number of loans sold to a Freddie Mac pool: {:,}'.format(len(taken_freddie_deals)))
+logging.debug('Total amount sold to Fannie Mae pools: {:,}'.format(fannie_total_amount))
+logging.debug('Total amount sold to Freddie Mac pools: {:,}'.format(freddie_total_amount))
+
+
+weighted_ficos = [loan.fico * weight for loan, weight in fannie_loans_weights]
+logging.debug('')
+logging.debug('Constraint 13')
+logging.debug(f'What is the amount-relative average FICO score among the loans sold to a Fannie Mae pool: {sum(weighted_ficos)}')
+weighted_ficos = [loan.fico * weight for loan, weight in freddie_loans_weights]
+logging.debug(f'What is the amount-relative average FICO score among the loans sold to a Freddie Mac pool: {sum(weighted_ficos)}')
+
+weighted_dtis = [loan.dti * weight for loan, weight in fannie_loans_weights]
+logging.debug('')
+logging.debug('Constraint 14')
+logging.debug(f'What is the amount-relative average debt-to-income ratio among the loans sold to a Fannie Mae pool: {sum(weighted_dtis)}')
+weighted_dtis = [loan.dti * weight for loan, weight in freddie_loans_weights]
+logging.debug(f'What is the amount-relative average debt-to-income ratio among the loans sold to a Freddie Mac pool: {sum(weighted_dtis)}')
+
+taken_fannie_california_deals = [loans[taken_fannie_deal.loan_id].is_california for taken_fannie_deal in taken_fannie_deals]
 taken_freddie_california_deals = [loans[taken_freddie_deal.loan_id].is_california for taken_freddie_deal in taken_freddie_deals]
-logging.debug(f'Number of loans sold to a Freddie Mae pool: {len(taken_freddie_deals)}')
-logging.debug(f'Number of California loans sold to a Freddie Mac pool: {len(taken_freddie_california_deals)}')
-logging.debug(f'Proportion of California loans sold to a Freddie Mac pool: {len(taken_freddie_california_deals) / len(taken_freddie_deals)}')
+logging.debug('')
+logging.debug('Constraint 15')
+c15_fannie = sum(taken_fannie_california_deals) / len(taken_fannie_deals)
+c15_freddie = sum(taken_freddie_california_deals) / len(taken_freddie_deals)
+logging.debug(f'For each loan, that is sold to a Fannie Mae pool, how many loans are also bound to a residence in California: {c15_fannie}')
+logging.debug(f'For each loan, that is sold to a Freddie Mac pool, how many loans are also bound to a residence in California: {c15_freddie}')
+c15_distance = abs(c15_fannie - c15_freddie)
+logging.debug(f'Distance: {c15_distance}')
+
+
+taken_fannie_primary_deals = [loans[taken_fannie_deal.loan_id].is_primary for taken_fannie_deal in taken_fannie_deals]
+taken_freddie_primary_deals = [loans[taken_freddie_deal.loan_id].is_primary for taken_freddie_deal in taken_freddie_deals]
+logging.debug('')
+logging.debug('Constraint 16')
+logging.debug(f'For each loan, that is sold to a Fannie Mae pool, how many loans are also bound to a primary residence: {sum(taken_fannie_primary_deals) / len(taken_fannie_deals)}')
+logging.debug(f'For each loan, that is sold to a Freddie Mac pool, how many loans are also bound to a primary residence: {sum(taken_freddie_primary_deals) / len(taken_freddie_deals)}')
+
+taken_fannie_cashout_deals = [loans[taken_fannie_deal.loan_id].is_cashout for taken_fannie_deal in taken_fannie_deals]
+taken_freddie_cashout_deals = [loans[taken_freddie_deal.loan_id].is_cashout for taken_freddie_deal in taken_freddie_deals]
+logging.debug('')
+logging.debug('Constraint 17')
+c17_fannie = sum(taken_fannie_cashout_deals) / len(taken_fannie_deals)
+c17_freddie = sum(taken_freddie_cashout_deals) / len(taken_freddie_deals)
+logging.debug(f'For each loan, that is sold to a Fannie Mae pool, how many loans have also been given out in cash: {c17_fannie}')
+logging.debug(f'For each loan, that is sold to a Freddie Mac pool, how many loans have also been given out in cash: {c17_freddie}')
+c17_distance = abs(c17_fannie - c17_freddie)
+logging.debug(f'Distance: {c17_distance}')
