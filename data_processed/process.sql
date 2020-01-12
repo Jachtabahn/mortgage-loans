@@ -23,3 +23,12 @@ SELECT PoolOptonj AS Pool,
 	PriceP_ijk / 100 * Amount AS Price
 	FROM EligiblePricingCombinations INNER JOIN LoanData
 	ON EligiblePricingCombinations.LoanID == LoanData.LoanID ORDER BY Pool;
+
+
+SELECT DISTINCT PropOcc FROM LoanData;
+
+SELECT DISTINCT PropState FROM LoanData;
+
+SELECT DISTINCT PropType FROM LoanData;
+
+SELECT DISTINCT Purpose FROM LoanData;
