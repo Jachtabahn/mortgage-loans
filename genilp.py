@@ -1,4 +1,5 @@
 import pulp
+import json
 import logging
 import csv
 import argparse
@@ -332,7 +333,7 @@ two_harbors_primaries = pulp.lpSum([loans[deal.loan_id].is_primary * variables[d
 c12_inequation = two_harbors_primaries >= constraints['c12'] * num_two_harbors_deals, 'Upper bound on the number of loans issued to finance a primary residence and sold to Two Harbors'
 program += c12_inequation
 
-# Constraints for fairness between Fanny Mae and Freddy Mac
+# Special constraints for fairness between Fanny Mae and Freddy Mac
 fannie_deals = [deal for _, deal in deals.items() if pools[deal.pool_id].agency == 'Fannie Mae']
 freddie_deals = [deal for _, deal in deals.items() if pools[deal.pool_id].agency == 'Freddie Mac']
 logging.debug(f'Have {len(deals)} deals in total')
@@ -340,14 +341,8 @@ logging.debug(f'Have {len(fannie_deals)} Fannie Mae deals')
 logging.debug(f'Have {len(freddie_deals)} Freddie Mac deals')
 
 
-start = {
-    'c15': {
-        'CA': 0.197556
-    },
-    'c17': {
-        'Rate/Term': 0.4226677
-    }
-}
+with open('start.json') as start_file:
+    start = json.load(start_file)
 
 sum_fannies = pulp.lpSum([variables[deal.id] for deal in fannie_deals])
 sum_freddies = pulp.lpSum([variables[deal.id] for deal in freddie_deals])
@@ -365,18 +360,33 @@ program += upper_california_fannie
 program += lower_california_freddie
 program += upper_california_freddie
 
-sum_rateterm_fannies = pulp.lpSum([variables[deal.id] for deal in fannie_deals if loans[deal.loan_id].purpose == 'Rate/Term'])
-sum_rateterm_freddies = pulp.lpSum([variables[deal.id] for deal in freddie_deals if loans[deal.loan_id].purpose == 'Rate/Term'])
+all_purposes = set([loan.purpose for _, loan in loans.items()])
+for i, purpose in enumerate(all_purposes):
+    sum_purpose_fannies = pulp.lpSum([variables[deal.id] for deal in fannie_deals if loans[deal.loan_id].purpose == purpose])
+    sum_purpose_freddies = pulp.lpSum([variables[deal.id] for deal in freddie_deals if loans[deal.loan_id].purpose == purpose])
+    lower_purpose_fannie = start['c17'][purpose] * sum_fannies <= sum_purpose_fannies, f'Lower bound on number of Fannie Mae loans given out as a {purpose.replace("/"," per ")}'
+    upper_purpose_fannie = sum_purpose_fannies <= (start['c17'][purpose] + constraints['c17']) * sum_fannies, f'Upper bound on number of Fannie Mae loans given out as a {purpose.replace("/"," per ")}'
+    lower_purpose_freddie = start['c17'][purpose] * sum_freddies <= sum_purpose_freddies, f'Lower bound on number of Freddie Mac loans given out as a {purpose.replace("/"," per ")}'
+    upper_purpose_freddie = sum_purpose_freddies <= (start['c17'][purpose] + constraints['c17']) * sum_freddies, f'Upper bound on number of Freddie Mac loans given out as a {purpose.replace("/"," per ")}'
 
-lower_fannie = start['c15']['CA'] * sum_fannies <= sum_califonia_fannies, 'Lower bound on number of Fannie Mae loans bound to a residence in CA'
-upper_fannie = sum_califonia_fannies <= (start['c15']['CA'] + constraints['c15']) * sum_fannies, 'Upper bound on number of Fannie Mae loans bound to a residence in CA'
-lower_freddie = start['c15']['CA'] * sum_freddies <= sum_califonia_freddies, 'Lower bound on number of Freddie Mac loans bound to a residence in CA'
-upper_freddie = sum_califonia_freddies <= (start['c15']['CA'] + constraints['c15']) * sum_freddies, 'Upper bound on number of Freddie Mac loans bound to a residence in CA'
+    program += lower_purpose_fannie
+    program += upper_purpose_fannie
+    program += lower_purpose_freddie
+    program += upper_purpose_freddie
 
-# program += lower_fannie
-# program += upper_fannie
-# program += lower_freddie
-# program += upper_freddie
+all_types = set([loan.property_type for _, loan in loans.items()])
+for i, property_type in enumerate(all_types):
+    sum_property_type_fannies = pulp.lpSum([variables[deal.id] for deal in fannie_deals if loans[deal.loan_id].property_type == property_type])
+    sum_property_type_freddies = pulp.lpSum([variables[deal.id] for deal in freddie_deals if loans[deal.loan_id].property_type == property_type])
+    lower_property_type_fannie = start['c18'][property_type] * sum_fannies <= sum_property_type_fannies, f'Lower bound on number of Fannie Mae loans bound to a residence of type {property_type.replace("/"," per ")}'
+    upper_property_type_fannie = sum_property_type_fannies <= (start['c18'][property_type] + constraints['c18']) * sum_fannies, f'Upper bound on number of Fannie Mae loans bound to a residence of type {property_type.replace("/"," per ")}'
+    lower_property_type_freddie = start['c18'][property_type] * sum_freddies <= sum_property_type_freddies, f'Lower bound on number of Freddie Mac loans bound to a residence of type {property_type.replace("/"," per ")}'
+    upper_property_type_freddie = sum_property_type_freddies <= (start['c18'][property_type] + constraints['c18']) * sum_freddies, f'Upper bound on number of Freddie Mac loans bound to a residence of type {property_type.replace("/"," per ")}'
+
+    program += lower_property_type_fannie
+    program += upper_property_type_fannie
+    program += lower_property_type_freddie
+    program += upper_property_type_freddie
 
 program.writeLP('MortgagesProblem.lp')
 logging.info('Integer Linear Program written to MortgagesProblem.lp')
