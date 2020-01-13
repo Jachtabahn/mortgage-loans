@@ -1,4 +1,5 @@
 import logging
+import json
 import sys
 import csv
 import argparse
@@ -236,6 +237,8 @@ logging.debug('Number of loans sold to a Freddie Mac pool: {:,}'.format(len(take
 logging.debug('Total amount sold to Fannie Mae pools: {:,}'.format(fannie_total_amount))
 logging.debug('Total amount sold to Freddie Mac pools: {:,}'.format(freddie_total_amount))
 
+start = {}
+
 logging.debug('-----------------------------------------------')
 weighted_fannie_ficos = [loan.fico * weight for loan, weight in fannie_loans_weights]
 logging.debug('')
@@ -246,6 +249,7 @@ logging.debug(f'What is the amount-relative average FICO score among the loans s
 c13_distance = abs(sum(weighted_fannie_ficos) - sum(weighted_freddie_ficos))
 logging.debug(f'Actual distance: {c13_distance}')
 logging.debug(f'Allowed distance: {constraints["c13"]}')
+start['c13'] = min(sum(weighted_fannie_ficos), sum(weighted_freddie_ficos))
 logging.debug('-----------------------------------------------')
 
 weighted_fannie_dtis = [loan.dti * weight for loan, weight in fannie_loans_weights]
@@ -257,9 +261,11 @@ logging.debug(f'What is the amount-relative average debt-to-income ratio among t
 c14_distance = abs(sum(weighted_fannie_dtis) - sum(weighted_freddie_dtis))
 logging.debug(f'Actual distance: {c14_distance}')
 logging.debug(f'Allowed distance: {constraints["c14"]}')
+start['c14'] = min(sum(weighted_fannie_dtis), sum(weighted_freddie_dtis))
 logging.debug('-----------------------------------------------')
 
 all_locations = set([loan.location for _, loan in loans.items()])
+start['c15'] = {}
 for i, location in enumerate(all_locations):
     taken_fannie_california_deals = [int(loans[taken_fannie_deal.loan_id].location == location) for taken_fannie_deal in taken_fannie_deals]
     taken_freddie_california_deals = [int(loans[taken_freddie_deal.loan_id].location == location) for taken_freddie_deal in taken_freddie_deals]
@@ -272,9 +278,11 @@ for i, location in enumerate(all_locations):
     c15_distance = abs(c15_fannie - c15_freddie)
     logging.debug(f'Actual distance: {c15_distance}')
     logging.debug(f'Allowed distance: {constraints["c15"]}')
+    start['c15'][location] = min(c15_fannie, c15_freddie)
 logging.debug('-----------------------------------------------')
 
 all_occupancies = set([loan.occupancy for _, loan in loans.items()])
+start['c16'] = {}
 for i, occupancy in enumerate(all_occupancies):
     taken_fannie_primary_deals = [loans[taken_fannie_deal.loan_id].occupancy == occupancy for taken_fannie_deal in taken_fannie_deals]
     taken_freddie_primary_deals = [loans[taken_freddie_deal.loan_id].occupancy == occupancy for taken_freddie_deal in taken_freddie_deals]
@@ -287,9 +295,11 @@ for i, occupancy in enumerate(all_occupancies):
     c16_distance = abs(c16_fannie - c16_freddie)
     logging.debug(f'Actual distance: {c16_distance}')
     logging.debug(f'Allowed distance: {constraints["c16"]}')
+    start['c16'][occupancy] = min(c16_fannie, c16_freddie)
 logging.debug('-----------------------------------------------')
 
 all_purposes = set([loan.purpose for _, loan in loans.items()])
+start['c17'] = {}
 for i, purpose in enumerate(all_purposes):
     taken_fannie_cashout_deals = [loans[taken_fannie_deal.loan_id].purpose == purpose for taken_fannie_deal in taken_fannie_deals]
     taken_freddie_cashout_deals = [loans[taken_freddie_deal.loan_id].purpose == purpose for taken_freddie_deal in taken_freddie_deals]
@@ -302,9 +312,11 @@ for i, purpose in enumerate(all_purposes):
     c17_distance = abs(c17_fannie - c17_freddie)
     logging.debug(f'Actual distance: {c17_distance}')
     logging.debug(f'Allowed distance: {constraints["c17"]}')
+    start['c17'][purpose] = min(c17_fannie, c17_freddie)
 logging.debug('-----------------------------------------------')
 
 all_types = set([loan.property_type for _, loan in loans.items()])
+start['c18'] = {}
 for i, property_type in enumerate(all_types):
     taken_fannie_cashout_deals = [loans[taken_fannie_deal.loan_id].property_type == property_type for taken_fannie_deal in taken_fannie_deals]
     taken_freddie_cashout_deals = [loans[taken_freddie_deal.loan_id].property_type == property_type for taken_freddie_deal in taken_freddie_deals]
@@ -317,3 +329,7 @@ for i, property_type in enumerate(all_types):
     c18_distance = abs(c18_fannie - c18_freddie)
     logging.debug(f'Actual distance: {c18_distance}')
     logging.debug(f'Allowed distance: {constraints["c18"]}')
+    start['c18'][property_type] = min(c18_fannie, c18_freddie)
+
+with open('start.json', 'w') as start_file:
+    json.dump(start, start_file, indent=4)
