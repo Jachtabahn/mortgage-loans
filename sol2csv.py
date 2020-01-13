@@ -333,3 +333,17 @@ for i, property_type in enumerate(all_types):
 
 with open('start.json', 'w') as start_file:
     json.dump(start, start_file, indent=4)
+
+logging.debug('-----------------------------------------')
+pool_id = 249
+pool_deals = [deal for deal in taken_deals if deal.pool_id == pool_id]
+deal_amounts = [loans[deal.loan_id].amount for deal in pool_deals]
+total_amount = sum(deal_amounts)
+deal_high_balance_amounts = [loans[deal.loan_id].is_expensive * loans[deal.loan_id].amount / total_amount for deal in pool_deals]
+deal_average_high_balance = sum(deal_high_balance_amounts)
+
+logging.debug([deal.id for deal in pool_deals])
+logging.debug(deal_amounts)
+logging.debug(total_amount)
+logging.debug(deal_high_balance_amounts)
+logging.debug(deal_average_high_balance)
