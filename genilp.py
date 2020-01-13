@@ -348,49 +348,49 @@ num_fannies = pulp.lpSum([variables[deal.id] for deal in fannie_deals])
 num_freddies = pulp.lpSum([variables[deal.id] for deal in freddie_deals])
 
 # FICO
-# sum_fannies = pulp.lpSum([loans[deal.loan_id].amount * variables[deal.id] for deal in fannie_deals])
-# sum_freddies = pulp.lpSum([loans[deal.loan_id].amount * variables[deal.id] for deal in freddie_deals])
-# sum_fico_fannies = pulp.lpSum([loans[deal.loan_id].fico * loans[deal.loan_id].amount * variables[deal.id] for deal in fannie_deals])
-# sum_fico_freddies = pulp.lpSum([loans[deal.loan_id].fico * loans[deal.loan_id].amount * variables[deal.id] for deal in freddie_deals])
-# lower_fico_fannie = start['c13'] * sum_fannies <= sum_fico_fannies
-# upper_fico_fannie = sum_fico_fannies <= (start['c13'] + constraints['c13']) * sum_fannies
-# lower_fico_freddie = start['c13'] * sum_freddies <= sum_fico_freddies
-# upper_fico_freddie = sum_fico_freddies <= (start['c13'] + constraints['c13']) * sum_freddies
+sum_fannies = pulp.lpSum([loans[deal.loan_id].amount * variables[deal.id] for deal in fannie_deals])
+sum_freddies = pulp.lpSum([loans[deal.loan_id].amount * variables[deal.id] for deal in freddie_deals])
+sum_fico_fannies = pulp.lpSum([loans[deal.loan_id].fico * loans[deal.loan_id].amount * variables[deal.id] for deal in fannie_deals])
+sum_fico_freddies = pulp.lpSum([loans[deal.loan_id].fico * loans[deal.loan_id].amount * variables[deal.id] for deal in freddie_deals])
+lower_fico_fannie = start['c13'] * sum_fannies <= sum_fico_fannies
+upper_fico_fannie = sum_fico_fannies <= (start['c13'] + constraints['c13']) * sum_fannies
+lower_fico_freddie = start['c13'] * sum_freddies <= sum_fico_freddies
+upper_fico_freddie = sum_fico_freddies <= (start['c13'] + constraints['c13']) * sum_freddies
 
-# program += lower_fico_fannie
-# program += upper_fico_fannie
-# program += lower_fico_freddie
-# program += upper_fico_freddie
+program += lower_fico_fannie
+program += upper_fico_fannie
+program += lower_fico_freddie
+program += upper_fico_freddie
 
-# # DTI
-# sum_fannies = pulp.lpSum([loans[deal.loan_id].amount * variables[deal.id] for deal in fannie_deals])
-# sum_freddies = pulp.lpSum([loans[deal.loan_id].amount * variables[deal.id] for deal in freddie_deals])
-# sum_dti_fannies = pulp.lpSum([loans[deal.loan_id].dti * loans[deal.loan_id].amount * variables[deal.id] for deal in fannie_deals])
-# sum_dti_freddies = pulp.lpSum([loans[deal.loan_id].dti * loans[deal.loan_id].amount * variables[deal.id] for deal in freddie_deals])
-# lower_dti_fannie = start['c14'] * sum_fannies <= sum_dti_fannies
-# upper_dti_fannie = sum_dti_fannies <= (start['c14'] + constraints['c14']) * sum_fannies
-# lower_dti_freddie = start['c14'] * sum_freddies <= sum_dti_freddies
-# upper_dti_freddie = sum_dti_freddies <= (start['c14'] + constraints['c14']) * sum_freddies
+# DTI
+sum_fannies = pulp.lpSum([loans[deal.loan_id].amount * variables[deal.id] for deal in fannie_deals])
+sum_freddies = pulp.lpSum([loans[deal.loan_id].amount * variables[deal.id] for deal in freddie_deals])
+sum_dti_fannies = pulp.lpSum([loans[deal.loan_id].dti * loans[deal.loan_id].amount * variables[deal.id] for deal in fannie_deals])
+sum_dti_freddies = pulp.lpSum([loans[deal.loan_id].dti * loans[deal.loan_id].amount * variables[deal.id] for deal in freddie_deals])
+lower_dti_fannie = start['c14'] * sum_fannies <= sum_dti_fannies
+upper_dti_fannie = sum_dti_fannies <= (start['c14'] + constraints['c14']) * sum_fannies
+lower_dti_freddie = start['c14'] * sum_freddies <= sum_dti_freddies
+upper_dti_freddie = sum_dti_freddies <= (start['c14'] + constraints['c14']) * sum_freddies
 
-# program += lower_dti_fannie
-# program += upper_dti_fannie
-# program += lower_dti_freddie
-# program += upper_dti_freddie
+program += lower_dti_fannie
+program += upper_dti_fannie
+program += lower_dti_freddie
+program += upper_dti_freddie
 
 
-# all_locations = set([loan.location for _, loan in loans.items()])
-# for i, location in enumerate(all_locations):
-#     sum_location_fannies = pulp.lpSum([variables[deal.id] for deal in fannie_deals if loans[deal.loan_id].location == location])
-#     sum_location_freddies = pulp.lpSum([variables[deal.id] for deal in freddie_deals if loans[deal.loan_id].location == location])
-#     lower_location_fannie = start['c15'][location] * num_fannies <= sum_location_fannies, f'Lower bound on number of Fannie Mae loans bound to a residence in {location}'
-#     upper_location_fannie = sum_location_fannies <= (start['c15'][location] + constraints['c15']) * num_fannies, f'Upper bound on number of Fannie Mae loans bound to a residence in {location}'
-#     lower_location_freddie = start['c15'][location] * num_freddies <= sum_location_freddies, f'Lower bound on number of Freddie Mac loans bound to a residence in {location}'
-#     upper_location_freddie = sum_location_freddies <= (start['c15'][location] + constraints['c15']) * num_freddies, f'Upper bound on number of Freddie Mac loans bound to a residence in {location}'
+all_locations = set([loan.location for _, loan in loans.items()])
+for i, location in enumerate(all_locations):
+    sum_location_fannies = pulp.lpSum([variables[deal.id] for deal in fannie_deals if loans[deal.loan_id].location == location])
+    sum_location_freddies = pulp.lpSum([variables[deal.id] for deal in freddie_deals if loans[deal.loan_id].location == location])
+    lower_location_fannie = start['c15'][location] * num_fannies <= sum_location_fannies, f'Lower bound on number of Fannie Mae loans bound to a residence in {location}'
+    upper_location_fannie = sum_location_fannies <= (start['c15'][location] + constraints['c15']) * num_fannies, f'Upper bound on number of Fannie Mae loans bound to a residence in {location}'
+    lower_location_freddie = start['c15'][location] * num_freddies <= sum_location_freddies, f'Lower bound on number of Freddie Mac loans bound to a residence in {location}'
+    upper_location_freddie = sum_location_freddies <= (start['c15'][location] + constraints['c15']) * num_freddies, f'Upper bound on number of Freddie Mac loans bound to a residence in {location}'
 
-#     program += lower_location_fannie
-#     program += upper_location_fannie
-#     program += lower_location_freddie
-#     program += upper_location_freddie
+    program += lower_location_fannie
+    program += upper_location_fannie
+    program += lower_location_freddie
+    program += upper_location_freddie
 
 all_occupancies = set([loan.occupancy for _, loan in loans.items()])
 for i, occupancy in enumerate(all_occupancies):
