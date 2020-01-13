@@ -373,20 +373,10 @@ upper_fannie = sum_califonia_fannies <= (start['c15']['CA'] + constraints['c15']
 lower_freddie = start['c15']['CA'] * sum_freddies <= sum_califonia_freddies, 'Lower bound on number of Freddie Mac loans bound to a residence in CA'
 upper_freddie = sum_califonia_freddies <= (start['c15']['CA'] + constraints['c15']) * sum_freddies, 'Upper bound on number of Freddie Mac loans bound to a residence in CA'
 
-program += lower_fannie
-program += upper_fannie
-program += lower_freddie
-program += upper_freddie
+# program += lower_fannie
+# program += upper_fannie
+# program += lower_freddie
+# program += upper_freddie
 
 program.writeLP('MortgagesProblem.lp')
 logging.info('Integer Linear Program written to MortgagesProblem.lp')
-
-my_solver = pulp.solvers.CPLEX_CMD(path='/opt/ibm/ILOG/CPLEX_Studio129/cplex/bin/x86-64_linux/cplex')
-program.solve(solver=my_solver)
-logging.debug(f'Solver status: {pulp.LpStatus[program.status]}')
-logging.debug(f'Objective: {pulp.value(program.objective)}')
-with open('MortgagesProblem.sol', 'w') as solution_file:
-    solution_file.write('TakenDealId\n')
-    for deal_id, variable in variables.items():
-        if variable.varValue is not None and variable.varValue == 1:
-            solution_file.write(f'{deal_id}\n')
