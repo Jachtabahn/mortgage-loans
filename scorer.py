@@ -1,8 +1,6 @@
-import logging
-import argparse
 import csv, sys, traceback
-import collections
 from data import *
+from collections import defaultdict
 
 def evaluate(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE, SOLUTION_FILE):
     print(f'[INFO] Loan File: {LOAN_FILE}')
@@ -17,6 +15,25 @@ def evaluate(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE, SOLUTION_FILE)
     constraints = load_constraints(CONSTRAINT_FILE)
     print('[INFO]', constraints)
 
+    min_by_i = {}
+    max_by_i = {}
+    for (i, j, k), pijk in combs.items():
+        if i in min_by_i:
+            min_by_i[i] = min(min_by_i[i], float(pijk))
+        else:
+            min_by_i[i] = float(pijk);
+        if i in max_by_i:
+            max_by_i[i] = max(max_by_i[i], float(pijk))
+        else:
+            max_by_i[i] = float(pijk);
+    norm_min = 0
+    norm_max = 0
+    for i in loans:
+        norm_min = norm_min + min_by_i[i] / 100 * loans[i].Li
+        norm_max = norm_max + max_by_i[i] / 100 * loans[i].Li
+    print('[INFO] Normalizer range = [', norm_min, ', ', norm_max, ']')
+    
+
     states = sorted(list(set([loan.state for loan in loans.values()])))
     occupancy_types = sorted(list(set([loan.occupancy for loan in loans.values()])))
     purposes = sorted(list(set([loan.purpose for loan in loans.values()])))
@@ -30,12 +47,14 @@ def evaluate(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE, SOLUTION_FILE)
         reader = csv.DictReader(csvfile)
         obj = 0
         used = set()
+        used_loan = set()
         for row in reader:
             i = row['Loan']
             j = row['Pool']
             k = row['Servicer']
             assert (i, j, k) in combs, f'Invalid combinations! {i}, {j}, {k}'
-            assert (i, j, k) not in used, 'Duplicated combinations!'
+            assert i not in used_loan, f'Duplicated loan {i}!'
+            used_loan.add(i)
             used.add((i, j, k))
             pijk = combs[(i, j, k)]
             obj += float(pijk) / 100 * loans[i].Li
@@ -127,7 +146,7 @@ def evaluate(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE, SOLUTION_FILE)
         if cnt_two_harbors > 0:
             p_r /= cnt_two_harbors
             p_pr /= cnt_two_harbors
-
+        
         if 'c8' in constraints:
             assert total >= constraints['c8'], f'c8 violated on pool {j}: {total}'
         if 'c9' in constraints:
@@ -144,7 +163,7 @@ def evaluate(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE, SOLUTION_FILE)
     for agency, loan_list in byAgency.items():
         total, avg_fico, avg_dti = 0, 0, 0
         state_cnt, occupancy_cnt, purpose_cnt, property_type_cnt = \
-            collections.defaultdict(int), collections.defaultdict(int), collections.defaultdict(int), collections.defaultdict(int)
+            defaultdict(int), defaultdict(int), defaultdict(int), defaultdict(int)
         for loan in loan_list:
             total += loan.Li
             avg_fico += loan.FICO * loan.Li
@@ -160,11 +179,11 @@ def evaluate(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE, SOLUTION_FILE)
         for state in states:
             measure[agency].append(state_cnt[state] / len(loan_list))
         for occupancy in occupancy_types:
-            measure[agency].append(occupancy_cnt[occupancy] / len(loan_list))
+            measure[agency].append(occupancy_cnt[occupancy] / len(loan_list)) 
         for purpose in purposes:
-            measure[agency].append(purpose_cnt[purpose] / len(loan_list))
+            measure[agency].append(purpose_cnt[purpose] / len(loan_list)) 
         for property_type in property_types:
-            measure[agency].append(property_type_cnt[property_type] / len(loan_list))
+            measure[agency].append(property_type_cnt[property_type] / len(loan_list)) 
 
     ptr = 0
     if 'c13' in constraints:
@@ -195,36 +214,47 @@ def evaluate(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE, SOLUTION_FILE)
             assert abs(measure[agentA][ptr + i] - measure[agentB][ptr + i]) <= constraints['c18'], f'c17 violated on property_type {property_types[i]}: {measure[agentA][ptr + i]} vs. {measure[agentB][ptr + i]}'
     print('[INFO] all checks passed')
     print(f'[INFO] Score = {obj}')
+    obj = (obj - norm_min) / (norm_max - norm_min)
+    obj *= 100
+    print(f'[INFO] Normalized Score = {obj}')
     return obj
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--solution-path', '-s', type=str, required=True)
-    parser.add_argument('--constraints-path', '-c', type=str, required=True)
-    parser.add_argument('--verbose', '-v', action='count')
-    args = parser.parse_args()
+    if len(sys.argv) == 3:
+        DATA_FOLDER = sys.argv[1]
+        SOLUTION_FOLDER = sys.argv[2]
+    else:
+        DATA_FOLDER = './data/'
+        SOLUTION_FOLDER = './344827/solution/'
+        # SOLUTION_FOLDER = './submission/solution/'
 
-    log_levels = {
-        None: logging.WARNING,
-        1: logging.INFO,
-        2: logging.DEBUG
-    }
-    if args.verbose is not None and args.verbose >= len(log_levels):
-        args.verbose = len(log_levels)-1
-    logging.basicConfig(format='%(message)s', level=log_levels[args.verbose])
+    COMBO_FILE = DATA_FOLDER + '/EligiblePricingCombinations.csv'
+    LOAN_FILE = DATA_FOLDER + '/LoanData.csv'
+    OPTION_FILE = DATA_FOLDER + '/PoolOptionData.csv'
+    CONSTARINT_FILES = [DATA_FOLDER + '/ConstraintA.csv', DATA_FOLDER + '/ConstraintB.csv']
+    SOLUTION_FILES = [SOLUTION_FOLDER + '/A.csv', SOLUTION_FOLDER + '/B.csv']
 
-    try:
-        evaluate('data/LoanData.csv',
-            'data/PoolOptionData.csv',
-            'data/EligiblePricingCombinations.csv',
-            args.constraints_path,
-            args.solution_path)
-    except AssertionError as e:
-        _, _, tb = sys.exc_info()
-        traceback.print_tb(tb) # Fixed format
-        print('Error Message:', e)
-    except FileNotFoundError as e:
-        _, _, tb = sys.exc_info()
-        traceback.print_tb(tb) # Fixed format
-        print('Error Message:', e)
+    scores = []
+    for CONSTRAINT_FILE, SOLUTION_FILE in zip(CONSTARINT_FILES, SOLUTION_FILES):
+        score = 0
+        try:
+            score = evaluate(LOAN_FILE, OPTION_FILE, COMBO_FILE, CONSTRAINT_FILE, SOLUTION_FILE)
+        except AssertionError as e:
+            _, _, tb = sys.exc_info()
+            traceback.print_tb(tb) # Fixed format
+            print('Error Message:', e)
+        except FileNotFoundError as e:
+            _, _, tb = sys.exc_info()
+            traceback.print_tb(tb) # Fixed format
+            print('Error Message:', e)
+        except:
+            _, _, tb = sys.exc_info()
+            traceback.print_tb(tb) # Fixed format
+            print('Other Errors!')
+        scores.append(score)
+
+    final_score = sum(scores) / len(scores)
+
+    print(f'Final Score = {final_score}')
+
