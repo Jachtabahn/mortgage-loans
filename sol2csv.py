@@ -173,7 +173,7 @@ with open('data_processed/Pools.csv') as pools_file:
         assert type(pool.agency) == str
 
 constraints = {}
-with open('data_processed/Constraints.csv') as constraints_file:
+with open('data/ConstraintsComparability.csv') as constraints_file:
     constraints_reader = csv.reader(constraints_file)
     for name, value_string in constraints_reader:
         value = float(value_string)
@@ -236,22 +236,27 @@ logging.debug('Number of loans sold to a Freddie Mac pool: {:,}'.format(len(take
 logging.debug('Total amount sold to Fannie Mae pools: {:,}'.format(fannie_total_amount))
 logging.debug('Total amount sold to Freddie Mac pools: {:,}'.format(freddie_total_amount))
 
-
 logging.debug('-----------------------------------------------')
-weighted_ficos = [loan.fico * weight for loan, weight in fannie_loans_weights]
+weighted_fannie_ficos = [loan.fico * weight for loan, weight in fannie_loans_weights]
 logging.debug('')
 logging.debug('Constraint 13')
-logging.debug(f'What is the amount-relative average FICO score among the loans sold to a Fannie Mae pool: {sum(weighted_ficos)}')
-weighted_ficos = [loan.fico * weight for loan, weight in freddie_loans_weights]
-logging.debug(f'What is the amount-relative average FICO score among the loans sold to a Freddie Mac pool: {sum(weighted_ficos)}')
+logging.debug(f'What is the amount-relative average FICO score among the loans sold to a Fannie Mae pool: {sum(weighted_fannie_ficos)}')
+weighted_freddie_ficos = [loan.fico * weight for loan, weight in freddie_loans_weights]
+logging.debug(f'What is the amount-relative average FICO score among the loans sold to a Freddie Mac pool: {sum(weighted_freddie_ficos)}')
+c13_distance = abs(sum(weighted_fannie_ficos) - sum(weighted_freddie_ficos))
+logging.debug(f'Actual distance: {c13_distance}')
+logging.debug(f'Allowed distance: {constraints["c13"]}')
 logging.debug('-----------------------------------------------')
 
-weighted_dtis = [loan.dti * weight for loan, weight in fannie_loans_weights]
+weighted_fannie_dtis = [loan.dti * weight for loan, weight in fannie_loans_weights]
 logging.debug('')
 logging.debug('Constraint 14')
-logging.debug(f'What is the amount-relative average debt-to-income ratio among the loans sold to a Fannie Mae pool: {sum(weighted_dtis)}')
-weighted_dtis = [loan.dti * weight for loan, weight in freddie_loans_weights]
-logging.debug(f'What is the amount-relative average debt-to-income ratio among the loans sold to a Freddie Mac pool: {sum(weighted_dtis)}')
+logging.debug(f'What is the amount-relative average debt-to-income ratio among the loans sold to a Fannie Mae pool: {sum(weighted_fannie_dtis)}')
+weighted_freddie_dtis = [loan.dti * weight for loan, weight in freddie_loans_weights]
+logging.debug(f'What is the amount-relative average debt-to-income ratio among the loans sold to a Freddie Mac pool: {sum(weighted_freddie_dtis)}')
+c14_distance = abs(sum(weighted_fannie_dtis) - sum(weighted_freddie_dtis))
+logging.debug(f'Actual distance: {c14_distance}')
+logging.debug(f'Allowed distance: {constraints["c14"]}')
 logging.debug('-----------------------------------------------')
 
 all_locations = set([loan.location for _, loan in loans.items()])
@@ -265,7 +270,8 @@ for i, location in enumerate(all_locations):
     logging.debug(f'For each loan, that is sold to a Fannie Mae pool, how many loans are also bound to a residence in {location}: {c15_fannie}')
     logging.debug(f'For each loan, that is sold to a Freddie Mac pool, how many loans are also bound to a residence in {location}: {c15_freddie}')
     c15_distance = abs(c15_fannie - c15_freddie)
-    logging.debug(f'Distance: {c15_distance}')
+    logging.debug(f'Actual distance: {c15_distance}')
+    logging.debug(f'Allowed distance: {constraints["c15"]}')
 logging.debug('-----------------------------------------------')
 
 all_occupancies = set([loan.occupancy for _, loan in loans.items()])
@@ -274,8 +280,13 @@ for i, occupancy in enumerate(all_occupancies):
     taken_freddie_primary_deals = [loans[taken_freddie_deal.loan_id].occupancy == occupancy for taken_freddie_deal in taken_freddie_deals]
     logging.debug('')
     logging.debug(f'Constraint 16 for property occupancy {occupancy} ({i+1}/{len(all_occupancies)})')
-    logging.debug(f'For each loan, that is sold to a Fannie Mae pool, how many loans are also bound to a {occupancy} residence: {sum(taken_fannie_primary_deals) / len(taken_fannie_deals)}')
-    logging.debug(f'For each loan, that is sold to a Freddie Mac pool, how many loans are also bound to a {occupancy} residence: {sum(taken_freddie_primary_deals) / len(taken_freddie_deals)}')
+    c16_fannie = sum(taken_fannie_primary_deals) / len(taken_fannie_deals)
+    c16_freddie = sum(taken_freddie_primary_deals) / len(taken_freddie_deals)
+    logging.debug(f'For each loan, that is sold to a Fannie Mae pool, how many loans are also bound to a {occupancy} residence: {c16_fannie}')
+    logging.debug(f'For each loan, that is sold to a Freddie Mac pool, how many loans are also bound to a {occupancy} residence: {c16_freddie}')
+    c16_distance = abs(c16_fannie - c16_freddie)
+    logging.debug(f'Actual distance: {c16_distance}')
+    logging.debug(f'Allowed distance: {constraints["c16"]}')
 logging.debug('-----------------------------------------------')
 
 all_purposes = set([loan.purpose for _, loan in loans.items()])
@@ -289,7 +300,8 @@ for i, purpose in enumerate(all_purposes):
     logging.debug(f'For each loan, that is sold to a Fannie Mae pool, how many loans have also been given out as a {purpose}: {c17_fannie}')
     logging.debug(f'For each loan, that is sold to a Freddie Mac pool, how many loans have also been given out as a {purpose}: {c17_freddie}')
     c17_distance = abs(c17_fannie - c17_freddie)
-    logging.debug(f'Distance: {c17_distance}')
+    logging.debug(f'Actual distance: {c17_distance}')
+    logging.debug(f'Allowed distance: {constraints["c17"]}')
 logging.debug('-----------------------------------------------')
 
 all_types = set([loan.property_type for _, loan in loans.items()])
@@ -303,4 +315,5 @@ for i, property_type in enumerate(all_types):
     logging.debug(f'For each loan, that is sold to a Fannie Mae pool, how many loans are also bound to a property of type {property_type}: {c18_fannie}')
     logging.debug(f'For each loan, that is sold to a Freddie Mac pool, how many loans are also bound to a property of type {property_type}: {c18_freddie}')
     c18_distance = abs(c18_fannie - c18_freddie)
-    logging.debug(f'Distance: {c18_distance}')
+    logging.debug(f'Actual distance: {c18_distance}')
+    logging.debug(f'Allowed distance: {constraints["c18"]}')
