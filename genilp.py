@@ -73,7 +73,8 @@ buyer_string = '''Deal {}
 
 class Loan:
 
-    def __init__(self, loan_id, amount, fico, dti, is_expensive, is_california, is_cashout, is_primary):
+    def __init__(self, loan_id, amount, fico, dti, is_expensive, is_california, is_cashout, is_primary,
+        occupancy, location, property_type, purpose):
         self.id = loan_id
         if int(amount) == amount:
             self.amount = int(amount)
@@ -85,6 +86,11 @@ class Loan:
         self.is_california = is_california
         self.is_cashout = is_cashout
         self.is_primary = is_primary
+
+        self.occupancy = occupancy
+        self.location = location
+        self.property_type = property_type
+        self.purpose = purpose
 
     def __str__(self):
         return loan_string.format(self.id, self.amount, self.fico, self.dti,
@@ -131,12 +137,13 @@ if args.verbose is not None and args.verbose >= len(log_levels):
 logging.basicConfig(format='%(message)s', level=log_levels[args.verbose])
 
 loans = {}
-with open('data_processed/Loans.csv') as loans_file:
+with open('data_processed/LoansFull.csv') as loans_file:
     loans_reader = csv.reader(loans_file)
     next(loans_reader) # consume the column names
     for loan_id_string, amount_string, fico_string, dti_string,\
             is_expensive_string, is_california_string,\
-            is_cashout_string, is_primary_string in loans_reader:
+            is_cashout_string, is_primary_string,\
+            occupancy, location, property_type, purpose in loans_reader:
 
         # parse the loan row
         loan_id = int(loan_id_string)
@@ -149,7 +156,8 @@ with open('data_processed/Loans.csv') as loans_file:
         is_primary = int(is_primary_string == '1')
 
         loan = Loan(loan_id, amount, fico, dti,
-            is_expensive, is_california, is_cashout, is_primary)
+            is_expensive, is_california, is_cashout, is_primary,
+            occupancy, location, property_type, purpose)
         loans[loan_id] = loan
 
         assert type(loan.id) == int
@@ -160,6 +168,10 @@ with open('data_processed/Loans.csv') as loans_file:
         assert type(loan.is_california) == int, 'is_california should be an integer for easy multiplication and addition'
         assert type(loan.is_cashout) == int, 'is_cashout should be an integer for easy multiplication and addition'
         assert type(loan.is_primary) == int, 'is_primary should be an integer for easy multiplication and addition'
+        assert type(loan.occupancy) == str
+        assert type(loan.location) == str
+        assert type(loan.property_type) == str
+        assert type(loan.purpose) == str
 
 pools = {}
 with open('data_processed/Pools.csv') as pools_file:
@@ -182,7 +194,7 @@ with open('data_processed/Pools.csv') as pools_file:
         assert type(pool.agency) == str
 
 constraints = {}
-with open('data_processed/Constraints.csv') as constraints_file:
+with open('data/ConstraintsComparability.csv') as constraints_file:
     constraints_reader = csv.reader(constraints_file)
     for name, value_string in constraints_reader:
         value = float(value_string)
@@ -326,6 +338,45 @@ freddie_deals = [deal for _, deal in deals.items() if pools[deal.pool_id].agency
 logging.debug(f'Have {len(deals)} deals in total')
 logging.debug(f'Have {len(fannie_deals)} Fannie Mae deals')
 logging.debug(f'Have {len(freddie_deals)} Freddie Mac deals')
+
+
+start = {
+    'c15': {
+        'CA': 0.197556
+    },
+    'c17': {
+        'Rate/Term': 0.4226677
+    }
+}
+
+sum_fannies = pulp.lpSum([variables[deal.id] for deal in fannie_deals])
+sum_freddies = pulp.lpSum([variables[deal.id] for deal in freddie_deals])
+
+sum_califonia_fannies = pulp.lpSum([variables[deal.id] for deal in fannie_deals if loans[deal.loan_id].is_california])
+sum_califonia_freddies = pulp.lpSum([variables[deal.id] for deal in freddie_deals if loans[deal.loan_id].is_california])
+
+lower_california_fannie = start['c15']['CA'] * sum_fannies <= sum_califonia_fannies, 'Lower bound on number of Fannie Mae loans bound to a residence in CA'
+upper_california_fannie = sum_califonia_fannies <= (start['c15']['CA'] + constraints['c15']) * sum_fannies, 'Upper bound on number of Fannie Mae loans bound to a residence in CA'
+lower_california_freddie = start['c15']['CA'] * sum_freddies <= sum_califonia_freddies, 'Lower bound on number of Freddie Mac loans bound to a residence in CA'
+upper_california_freddie = sum_califonia_freddies <= (start['c15']['CA'] + constraints['c15']) * sum_freddies, 'Upper bound on number of Freddie Mac loans bound to a residence in CA'
+
+program += lower_california_fannie
+program += upper_california_fannie
+program += lower_california_freddie
+program += upper_california_freddie
+
+sum_rateterm_fannies = pulp.lpSum([variables[deal.id] for deal in fannie_deals if loans[deal.loan_id].purpose == 'Rate/Term'])
+sum_rateterm_freddies = pulp.lpSum([variables[deal.id] for deal in freddie_deals if loans[deal.loan_id].purpose == 'Rate/Term'])
+
+lower_fannie = start['c15']['CA'] * sum_fannies <= sum_califonia_fannies, 'Lower bound on number of Fannie Mae loans bound to a residence in CA'
+upper_fannie = sum_califonia_fannies <= (start['c15']['CA'] + constraints['c15']) * sum_fannies, 'Upper bound on number of Fannie Mae loans bound to a residence in CA'
+lower_freddie = start['c15']['CA'] * sum_freddies <= sum_califonia_freddies, 'Lower bound on number of Freddie Mac loans bound to a residence in CA'
+upper_freddie = sum_califonia_freddies <= (start['c15']['CA'] + constraints['c15']) * sum_freddies, 'Upper bound on number of Freddie Mac loans bound to a residence in CA'
+
+program += lower_fannie
+program += upper_fannie
+program += lower_freddie
+program += upper_freddie
 
 program.writeLP('MortgagesProblem.lp')
 logging.info('Integer Linear Program written to MortgagesProblem.lp')
