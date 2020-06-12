@@ -12,4 +12,6 @@ The problem boils down to this: Assign a house (mortgage loan) to a government e
 
 The code in this repository reduces the problem to an [integer linear program](https://github.com/Jachtabahn/mortgage-loans/blob/construct-ilp-with-pulp/genilp.py).
 
+This integer linear program can be solved in a few minutes with [CPLEX](https://www.ibm.com/analytics/cplex-optimizer), but not with [COIN OR](https://www.coin-or.org/).
+
 This code was submitted to a [TopCoder](https://www.topcoder.com/) competition, but it didn't win the main prize.
